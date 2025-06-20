@@ -1,5 +1,9 @@
 package tcc.conexao_alimentar.repository;
 
-public interface PessoaFisicaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import tcc.conexao_alimentar.model.PessoaFisicaModel;
+
+public interface PessoaFisicaRepository extends JpaRepository<PessoaFisicaModel,Long> {
 
 }

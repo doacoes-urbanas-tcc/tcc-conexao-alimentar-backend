@@ -1,5 +1,9 @@
 package tcc.conexao_alimentar.repository;
 
-public interface EnderecoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import tcc.conexao_alimentar.model.EnderecoModel;
+
+public interface EnderecoRepository extends JpaRepository<EnderecoModel,Long> {
 
 }
