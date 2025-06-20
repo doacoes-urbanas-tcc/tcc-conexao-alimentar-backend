@@ -6,4 +6,7 @@ import tcc.conexao_alimentar.model.OngModel;
 
 public interface OngRepository extends JpaRepository<OngModel,Long> {
 
+    boolean existsByEmail(String email);
+
+
 }

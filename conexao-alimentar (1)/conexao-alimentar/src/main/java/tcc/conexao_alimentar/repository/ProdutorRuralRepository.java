@@ -6,4 +6,7 @@ import tcc.conexao_alimentar.model.ProdutorRuralModel;
 
 public interface ProdutorRuralRepository extends JpaRepository<ProdutorRuralModel,Long> {
 
+    boolean existsByEmail(String email);
+
+
 }

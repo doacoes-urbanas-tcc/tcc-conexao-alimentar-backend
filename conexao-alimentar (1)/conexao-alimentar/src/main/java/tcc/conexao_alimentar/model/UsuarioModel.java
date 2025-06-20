@@ -1,6 +1,7 @@
 package tcc.conexao_alimentar.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,6 +25,7 @@ public abstract class UsuarioModel {
     private Long id;
 
     private String nome;
+    @Column(nullable = false, unique = true)
     private String email;
     private String senha;
     private String telefone;

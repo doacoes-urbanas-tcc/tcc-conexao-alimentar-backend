@@ -1,11 +1,12 @@
 package tcc.conexao_alimentar.DTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tcc.conexao_alimentar.enums.TipoUsuario;
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class ProdutorRuralResponseDTO {
 
     private Long id;
@@ -15,4 +16,5 @@ public class ProdutorRuralResponseDTO {
     private String numeroRegistroRural;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+
 }

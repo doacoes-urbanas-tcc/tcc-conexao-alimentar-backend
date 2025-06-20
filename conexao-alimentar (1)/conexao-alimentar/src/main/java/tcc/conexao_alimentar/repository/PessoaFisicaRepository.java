@@ -6,4 +6,7 @@ import tcc.conexao_alimentar.model.PessoaFisicaModel;
 
 public interface PessoaFisicaRepository extends JpaRepository<PessoaFisicaModel,Long> {
 
+    boolean existsByEmail(String email);
+
+
 }

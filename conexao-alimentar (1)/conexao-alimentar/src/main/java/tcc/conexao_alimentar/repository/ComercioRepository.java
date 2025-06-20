@@ -6,4 +6,7 @@ import tcc.conexao_alimentar.model.ComercioModel;
 
 public interface ComercioRepository  extends JpaRepository<ComercioModel,Long>{
 
+    boolean existsByEmail(String email);
+
+
 }
