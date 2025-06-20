@@ -232,7 +232,7 @@ Este documento tem como objetivo definir as regras de negócio do nosso software
   - Falta de feedback e risco de manter más práticas não registradas  
 
 
-### RN003
+### RN014
 
 - **Nome:** Validação de retirada
 - **Data de Criação:** 01/06/2025
@@ -242,7 +242,7 @@ Este documento tem como objetivo definir as regras de negócio do nosso software
 ---
 
 
-### RN004
+### RN015
 
 - **Nome:** Horário de doações
 - **Data de Criação:** 01/06/2025
