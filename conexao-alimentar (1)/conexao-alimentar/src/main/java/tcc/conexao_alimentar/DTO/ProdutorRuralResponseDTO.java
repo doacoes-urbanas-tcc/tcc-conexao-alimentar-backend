@@ -1,29 +1,18 @@
 package tcc.conexao_alimentar.DTO;
-
-
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import tcc.conexao_alimentar.enums.SetorAtuacao;
 import tcc.conexao_alimentar.enums.TipoUsuario;
-
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class VolunarioResponseDTO {
+public class ProdutorRuralResponseDTO {
 
     private Long id;
     private String nome;
     private String email;
     private String telefone;
-    private String cpf;
-    private String documentoComprovante;
-    private SetorAtuacao setorAtuacao;
+    private String numeroRegistroRural;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
-
 }

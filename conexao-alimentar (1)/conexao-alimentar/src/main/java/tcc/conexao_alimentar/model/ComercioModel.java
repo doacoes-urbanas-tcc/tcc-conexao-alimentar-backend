@@ -19,6 +19,7 @@ public class ComercioModel extends UsuarioModel {
     private String cnpj;
     private String nomeFantasia;
     @Enumerated(EnumType.STRING)
-    private TipoComercio tipo;
+    private TipoComercio tipoComercio;
+    
 
 }

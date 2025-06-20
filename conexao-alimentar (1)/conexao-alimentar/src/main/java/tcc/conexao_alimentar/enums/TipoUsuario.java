@@ -6,6 +6,7 @@ public enum TipoUsuario {
     PESSOA_FISICA,
     COMERCIO,
     PRODUTOR_RURAL,
-    ONG;
+    ONG,
+    VOLUNTARIO;
 
 }

@@ -1,18 +1,14 @@
 package tcc.conexao_alimentar.DTO;
 
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import tcc.conexao_alimentar.enums.SetorAtuacao;
-
-@Getter
-@Setter
+import tcc.conexao_alimentar.enums.TipoUsuario;
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class VoluntarioCadastroDTO {
 
     private String nome;
@@ -23,5 +19,7 @@ public class VoluntarioCadastroDTO {
     private String cpf;
     private String documentoComprovante;
     private SetorAtuacao setorAtuacao;
+    private TipoUsuario tipoUsuario;
+
 
 }

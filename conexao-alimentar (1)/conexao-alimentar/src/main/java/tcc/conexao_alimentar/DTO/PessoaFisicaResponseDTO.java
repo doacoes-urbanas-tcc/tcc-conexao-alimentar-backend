@@ -1,16 +1,12 @@
 package tcc.conexao_alimentar.DTO;
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class PessoaFisicaResponseDTO {
     private Long id;
     private String nome;

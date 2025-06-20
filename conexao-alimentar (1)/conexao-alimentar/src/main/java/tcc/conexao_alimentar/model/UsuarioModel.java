@@ -2,7 +2,6 @@ package tcc.conexao_alimentar.model;
 
 
 import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

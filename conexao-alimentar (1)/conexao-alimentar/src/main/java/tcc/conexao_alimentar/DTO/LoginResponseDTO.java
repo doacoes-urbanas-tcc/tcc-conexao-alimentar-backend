@@ -1,15 +1,12 @@
 package tcc.conexao_alimentar.DTO;
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class LoginResponseDTO {
 
     private String token;
