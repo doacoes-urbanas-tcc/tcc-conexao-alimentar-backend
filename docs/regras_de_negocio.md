@@ -247,7 +247,7 @@ Este documento tem como objetivo definir as regras de negócio do nosso software
 - **Nome:** Horário de doações
 - **Data de Criação:** 01/06/2025
 - **Autor:** Lívia Neves
-- **Descrição:** As doações só poderão ser efetuadas de 08:00 às 18:00, essa medida torna o processo de doação mais 
+- **Descrição:** As doações só poderão ser efetuadas de 08:00 às 18:00, essa medida torna o processo de doação mais seguro para todos os envolvidos.
 
 ---
 
