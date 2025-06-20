@@ -3,6 +3,7 @@ package tcc.conexao_alimentar.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import tcc.conexao_alimentar.enums.TipoComercio;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "comercio")
 public class ComercioModel extends UsuarioModel {
 
     private String cnpj;
