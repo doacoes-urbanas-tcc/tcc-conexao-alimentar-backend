@@ -2,13 +2,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GerarSenha",
+            "request": "launch",
+            "mainClass": "tcc.conexao_alimentar.config.GerarSenha",
+            "projectName": "conexao-alimentar"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-ConexaoAlimentarApplication<conexao-alimentar>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "tcc.conexao_alimentar.ConexaoAlimentarApplication",
             "projectName": "conexao-alimentar",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=50753 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=conexao-alimentar"
         }
     ]
 }

@@ -21,6 +21,7 @@ import tcc.conexao_alimentar.service.JwtService;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtAuthFilter jwtAuthFilter;
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
@@ -30,13 +31,19 @@ public class SecurityConfig {
         return http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(
+                    "/auth/**",
+                    "/pessoa-fisica/**",
+                    "/voluntario/**",
+                    "/comercio/**",
+                    "/produtor-rural/**",
+                    "/ong/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(daoAuthProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
             .build();
     }
 
@@ -57,5 +64,4 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
-
 }

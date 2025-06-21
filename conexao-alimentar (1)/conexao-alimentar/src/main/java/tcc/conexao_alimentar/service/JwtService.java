@@ -20,17 +20,15 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Gera o token JWT com base no usuário
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-            .setSubject(userDetails.getUsername()) // email
+            .setSubject(userDetails.getUsername()) 
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 dia
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) 
             .signWith(getSignInKey(), SignatureAlgorithm.HS256)
             .compact();
     }
 
-    // Extrai o email (username) do token
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
             .setSigningKey(getSignInKey())
@@ -40,13 +38,11 @@ public class JwtService {
             .getSubject();
     }
 
-    // Verifica se o token está válido
     public boolean isTokenValid(String token, UserDetails userDetails) {
         String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    // Verifica se o token está expirado
     private boolean isTokenExpired(String token) {
         Date expiration = Jwts.parserBuilder()
             .setSigningKey(getSignInKey())
