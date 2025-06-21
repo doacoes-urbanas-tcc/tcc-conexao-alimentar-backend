@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ConexaoAlimentarApplication<conexao-alimentar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "tcc.conexao_alimentar.ConexaoAlimentarApplication",
+            "projectName": "conexao-alimentar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
