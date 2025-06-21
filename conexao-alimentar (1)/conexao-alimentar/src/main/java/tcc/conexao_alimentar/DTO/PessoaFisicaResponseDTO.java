@@ -1,10 +1,12 @@
 package tcc.conexao_alimentar.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PessoaFisicaResponseDTO {
