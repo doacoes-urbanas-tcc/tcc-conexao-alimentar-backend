@@ -8,7 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UsuarioModel {
 
     @Id
