@@ -3,6 +3,7 @@ package tcc.conexao_alimentar.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UsuarioModel {
 
