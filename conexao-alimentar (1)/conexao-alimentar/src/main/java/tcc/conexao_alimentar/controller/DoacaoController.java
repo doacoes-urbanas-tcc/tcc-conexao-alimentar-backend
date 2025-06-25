@@ -16,7 +16,7 @@ public class DoacaoController {
 
     private final DoacaoService service;
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     @PreAuthorize("hasAnyRole('COMERCIO', 'PESSOA_FISICA', 'PRODUTOR_RURAL')")
     public ResponseEntity<?> criar(@RequestBody DoacaoRequestDTO dto) {
         service.cadastrar(dto);

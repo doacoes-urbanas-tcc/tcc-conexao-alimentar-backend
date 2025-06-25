@@ -35,5 +35,5 @@ public class DoacaoModel {
     @ManyToOne
     @JoinColumn(name = "doador_id")
     private UsuarioModel doador;
-
+    
 }
