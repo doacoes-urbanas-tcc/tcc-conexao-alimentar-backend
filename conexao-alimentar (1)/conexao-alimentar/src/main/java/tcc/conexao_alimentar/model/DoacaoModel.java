@@ -3,7 +3,6 @@ package tcc.conexao_alimentar.model;
 import jakarta.persistence.*;
 import lombok.*;
 import tcc.conexao_alimentar.enums.CategoriaAlimento;
-import tcc.conexao_alimentar.enums.Medida;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
@@ -21,21 +20,16 @@ public class DoacaoModel {
 
     @Column(name = "nome_alimento", nullable = false)
     private String nomeAlimento;
-
     private String descricao;
-
     private LocalDate dataCadastro;
-
     private LocalDate dataExpiracao;
-    private String categoria;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false)
+    private CategoriaAlimento categoria;
     private Integer quantidade;
-
     private String localizacao;
-
     @Enumerated(EnumType.STRING)
     private StatusDoacao status;
-
     @ManyToOne
     @JoinColumn(name = "doador_id")
     private UsuarioModel doador;

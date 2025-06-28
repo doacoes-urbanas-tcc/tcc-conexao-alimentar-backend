@@ -4,6 +4,7 @@ import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.model.DoacaoModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
+import tcc.conexao_alimentar.enums.CategoriaAlimento;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ public class DoacaoMapper {
         model.setDescricao(dto.getDescricao());
         model.setDataCadastro(LocalDate.now());
         model.setDataExpiracao(dto.getDataExpiracao());
-        model.setCategoria(dto.getCategoria());
+        model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
         model.setQuantidade(dto.getQuantidade());
         model.setLocalizacao(dto.getLocalizacao());
         model.setStatus(StatusDoacao.PENDENTE);
@@ -28,7 +29,7 @@ public class DoacaoMapper {
             model.getDescricao(),
             model.getDataCadastro(),
             model.getDataExpiracao(),
-            model.getCategoria(),
+            model.getCategoria().name(),
             model.getQuantidade(),
             model.getLocalizacao(),
             model.getStatus(),
