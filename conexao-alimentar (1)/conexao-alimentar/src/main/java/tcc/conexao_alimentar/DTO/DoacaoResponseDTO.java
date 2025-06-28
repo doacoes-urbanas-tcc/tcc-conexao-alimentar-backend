@@ -10,15 +10,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class DoacaoResponseDTO {
 
-    private Long id;
+    private String nomeAlimento;
+    private String unidadeMedida; 
     private String descricao;
     private LocalDate dataCadastro;
     private LocalDate dataExpiracao;
-    private String categoria;
-    private Integer quantidade;
+    private String categoria; 
+    private Double quantidade;
     private String localizacao;
     private StatusDoacao status;
-    private String nomeDoador;
+    private String doadorNome;
     private Long doadorId;
 
 }
