@@ -70,6 +70,18 @@ public class DoacaoService {
     return DoacaoMapper.toResponse(doacao);
     }
 
+    public void removerDoacao(Long id, Long doadorId) {
+    DoacaoModel doacao = doacaoRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada para exclusão."));
+
+    if (!doacao.getDoador().getId().equals(doadorId)) {
+        throw new RegraDeNegocioException("Você não tem permissão para excluir esta doação.");
+    }
+
+    doacaoRepository.deleteById(id);
+}
+
+
 
 
     

@@ -36,6 +36,16 @@ public class DoacaoController {
     DoacaoResponseDTO dto = service.buscarPorId(id);
     return ResponseEntity.ok(dto);
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMERCIO', 'PRODUTOR_RURAL', 'PESSOA_FISICA')")
+    public ResponseEntity<Void> remover(@PathVariable Long id, @RequestParam Long doadorId) {
+        service.removerDoacao(id, doadorId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    
 }
 
 
