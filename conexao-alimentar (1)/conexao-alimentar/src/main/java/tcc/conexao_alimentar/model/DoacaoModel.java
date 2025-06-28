@@ -35,9 +35,5 @@ public class DoacaoModel {
     @ManyToOne
     @JoinColumn(name = "doador_id")
     private UsuarioModel doador;
-
-    @ManyToOne
-    @JoinColumn(name = "receptor_id")
-    private UsuarioModel receptor;
-
+    
 }
