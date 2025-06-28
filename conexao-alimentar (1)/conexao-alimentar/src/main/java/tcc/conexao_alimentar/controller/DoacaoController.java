@@ -23,10 +23,5 @@ public class DoacaoController {
         return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ONG', 'VOLUNTARIO', 'ADMIN')")
-    public ResponseEntity<List<DoacaoResponseDTO>> listar() {
-        return ResponseEntity.ok(service.listarTodas());
-    }
-
+    
 }

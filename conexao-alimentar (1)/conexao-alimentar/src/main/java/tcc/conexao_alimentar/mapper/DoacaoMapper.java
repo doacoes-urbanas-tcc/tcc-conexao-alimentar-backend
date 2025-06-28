@@ -25,7 +25,6 @@ public class DoacaoMapper {
             model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
         }
         model.setDataCadastro(LocalDateTime.now());
-        model.setDataExpiracao(LocalDateTime.now().plusHours(48));
         model.setStatus(StatusDoacao.PENDENTE);
         model.setDoador(doador);
         return model;
