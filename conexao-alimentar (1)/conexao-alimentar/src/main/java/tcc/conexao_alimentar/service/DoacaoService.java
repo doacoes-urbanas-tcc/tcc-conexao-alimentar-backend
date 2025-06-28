@@ -64,6 +64,13 @@ public class DoacaoService {
             .collect(Collectors.toList());         
     }
 
+    public DoacaoResponseDTO buscarPorId(Long id) {
+    DoacaoModel doacao = doacaoRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada"));
+    return DoacaoMapper.toResponse(doacao);
+    }
+
+
 
     
 }
