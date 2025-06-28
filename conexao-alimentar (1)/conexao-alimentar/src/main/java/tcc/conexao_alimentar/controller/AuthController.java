@@ -26,6 +26,8 @@ public class AuthController {
     @GetMapping("/test-encode")
     public String encodePassword() {
     return passwordEncoder.encode("123456");
+
+    
 }
 
 
