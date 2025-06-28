@@ -23,5 +23,11 @@ public class DoacaoController {
         return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }
 
+    @GetMapping
+    public ResponseEntity<List<DoacaoResponseDTO>> listarTodas() {
+        List<DoacaoResponseDTO> lista = service.listarTodas();
+        return ResponseEntity.ok(lista);
+    }
+
     
 }

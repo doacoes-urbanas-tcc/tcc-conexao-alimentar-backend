@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
+import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.DoacaoMapper;
 import tcc.conexao_alimentar.model.DoacaoModel;
@@ -14,6 +15,8 @@ import tcc.conexao_alimentar.repository.DoacaoRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -53,6 +56,14 @@ public class DoacaoService {
         log.info("Doação cadastrada com sucesso para doador ID {}", doador.getId());
         doacaoRepository.save(model);
     }
+
+    public List<DoacaoResponseDTO> listarTodas() {
+        return doacaoRepository.findAll()         
+            .stream()                              
+            .map(DoacaoMapper::toResponse)        
+            .collect(Collectors.toList());         
+    }
+
 
     
 }
