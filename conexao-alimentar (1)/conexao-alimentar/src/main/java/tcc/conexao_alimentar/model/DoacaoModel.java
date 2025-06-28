@@ -7,6 +7,7 @@ import tcc.conexao_alimentar.enums.Medida;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,13 +26,19 @@ public class DoacaoModel {
     private Medida unidadeMedida;
     @Column(name = "quantidade", nullable = false)
     private Double quantidade;
+    @Column(name = "data_validade", nullable = false)
+    private LocalDate dataValidade;
+    @Column(name = "descricao", nullable = false)
     private String descricao;
-    private LocalDate dataCadastro;
-    private LocalDate dataExpiracao;
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria", nullable = false)
     private CategoriaAlimento categoria;
-    private String localizacao;
+    @Column(name = "data_cadastro", nullable = false)
+    private LocalDateTime dataCadastro;
+    @Column(name = "data_expiracao", nullable = false)
+    private LocalDateTime dataExpiracao;
+    @Column(name = "url_imagem")
+    private String urlImagem;
     @Enumerated(EnumType.STRING)
     private StatusDoacao status;
     @ManyToOne

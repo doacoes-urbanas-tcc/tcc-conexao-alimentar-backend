@@ -10,10 +10,9 @@ public class DoacaoRequestDTO {
     private String nomeAlimento;
     private String unidadeMedida;
     private Double quantidade;
+    private LocalDate dataValidade;
     private String descricao;
     private String categoria;
-    private LocalDate dataExpiracao;
-    private String localizacao;
     private Long doadorId;
 
  

@@ -8,7 +8,7 @@ import tcc.conexao_alimentar.enums.CategoriaAlimento;
 import tcc.conexao_alimentar.enums.Medida;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 public class DoacaoMapper {
 
     public static DoacaoModel toEntity(DoacaoRequestDTO dto, UsuarioModel doador) {
@@ -24,9 +24,8 @@ public class DoacaoMapper {
         if (dto.getCategoria() != null) {
             model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
         }
-        model.setDataCadastro(LocalDate.now());
-        model.setDataExpiracao(dto.getDataExpiracao());
-        model.setLocalizacao(dto.getLocalizacao());
+        model.setDataCadastro(LocalDateTime.now());
+        model.setDataExpiracao(LocalDateTime.now().plusHours(48));
         model.setStatus(StatusDoacao.PENDENTE);
         model.setDoador(doador);
         return model;
@@ -34,14 +33,15 @@ public class DoacaoMapper {
 
     public static DoacaoResponseDTO toResponse(DoacaoModel model) {
         return new DoacaoResponseDTO(
+            model.getId(),
             model.getNomeAlimento(),
             model.getUnidadeMedida() != null ? model.getUnidadeMedida().name() : null,
+            model.getQuantidade(),
+            model.getDataValidade(),
             model.getDescricao(),
             model.getDataCadastro(),
             model.getDataExpiracao(),
             model.getCategoria() != null ? model.getCategoria().name() : null,
-            model.getQuantidade(),
-            model.getLocalizacao(),
             model.getStatus(),
             model.getDoador() != null ? model.getDoador().getNome() : null,
             model.getDoador() != null ? model.getDoador().getId() : null

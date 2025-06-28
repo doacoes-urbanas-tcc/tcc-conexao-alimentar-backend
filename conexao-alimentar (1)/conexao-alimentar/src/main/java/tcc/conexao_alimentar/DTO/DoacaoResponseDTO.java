@@ -5,19 +5,21 @@ import lombok.Data;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 public class DoacaoResponseDTO {
 
+    private Long id;
     private String nomeAlimento;
     private String unidadeMedida; 
-    private String descricao;
-    private LocalDate dataCadastro;
-    private LocalDate dataExpiracao;
-    private String categoria; 
     private Double quantidade;
-    private String localizacao;
+    private LocalDate dataValidade; 
+    private String descricao;
+    private LocalDateTime dataCadastro;
+    private LocalDateTime dataExpiracao;
+    private String categoria; 
     private StatusDoacao status;
     private String doadorNome;
     private Long doadorId;
