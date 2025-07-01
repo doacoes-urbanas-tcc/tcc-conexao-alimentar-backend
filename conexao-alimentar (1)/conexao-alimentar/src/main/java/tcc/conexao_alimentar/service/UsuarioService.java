@@ -15,7 +15,6 @@ import tcc.conexao_alimentar.DTO.ProdutorRuralCadastroDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioCadastroDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
-import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
@@ -31,19 +30,20 @@ import tcc.conexao_alimentar.repository.ComercioRepository;
 import tcc.conexao_alimentar.repository.OngRepository;
 import tcc.conexao_alimentar.repository.PessoaFisicaRepository;
 import tcc.conexao_alimentar.repository.ProdutorRuralRepository;
+import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
 
+      private final UsuarioRepository usuarioRepository;
+
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final VoluntarioRepository voluntarioRepository;
     private final ComercioRepository comercioRepository;
     private final ProdutorRuralRepository produtorRuralRepository;
     private final OngRepository ongRepository;
-
-   
 
     public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaCadastroDTO dto) {
         validarEmail(dto.getEmail());
@@ -76,36 +76,18 @@ public class UsuarioService {
     public OngResponseDTO cadastrarOng(OngCadastroDTO dto) {
         validarEmail(dto.getEmail());
         OngModel ong = OngMapper.toEntity(dto);
-        ong.setAtivo(false); 
+        ong.setAtivo(false);
         return OngMapper.toResponse(ongRepository.save(ong));
     }
 
-    
-
-    public Optional<UsuarioModel> buscarPorId(Long id, TipoUsuario tipo) {
-        return switch (tipo) {
-            case PESSOA_FISICA -> pessoaFisicaRepository.findById(id).map(u -> (UsuarioModel) u);
-            case VOLUNTARIO -> voluntarioRepository.findById(id).map(u -> (UsuarioModel) u);
-            case COMERCIO -> comercioRepository.findById(id).map(u -> (UsuarioModel) u);
-            case PRODUTOR_RURAL -> produtorRuralRepository.findById(id).map(u -> (UsuarioModel) u);
-            case ONG -> ongRepository.findById(id).map(u -> (UsuarioModel) u);
-            default -> Optional.empty();
-        };
+    public Optional<UsuarioModel> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
     }
 
-   
     private void validarEmail(String email) {
-        boolean jaExiste = pessoaFisicaRepository.existsByEmail(email)
-                || voluntarioRepository.existsByEmail(email)
-                || comercioRepository.existsByEmail(email)
-                || produtorRuralRepository.existsByEmail(email)
-                || ongRepository.existsByEmail(email);
-
+        boolean jaExiste = usuarioRepository.existsByEmail(email);
         if (jaExiste) {
             throw new RuntimeException("E-mail já cadastrado.");
         }
     }
-
-
-
 }

@@ -14,7 +14,7 @@ import tcc.conexao_alimentar.security.UserDetailsImpl;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-       private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -25,8 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new UserDetailsImpl(usuario);
     }
-
-
+    
+    
 
 
 }
