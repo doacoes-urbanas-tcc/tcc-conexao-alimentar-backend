@@ -13,12 +13,16 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UsuarioModel {
@@ -38,6 +42,6 @@ public abstract class UsuarioModel {
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    private Boolean ativo;
+    private boolean ativo;
 
 }
