@@ -35,7 +35,6 @@ public abstract class UsuarioModel {
 
     @Embedded
     private EnderecoModel endereco;
-
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
