@@ -17,21 +17,21 @@ public class DoacaoController {
     private final DoacaoService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
+    @PreAuthorize("hasAuthority('ROLE_COMERCIO') or hasAuhority('ROLE_PRODUTOR_RURAL') or hasAuthority('ROLE_PESSOA_FISICA')")
     public ResponseEntity<?> criar(@RequestBody DoacaoRequestDTO dto) {
         service.cadastrar(dto);
         return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ONG') or hasRole('VOLUNTARIO') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ONG') or hasAuthority('ROLE_VOLUNTARIO') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<DoacaoResponseDTO>> listarTodas() {
         List<DoacaoResponseDTO> lista = service.listarTodas();
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ONG') or hasRole('VOLUNTARIO') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ONG') or hasAuthority('ROLE_VOLUNTARIO') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<DoacaoResponseDTO> buscarPorId(@PathVariable Long id) {
     DoacaoResponseDTO dto = service.buscarPorId(id);
     return ResponseEntity.ok(dto);

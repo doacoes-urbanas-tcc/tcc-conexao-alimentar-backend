@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DoacaoService {
 
