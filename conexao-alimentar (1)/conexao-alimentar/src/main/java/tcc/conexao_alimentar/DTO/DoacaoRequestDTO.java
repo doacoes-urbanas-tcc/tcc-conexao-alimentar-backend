@@ -13,7 +13,6 @@ public class DoacaoRequestDTO {
     private LocalDate dataValidade;
     private String descricao;
     private String categoria;
-    private Long doadorId;
 
  
 
