@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +28,8 @@ public class DoacaoService {
     private final UsuarioRepository usuarioRepository;
 
     public void cadastrar(DoacaoRequestDTO dto) {
-        UsuarioModel doador = usuarioRepository.findById(dto.getDoadorId())
+        String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+        UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
             .orElseThrow(() -> new RuntimeException("Doador não encontrado."));
         
             if (!StringUtils.hasText(dto.getNomeAlimento())) {
@@ -53,8 +55,10 @@ public class DoacaoService {
 
         DoacaoModel model = DoacaoMapper.toEntity(dto, doador);
         model.setDataExpiracao(model.getDataCadastro().plusHours(48));
-        log.info("Doação cadastrada com sucesso para doador ID {}", doador.getId());
+        log.info("Doação cadastrada para {}", doador.getEmail());
+
         doacaoRepository.save(model);
+
     }
 
     public List<DoacaoResponseDTO> listarTodas() {
@@ -71,21 +75,27 @@ public class DoacaoService {
     }
 
     public void removerDoacao(Long id, Long doadorId) {
-    DoacaoModel doacao = doacaoRepository.findById(id)
-        .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada para exclusão."));
+     String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+        UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
+            .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado."));
 
-    if (!doacao.getDoador().getId().equals(doadorId)) {
-        throw new RegraDeNegocioException("Você não tem permissão para excluir esta doação.");
+        DoacaoModel doacao = doacaoRepository.findById(id)
+            .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
+
+        if (!doacao.getDoador().getId().equals(doador.getId())) {
+            throw new RegraDeNegocioException("Você não tem permissão para excluir esta doação.");
+        }
+
+        doacaoRepository.deleteById(id);
+        log.info("Doação {} removida pelo doador {}", id, doador.getEmail());
     }
-
-    doacaoRepository.deleteById(id);
 }
 
 
 
 
     
-}
+
 
 
 
