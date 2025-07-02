@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.*;
 
 import tcc.conexao_alimentar.security.UserDetailsImpl;
@@ -13,20 +14,14 @@ import tcc.conexao_alimentar.security.UserDetailsImpl;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-      private final AdministradorRepository adminRepo;
-    private final UsuarioRepository usuarioRepo;
+    
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("Procurando email: " + email);
-
-        return adminRepo.findByEmail(email)
-            .map(UserDetailsImpl::new)
-            .or(() -> usuarioRepo.findByEmail(email).map(UserDetailsImpl::new))
+        UsuarioModel usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + email));
+
+        return new UserDetailsImpl(usuario);
     }
-    
-
-
-
 }
