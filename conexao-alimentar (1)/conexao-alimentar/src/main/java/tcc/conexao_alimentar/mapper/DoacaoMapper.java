@@ -18,8 +18,8 @@ public class DoacaoMapper {
             model.setUnidadeMedida(Medida.valueOf(dto.getUnidadeMedida().toUpperCase()));
 
         }
-        model.setUnidadeMedida(Medida.valueOf(dto.getUnidadeMedida().toUpperCase()));
         model.setQuantidade(dto.getQuantidade());
+        model.setDataValidade(dto.getDataValidade());
         model.setDescricao(dto.getDescricao());
         if (dto.getCategoria() != null) {
             model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
