@@ -17,7 +17,7 @@ public class DoacaoController {
     private final DoacaoService service;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_COMERCIO') or hasAuhority('ROLE_PRODUTOR_RURAL') or hasAuthority('ROLE_PESSOA_FISICA')")
+    @PreAuthorize("hasAuthority('ROLE_COMERCIO') or hasAuthority('ROLE_PRODUTOR_RURAL') or hasAuthority('ROLE_PESSOA_FISICA')")
     public ResponseEntity<?> criar(@RequestBody DoacaoRequestDTO dto) {
         service.cadastrar(dto);
         return ResponseEntity.ok("Doação cadastrada com sucesso!");

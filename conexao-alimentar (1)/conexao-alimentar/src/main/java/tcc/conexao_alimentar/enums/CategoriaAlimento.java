@@ -4,9 +4,9 @@ public enum CategoriaAlimento {
 
     HORTIFRUTI,
     PADARIA,
-    GRÃOS,
+    GRAOS,
     CARNES,
-    LATICÍNIOS,
+    LATICINIOS,
     BEBIDAS,
     CONSERVAS,
     MASSAS,
