@@ -2,7 +2,7 @@ package tcc.conexao_alimentar.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tcc.conexao_alimentar.DTO.OngCadastroDTO;
+import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.model.OngModel;
@@ -15,7 +15,7 @@ public class OngService {
     private final OngRepository ongRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void cadastrar(OngCadastroDTO dto) {
+    public void cadastrar(OngRequestDTO dto) {
         OngModel model = OngMapper.toEntity(dto);
         model.setSenha(passwordEncoder.encode(dto.getSenha()));
         model.setTipoUsuario(TipoUsuario.ONG);

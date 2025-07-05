@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.PessoaFisicaCadastroDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
@@ -17,7 +17,7 @@ public class PessoaFisicaService {
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void cadastrar(PessoaFisicaCadastroDTO dto) {
+    public void cadastrar(PessoaFisicaRequestDTO dto) {
         PessoaFisicaModel model = PessoaFisicaMapper.toEntity(dto);
 
         model.setSenha(passwordEncoder.encode(dto.getSenha()));

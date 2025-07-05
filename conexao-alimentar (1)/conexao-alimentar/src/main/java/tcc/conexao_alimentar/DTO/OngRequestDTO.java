@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OngCadastroDTO {
+public class OngRequestDTO {
 
     private String nome;
     private String email;

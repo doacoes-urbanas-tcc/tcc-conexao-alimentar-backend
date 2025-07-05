@@ -1,13 +1,13 @@
 package tcc.conexao_alimentar.mapper;
 
-import tcc.conexao_alimentar.DTO.PessoaFisicaCadastroDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
 
 public class PessoaFisicaMapper {
 
-  public static PessoaFisicaModel toEntity(PessoaFisicaCadastroDTO dto) {
+  public static PessoaFisicaModel toEntity(PessoaFisicaRequestDTO dto) {
         PessoaFisicaModel pf = new PessoaFisicaModel();
         pf.setNome(dto.getNome());
         pf.setEmail(dto.getEmail());

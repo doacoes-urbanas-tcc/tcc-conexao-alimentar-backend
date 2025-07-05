@@ -5,15 +5,15 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.ComercioCadastroDTO;
+import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
-import tcc.conexao_alimentar.DTO.OngCadastroDTO;
+import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
-import tcc.conexao_alimentar.DTO.PessoaFisicaCadastroDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
-import tcc.conexao_alimentar.DTO.ProdutorRuralCadastroDTO;
+import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
-import tcc.conexao_alimentar.DTO.VoluntarioCadastroDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.OngMapper;
@@ -45,35 +45,35 @@ public class UsuarioService {
     private final ProdutorRuralRepository produtorRuralRepository;
     private final OngRepository ongRepository;
 
-    public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaCadastroDTO dto) {
+    public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaRequestDTO dto) {
         validarEmail(dto.getEmail());
         PessoaFisicaModel pf = PessoaFisicaMapper.toEntity(dto);
         pf.setAtivo(true);
         return PessoaFisicaMapper.toResponse(pessoaFisicaRepository.save(pf));
     }
 
-    public VoluntarioResponseDTO cadastrarVoluntario(VoluntarioCadastroDTO dto) {
+    public VoluntarioResponseDTO cadastrarVoluntario(VoluntarioRequestDTO dto) {
         validarEmail(dto.getEmail());
         VoluntarioModel v = VoluntarioMapper.toEntity(dto);
         v.setAtivo(true);
         return VoluntarioMapper.toResponse(voluntarioRepository.save(v));
     }
 
-    public ComercioResponseDTO cadastrarComercio(ComercioCadastroDTO dto) {
+    public ComercioResponseDTO cadastrarComercio(ComercioRequestDTO dto) {
         validarEmail(dto.getEmail());
         ComercioModel c = ComercioMapper.toEntity(dto);
         c.setAtivo(true);
         return ComercioMapper.toResponse(comercioRepository.save(c));
     }
 
-    public ProdutorRuralResponseDTO cadastrarProdutorRural(ProdutorRuralCadastroDTO dto) {
+    public ProdutorRuralResponseDTO cadastrarProdutorRural(ProdutorRuralRequestDTO dto) {
         validarEmail(dto.getEmail());
         ProdutorRuralModel pr = ProdutorRuralMapper.toEntity(dto);
         pr.setAtivo(true);
         return ProdutorRuralMapper.toResponse(produtorRuralRepository.save(pr));
     }
 
-    public OngResponseDTO cadastrarOng(OngCadastroDTO dto) {
+    public OngResponseDTO cadastrarOng(OngRequestDTO dto) {
         validarEmail(dto.getEmail());
         OngModel ong = OngMapper.toEntity(dto);
         ong.setAtivo(false);

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdutorRuralCadastroDTO {
+public class ProdutorRuralRequestDTO {
 
     private String nome;
     private String email;

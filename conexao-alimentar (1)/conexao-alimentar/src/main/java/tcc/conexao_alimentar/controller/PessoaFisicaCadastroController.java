@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.PessoaFisicaCadastroDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 
 @RestController
@@ -19,7 +19,7 @@ public class PessoaFisicaCadastroController {
     private final PessoaFisicaService pessoaFisicaService;
 
     @PostMapping
-    public ResponseEntity<Void> cadastrar(@RequestBody PessoaFisicaCadastroDTO dto) {
+    public ResponseEntity<Void> cadastrar(@RequestBody PessoaFisicaRequestDTO dto) {
         pessoaFisicaService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

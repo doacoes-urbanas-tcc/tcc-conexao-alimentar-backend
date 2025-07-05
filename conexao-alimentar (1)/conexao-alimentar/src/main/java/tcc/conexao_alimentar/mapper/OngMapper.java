@@ -1,13 +1,13 @@
 package tcc.conexao_alimentar.mapper;
 
-import tcc.conexao_alimentar.DTO.OngCadastroDTO;
+import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.OngModel;
 
 public class OngMapper {
 
-    public static OngModel toEntity(OngCadastroDTO dto) {
+    public static OngModel toEntity(OngRequestDTO dto) {
         OngModel o = new OngModel();
         o.setNome(dto.getNome());
         o.setEmail(dto.getEmail());
