@@ -8,4 +8,5 @@ import lombok.Data;
 public class ReservaRequestDTO {
 
     private Long doacaoId;
+    private Long beneficiarioId;
 }
