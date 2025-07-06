@@ -30,6 +30,5 @@ public class VoluntarioController {
         return ResponseEntity.ok("Veículo cadastrado com sucesso para voluntário!");
     }
 
-   
-
+    
 }

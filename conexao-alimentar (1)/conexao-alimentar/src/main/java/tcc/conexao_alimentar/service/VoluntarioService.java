@@ -1,10 +1,14 @@
 package tcc.conexao_alimentar.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
 import tcc.conexao_alimentar.model.VoluntarioModel;
@@ -23,6 +27,13 @@ public class VoluntarioService {
         model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
         model.setAtivo(false);
         voluntarioRepository.save(model);
+    }
+
+    public List<VoluntarioResponseDTO> listarTodos() {
+        return voluntarioRepository.findAll()         
+            .stream()                              
+            .map(VoluntarioMapper::toResponse)        
+            .collect(Collectors.toList());         
     }
 
 }
