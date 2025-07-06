@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
@@ -23,6 +24,7 @@ import tcc.conexao_alimentar.repository.UsuarioRepository;
 @RestController
 @RequestMapping("/admin/usuarios")
 @RequiredArgsConstructor
+@Tag(name = "Usuários", description = "Endpoints de gerenciamento de usuários e permissões")
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
@@ -30,9 +32,7 @@ public class UsuarioController {
     
     @Operation(summary = "Listar os cadastros pendentes",description = "Lista todos os cadastros pendentes de ativação. Somente ADMIN pode acessar")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Doação cadastrada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
+        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
@@ -45,9 +45,7 @@ public class UsuarioController {
 
     @Operation(summary = "Listar os cadastros pendentes por tipo",description = "Lista todos os cadastros pendentes de ativação de um determinado tipo de usuário. Somente ADMIN pode acessar")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Doação cadastrada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
+        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
@@ -62,8 +60,7 @@ public class UsuarioController {
 
  @Operation(summary = "Permite aprovar cadastro por id",description = "Permite aprovar um cadastro pendente pelo id. Somente ADMIN pode acessar")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Doação cadastrada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "200", description = "Usuário aprovado com sucesso"),
         @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
