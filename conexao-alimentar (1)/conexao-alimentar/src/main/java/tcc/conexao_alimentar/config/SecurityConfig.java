@@ -37,7 +37,9 @@ public class SecurityConfig {
                     "/voluntario/**",
                     "/comercio/**",
                     "/produtor-rural/**",
-                    "/ong/**"
+                    "/ong/**",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
