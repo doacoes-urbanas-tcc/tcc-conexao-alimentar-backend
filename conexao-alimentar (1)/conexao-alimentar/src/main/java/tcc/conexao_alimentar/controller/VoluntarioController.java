@@ -1,11 +1,15 @@
 package tcc.conexao_alimentar.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
 
@@ -30,5 +34,12 @@ public class VoluntarioController {
         return ResponseEntity.ok("Veículo cadastrado com sucesso para voluntário!");
     }
 
-    
+    @GetMapping
+    public ResponseEntity<List<VoluntarioResponseDTO>> listarTodos() {
+        List<VoluntarioResponseDTO> lista = voluntarioService.listarTodos();
+        return ResponseEntity.ok(lista);
+    }
+
+
+
 }
