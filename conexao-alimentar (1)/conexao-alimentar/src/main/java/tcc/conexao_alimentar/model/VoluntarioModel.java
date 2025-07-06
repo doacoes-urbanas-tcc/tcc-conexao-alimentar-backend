@@ -1,7 +1,9 @@
 package tcc.conexao_alimentar.model;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +24,9 @@ public class VoluntarioModel extends UsuarioModel{
 
     @Enumerated(EnumType.STRING)
     private SetorAtuacao setorAtuacao;
+
+    @OneToOne(mappedBy = "voluntario", cascade = CascadeType.ALL)
+    private VeiculoModel veiculo;
+
 
 }
