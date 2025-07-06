@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
@@ -36,4 +37,9 @@ public class VoluntarioService {
             .collect(Collectors.toList());         
     }
 
+    public VoluntarioResponseDTO buscarPorId(Long id) {
+    VoluntarioModel voluntario = voluntarioRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+     return VoluntarioMapper.toResponse(voluntario);
+    }
 }
