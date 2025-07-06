@@ -40,6 +40,12 @@ public class VoluntarioController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<VoluntarioResponseDTO> buscarPorId(@PathVariable Long id) {
+        VoluntarioResponseDTO dto = voluntarioService.buscarPorId(id);
+        return ResponseEntity.ok(dto);
+    }
+
     
 
 
