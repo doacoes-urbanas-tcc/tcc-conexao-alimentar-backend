@@ -1,6 +1,5 @@
 package tcc.conexao_alimentar.controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
