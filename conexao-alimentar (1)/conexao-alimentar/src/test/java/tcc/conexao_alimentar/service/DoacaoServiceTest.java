@@ -1,6 +1,8 @@
 package tcc.conexao_alimentar.service;
 
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,5 +61,21 @@ public class DoacaoServiceTest {
 
         verify(doacaoRepository, times(1)).save(any(DoacaoModel.class));
     }
+
+    @Test
+    @DisplayName("Deve lançar erro se nome do alimento for vazio")
+    void testNomeAlimentoVazio() {
+        DoacaoRequestDTO dto = new DoacaoRequestDTO("", "KG", 1.0, LocalDate.now().plusDays(1), "desc", "GRAOS");
+        UsuarioModel doador = mock(UsuarioModel.class);
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(doador));
+        mockAuth("x@email.com");
+
+        RegraDeNegocioException ex = assertThrows(
+            RegraDeNegocioException.class,
+            () -> doacaoService.cadastrar(dto)
+        );
+        assertTrue(ex.getMessage().contains("nome"));
+    }
+
 
 }
