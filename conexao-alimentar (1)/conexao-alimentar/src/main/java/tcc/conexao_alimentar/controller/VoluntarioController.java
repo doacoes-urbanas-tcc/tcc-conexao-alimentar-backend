@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
@@ -19,13 +20,14 @@ import tcc.conexao_alimentar.service.VoluntarioService;
 @RestController
 @RequestMapping("/voluntario")
 @RequiredArgsConstructor
+@Tag(name = "Voluntários", description = "Endpoints para gerenciamento de voluntários")
 public class VoluntarioController {
 
     private final VoluntarioService voluntarioService;
     private final VeiculoService veiculoService;
 
     
-    @Operation(summary = "Cadastramento de voluntário",description = "Permite que um usuário se cadastre como voluntário no sistema")
+    @Operation(summary = "Cadastro de voluntário",description = "Permite que um usuário se cadastre como voluntário no sistema")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Voluntário cadastrado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
