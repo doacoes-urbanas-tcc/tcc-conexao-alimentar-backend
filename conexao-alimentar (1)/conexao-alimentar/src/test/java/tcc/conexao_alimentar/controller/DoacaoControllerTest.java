@@ -1,67 +1,64 @@
 package tcc.conexao_alimentar.controller;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
-import tcc.conexao_alimentar.security.JwtAuthFilter;
+import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.service.DoacaoService;
-import tcc.conexao_alimentar.service.JwtService;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.*;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
-@WebMvcTest(DoacaoController.class)
 public class DoacaoControllerTest {
-    @Autowired
+
+    @InjectMocks
+    private DoacaoController controller;
+
+    @Mock
+    private DoacaoService service;
+
     private MockMvc mockMvc;
 
-    @MockBean
-    private DoacaoService doacaoService;
-
-    @MockBean
-    private JwtAuthFilter JwtAuthFilter;
-
-    @MockBean
-    private JwtService jwtService;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+    }
     @Test
-    @WithMockUser(username = "fulano@teste.com", roles = {"COMERCIO"})
-    @DisplayName("Deve cadastrar doação com sucesso (POST /doacoes)")
-    void testCriarDoacao() throws Exception {
-        DoacaoRequestDTO dto = new DoacaoRequestDTO(
-            "Arroz", "KG", 5.0, LocalDate.now().plusDays(1), "Descrição", "GRAOS"
+    public void testCriarDoacao() throws Exception {
+        DoacaoRequestDTO requestDTO = new DoacaoRequestDTO(
+            "Arroz", "QUILOGRAMA", 5.0, LocalDate.now().plusDays(10), "Arroz integral", "CEREAIS"
         );
 
-        doNothing().when(doacaoService).cadastrar(any(DoacaoRequestDTO.class));
+        String json = objectMapper.writeValueAsString(requestDTO);
+
+        doNothing().when(service).cadastrar(any(DoacaoRequestDTO.class));
 
         mockMvc.perform(post("/doacoes")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)))
+                .content(json))
             .andExpect(status().isOk())
             .andExpect(content().string("Doação cadastrada com sucesso!"));
-    }
 
+        verify(service, times(1)).cadastrar(any(DoacaoRequestDTO.class));
+    }
 
 }

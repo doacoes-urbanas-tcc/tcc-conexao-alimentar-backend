@@ -45,7 +45,7 @@ public class DoacaoController {
 
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ONG') or hasAuthority('ROLE_VOLUNTARIO') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ONG') or hasRole('VOLUNTARIO') or hasRole('ADMIN')")
     public ResponseEntity<List<DoacaoResponseDTO>> listarTodas() {
         List<DoacaoResponseDTO> lista = service.listarTodas();
         return ResponseEntity.ok(lista);
