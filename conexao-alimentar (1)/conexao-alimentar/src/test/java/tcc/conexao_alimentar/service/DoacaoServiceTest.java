@@ -107,6 +107,37 @@ public class DoacaoServiceTest {
         assertTrue(ex.getMessage().contains("validade"));
     }
 
+    
+    @Test
+    @DisplayName("Deve listar todas as doações")
+    void testListarTodas() {
+        when(doacaoRepository.findAll()).thenReturn(Collections.emptyList());
+        List<?> lista = doacaoService.listarTodas();
+        assertNotNull(lista);
+    }
+
+    @Test
+    @DisplayName("Deve buscar por ID com sucesso")
+    void testBuscarPorId() {
+        DoacaoModel doacao = new DoacaoModel();
+        doacao.setId(1L);
+        doacao.setNomeAlimento("Arroz");
+        doacao.setDescricao("desc");
+        doacao.setDataCadastro(java.time.LocalDateTime.now());
+        doacao.setDataExpiracao(java.time.LocalDateTime.now().plusHours(48));
+        doacao.setQuantidade(2.0);
+        doacao.setDataValidade(LocalDate.now().plusDays(1));
+        doacao.setCategoria(tcc.conexao_alimentar.enums.CategoriaAlimento.GRAOS);
+        doacao.setStatus(tcc.conexao_alimentar.enums.StatusDoacao.PENDENTE);
+
+        when(doacaoRepository.findById(1L)).thenReturn(Optional.of(doacao));
+        var resp = doacaoService.buscarPorId(1L);
+        assertEquals("Arroz", resp.getNomeAlimento());
+    }
+
+
+
+
 
 
 }
