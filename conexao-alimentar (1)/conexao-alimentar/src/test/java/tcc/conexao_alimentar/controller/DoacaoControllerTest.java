@@ -79,4 +79,19 @@ public class DoacaoControllerTest {
         verify(service, times(1)).listarTodas();
     }
 
+    @Test
+    public void testBuscarPorId() throws Exception {
+        DoacaoResponseDTO dto = new DoacaoResponseDTO(1L, "Feijão", "KG", 3.0, LocalDate.now().plusDays(8),
+                "Feijão preto", LocalDateTime.now(), LocalDateTime.now().plusDays(8), "LEGUMINOSAS", null, "Maria", 20L);
+
+        when(service.buscarPorId(1L)).thenReturn(dto);
+
+        mockMvc.perform(get("/doacoes/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.nomeAlimento").value("Feijão"));
+
+        verify(service, times(1)).buscarPorId(1L);
+    }
+
 }
