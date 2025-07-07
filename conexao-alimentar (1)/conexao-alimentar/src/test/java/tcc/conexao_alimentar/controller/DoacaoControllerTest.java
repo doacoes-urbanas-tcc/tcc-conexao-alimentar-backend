@@ -61,4 +61,22 @@ public class DoacaoControllerTest {
         verify(service, times(1)).cadastrar(any(DoacaoRequestDTO.class));
     }
 
+    @Test
+    public void testListarTodasDoacoes() throws Exception {
+        List<DoacaoResponseDTO> lista = List.of(
+            new DoacaoResponseDTO(1L, "Arroz", "KG", 5.0, LocalDate.now().plusDays(10), "Arroz integral",
+                    LocalDateTime.now(), LocalDateTime.now().plusDays(10), "CEREAIS", null, "Joao", 10L)
+        );
+
+        when(service.listarTodas()).thenReturn(lista);
+
+        mockMvc.perform(get("/doacoes"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(1))
+            .andExpect(jsonPath("$[0].nomeAlimento").value("Arroz"))
+            .andExpect(jsonPath("$[0].quantidade").value(5.0));
+
+        verify(service, times(1)).listarTodas();
+    }
+
 }
