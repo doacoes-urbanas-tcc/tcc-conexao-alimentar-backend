@@ -94,4 +94,14 @@ public class DoacaoControllerTest {
         verify(service, times(1)).buscarPorId(1L);
     }
 
+    @Test
+    public void testRemoverDoacao() throws Exception {
+        doNothing().when(service).removerDoacao(1L, 10L);
+
+        mockMvc.perform(delete("/doacoes/1")
+                .param("doadorId", "10"))
+            .andExpect(status().isNoContent());
+
+        verify(service, times(1)).removerDoacao(1L, 10L);
+    }
 }
