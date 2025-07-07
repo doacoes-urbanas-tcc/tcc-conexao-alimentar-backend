@@ -27,9 +27,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class DoacaoServiceTest {
 
     @Mock
@@ -51,7 +53,7 @@ public class DoacaoServiceTest {
     @DisplayName("Deve cadastrar doação com sucesso")
     void testCadastrarComSucesso() {
         DoacaoRequestDTO dto = new DoacaoRequestDTO(
-            "Arroz", "KG", 5.0, LocalDate.now().plusDays(2), "Doação de arroz", "GRAOS"
+            "Arroz", "QUILOGRAMA", 5.0, LocalDate.now().plusDays(2), "Doação de arroz", "GRAOS"
         );
         UsuarioModel doador = mock(UsuarioModel.class);
         when(usuarioRepository.findByEmail("teste@email.com"))

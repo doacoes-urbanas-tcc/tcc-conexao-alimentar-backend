@@ -18,8 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
+import tcc.conexao_alimentar.security.JwtAuthFilter;
 import tcc.conexao_alimentar.service.DoacaoService;
+import tcc.conexao_alimentar.service.JwtService;
+
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,10 +37,17 @@ public class DoacaoControllerTest {
     @MockBean
     private DoacaoService doacaoService;
 
+    @MockBean
+    private JwtAuthFilter JwtAuthFilter;
+
+    @MockBean
+    private JwtService jwtService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(username = "fulano@teste.com", roles = {"COMERCIO"})
     @DisplayName("Deve cadastrar doação com sucesso (POST /doacoes)")
     void testCriarDoacao() throws Exception {
         DoacaoRequestDTO dto = new DoacaoRequestDTO(

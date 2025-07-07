@@ -31,7 +31,7 @@ public class DoacaoController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_COMERCIO') or hasAuthority('ROLE_PRODUTOR_RURAL') or hasAuthority('ROLE_PESSOA_FISICA')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
     public ResponseEntity<?> criar(@RequestBody DoacaoRequestDTO dto) {
         service.cadastrar(dto);
         return ResponseEntity.ok("Doação cadastrada com sucesso!");
