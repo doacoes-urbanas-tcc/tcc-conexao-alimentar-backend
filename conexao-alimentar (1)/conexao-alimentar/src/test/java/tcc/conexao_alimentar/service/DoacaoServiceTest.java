@@ -76,6 +76,22 @@ public class DoacaoServiceTest {
         );
         assertTrue(ex.getMessage().contains("nome"));
     }
+    
+    @Test
+    @DisplayName("Deve lançar erro se quantidade for menor ou igual a zero")
+    void testQuantidadeZero() {
+        DoacaoRequestDTO dto = new DoacaoRequestDTO("Arroz", "KG", 0.0, LocalDate.now().plusDays(1), "desc", "GRAOS");
+        UsuarioModel doador = mock(UsuarioModel.class);
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(doador));
+        mockAuth("x@email.com");
+
+        RegraDeNegocioException ex = assertThrows(
+            RegraDeNegocioException.class,
+            () -> doacaoService.cadastrar(dto)
+        );
+        assertTrue(ex.getMessage().contains("quantidade"));
+    }
+
 
 
 }
