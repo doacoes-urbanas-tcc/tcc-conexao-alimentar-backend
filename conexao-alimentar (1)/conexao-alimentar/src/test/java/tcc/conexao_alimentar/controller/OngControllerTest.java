@@ -19,18 +19,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.EnderecoDTO;
-import tcc.conexao_alimentar.enums.TipoComercio;
-import tcc.conexao_alimentar.service.ComercioService;
+import tcc.conexao_alimentar.DTO.OngRequestDTO;
+import tcc.conexao_alimentar.service.OngService;
 
-public class ComercioControllerTest {
+public class OngControllerTest {
 
     @InjectMocks
-    private ComercioController comercioController;
+    private OngController ongController;
 
     @Mock
-    private ComercioService comercioService;
+    private OngService ongService;
 
     private MockMvc mockMvc;
 
@@ -39,45 +38,44 @@ public class ComercioControllerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(comercioController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(ongController).build();
         objectMapper = new ObjectMapper();
     }
 
     @Test
-    public void testCadastrarComercio() throws Exception {
-
+    public void testCadastrarOng() throws Exception {
         EnderecoDTO enderecoDTO = new EnderecoDTO(
                 "12345-678",
                 "Rua das Flores",
-                "123",
+                "456",
                 "Centro",
-                "São Paulo",
-                "SP",
-                -23.5505,
-                -46.6333
+                "Rio de Janeiro",
+                "RJ",
+                -22.9068,
+                -43.1729
         );
-        ComercioRequestDTO dto = new ComercioRequestDTO(
-                "Padaria do Zé",
-                "ze@padaria.com",
-                "123456",
-                "99999-9999",
+
+        OngRequestDTO dto = new OngRequestDTO(
+                "ONG Amigos do Bem",
+                "contato@amigosdobem.org",
+                "senha123",
+                "21999999999",
                 enderecoDTO,
-                "00.000.000/0001-00",
-                "Padaria Zé",
-                TipoComercio.PADARIA
+                "12.345.678/0001-90",
+                "ONG dedicada a ajudar comunidades carentes"
         );
 
         String json = objectMapper.writeValueAsString(dto);
 
-        doNothing().when(comercioService).cadastrar(any(ComercioRequestDTO.class));
+        doNothing().when(ongService).cadastrar(any(OngRequestDTO.class));
 
-        mockMvc.perform(post("/comercio/cadastrar")
+        mockMvc.perform(post("/ong/cadastrar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Comércio cadastrado com sucesso! Aguarde aprovação."));
+                .andExpect(content().string("ONG cadastrada com sucesso! Aguarde aprovação."));
 
-        verify(comercioService, times(1)).cadastrar(any(ComercioRequestDTO.class));
+        verify(ongService, times(1)).cadastrar(any(OngRequestDTO.class));
     }
 
 }
