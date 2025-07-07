@@ -92,6 +92,21 @@ public class DoacaoServiceTest {
         assertTrue(ex.getMessage().contains("quantidade"));
     }
 
+    @Test
+    @DisplayName("Deve lançar erro se data de validade for anterior")
+    void testDataValidadeAnterior() {
+        tcc.conexao_alimentar.DTO.DoacaoRequestDTO dto = new tcc.conexao_alimentar.DTO.DoacaoRequestDTO("Arroz", "KG", 2.0, LocalDate.now().minusDays(1), "desc", "GRAOS");
+        UsuarioModel doador = mock(UsuarioModel.class);
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(doador));
+        mockAuth("x@email.com");
+
+        RegraDeNegocioException ex = assertThrows(
+            RegraDeNegocioException.class,
+            () -> doacaoService.cadastrar(dto)
+        );
+        assertTrue(ex.getMessage().contains("validade"));
+    }
+
 
 
 }
