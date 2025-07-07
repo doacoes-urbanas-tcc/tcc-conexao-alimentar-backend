@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.service;
 
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,6 +134,15 @@ public class DoacaoServiceTest {
         when(doacaoRepository.findById(1L)).thenReturn(Optional.of(doacao));
         var resp = doacaoService.buscarPorId(1L);
         assertEquals("Arroz", resp.getNomeAlimento());
+    }
+    
+    @Test
+    @DisplayName("Deve lançar erro ao buscar por ID inexistente")
+    void testBuscarPorIdInexistente() {
+        when(doacaoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(RegraDeNegocioException.class,
+            () -> doacaoService.buscarPorId(999L)
+        );
     }
 
 
