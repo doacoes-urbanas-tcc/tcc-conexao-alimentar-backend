@@ -2,8 +2,10 @@ package tcc.conexao_alimentar.service;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
@@ -15,6 +17,7 @@ import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
@@ -90,4 +93,22 @@ public class UsuarioService {
             throw new RuntimeException("E-mail já cadastrado.");
         }
     }
+
+    @Transactional
+    public void atualizarEmail(Long id, String novoEmail) {
+        validarEmail(novoEmail);
+        UsuarioModel usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+        usuario.setEmail(novoEmail);
+        usuarioRepository.save(usuario);
+    }
+    
+    @Transactional
+    public void atualizarSenha(Long id, String novaSenha, PasswordEncoder encoder) {
+        UsuarioModel usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+        usuario.setSenha(encoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
+
 }
