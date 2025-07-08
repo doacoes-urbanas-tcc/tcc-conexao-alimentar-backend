@@ -10,12 +10,15 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.enums.SetorAtuacao;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
+import tcc.conexao_alimentar.model.VoluntarioTiModel;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
+import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +27,25 @@ public class VoluntarioService {
     private final VoluntarioRepository voluntarioRepository;
     private final PasswordEncoder passwordEncoder;
     private UsuarioService usuarioService;
+    private VoluntarioTiRepository voluntarioTiRepository;
 
+    @Transactional
     public void cadastrar(VoluntarioRequestDTO dto) {
-        VoluntarioModel model = VoluntarioMapper.toEntity(dto);
-        model.setSenha(passwordEncoder.encode(dto.getSenha()));
-        model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
-        model.setAtivo(false);
-        voluntarioRepository.save(model);
+    VoluntarioModel model = VoluntarioMapper.toEntity(dto);
+    model.setSenha(passwordEncoder.encode(dto.getSenha()));
+
+    model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
+    model.setAtivo(false);
+
+    VoluntarioModel salvo = voluntarioRepository.save(model);
+
+    if (dto.getSetorAtuacao().equals(SetorAtuacao.TI)) {
+        VoluntarioTiModel ti = new VoluntarioTiModel();
+        ti.setVoluntario(salvo);
+        voluntarioTiRepository.save(ti);
     }
 
+}
     public List<VoluntarioResponseDTO> listarTodos() {
         return voluntarioRepository.findAll()         
             .stream()                              
