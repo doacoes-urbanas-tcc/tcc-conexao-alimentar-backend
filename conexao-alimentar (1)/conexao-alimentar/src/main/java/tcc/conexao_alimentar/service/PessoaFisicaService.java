@@ -5,14 +5,11 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
-import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
-import tcc.conexao_alimentar.model.OngModel;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.PessoaFisicaRepository;
