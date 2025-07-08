@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
@@ -28,7 +29,7 @@ public class ReservaController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ONG')")
-    public ResponseEntity<?> criarReserva(@RequestBody ReservaRequestDTO dto) {
+    public ResponseEntity<?> criarReserva(@RequestBody @Valid ReservaRequestDTO dto) {
         reservaService.cadastrar(dto);
         return ResponseEntity.ok("Reserva criada com sucesso!");
     }

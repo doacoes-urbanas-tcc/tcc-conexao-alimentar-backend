@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.service.OngService;
 
@@ -28,7 +29,7 @@ public class OngController {
 
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody OngRequestDTO dto) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid OngRequestDTO dto) {
         ongService.cadastrar(dto);
         return ResponseEntity.ok("ONG cadastrada com sucesso! Aguarde aprovação.");
     }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.service.ProdutorRuralService;
 
@@ -28,7 +29,7 @@ public class ProdutorRuralController {
 
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody ProdutorRuralRequestDTO dto) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid ProdutorRuralRequestDTO dto) {
         produtorRuralService.cadastrar(dto);
         return ResponseEntity.ok("Produtor Rural cadastrado com sucesso! Aguarde aprovação.");
     }

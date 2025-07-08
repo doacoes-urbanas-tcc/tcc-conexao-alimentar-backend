@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.service.DoacaoService;
@@ -32,7 +33,7 @@ public class DoacaoController {
     })
     @PostMapping
     @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
-    public ResponseEntity<?> criar(@RequestBody DoacaoRequestDTO dto) {
+    public ResponseEntity<?> criar(@RequestBody @Valid DoacaoRequestDTO dto) {
         service.cadastrar(dto);
         return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }

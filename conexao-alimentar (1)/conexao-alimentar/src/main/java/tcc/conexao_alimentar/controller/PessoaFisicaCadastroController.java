@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
@@ -32,7 +33,7 @@ public class PessoaFisicaCadastroController {
 
     })
     @PostMapping
-    public ResponseEntity<Void> cadastrar(@RequestBody PessoaFisicaRequestDTO dto) {
+    public ResponseEntity<Void> cadastrar(@RequestBody @Valid  PessoaFisicaRequestDTO dto) {
         pessoaFisicaService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

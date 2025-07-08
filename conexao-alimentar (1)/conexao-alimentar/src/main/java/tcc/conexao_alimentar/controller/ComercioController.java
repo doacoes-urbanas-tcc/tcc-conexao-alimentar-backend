@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.service.ComercioService;
 
@@ -28,7 +29,7 @@ public class ComercioController {
 
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody ComercioRequestDTO dto) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid ComercioRequestDTO dto) {
         comercioService.cadastrar(dto);
         return ResponseEntity.ok("Comércio cadastrado com sucesso! Aguarde aprovação.");
     }

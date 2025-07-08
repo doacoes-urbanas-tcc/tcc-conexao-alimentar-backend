@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
@@ -35,7 +36,7 @@ public class VoluntarioController {
 
         })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody VoluntarioRequestDTO dto) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid VoluntarioRequestDTO dto) {
         voluntarioService.cadastrar(dto);
         return ResponseEntity.ok("Voluntário cadastrado com sucesso! Aguarde aprovação.");
     }
@@ -48,7 +49,7 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
     })
     @PostMapping("/{voluntarioId}/veiculo")
-    public ResponseEntity<String> cadastrarVeiculo(@PathVariable Long voluntarioId,@RequestBody VeiculoRequestDTO dto) {
+    public ResponseEntity<String> cadastrarVeiculo(@PathVariable @Valid Long voluntarioId,@RequestBody VeiculoRequestDTO dto) {
         dto.setVoluntarioId(voluntarioId);  
         veiculoService.cadastrarVeiculo(dto);
         return ResponseEntity.ok("Veículo cadastrado com sucesso para voluntário!");

@@ -58,7 +58,7 @@ public class UsuarioController {
     return ResponseEntity.ok(agrupados);
 }
 
- @Operation(summary = "Permite aprovar cadastro por id",description = "Permite aprovar um cadastro pendente pelo id. Somente ADMIN pode acessar")
+    @Operation(summary = "Permite aprovar cadastro por id",description = "Permite aprovar um cadastro pendente pelo id. Somente ADMIN pode acessar")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuário aprovado com sucesso"),
         @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
