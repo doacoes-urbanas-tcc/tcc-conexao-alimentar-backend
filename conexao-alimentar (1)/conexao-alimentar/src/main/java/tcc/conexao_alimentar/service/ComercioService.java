@@ -1,5 +1,8 @@
 package tcc.conexao_alimentar.service;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +52,10 @@ public class ComercioService {
 
     ComercioModel comercio = (ComercioModel) usuario;
     return ComercioMapper.toResponse(comercio);
+    }
+
+    public Optional<ComercioModel> buscarPorId(Long id) {
+        return comercioRepository.findById(id);
     }
 
 }
