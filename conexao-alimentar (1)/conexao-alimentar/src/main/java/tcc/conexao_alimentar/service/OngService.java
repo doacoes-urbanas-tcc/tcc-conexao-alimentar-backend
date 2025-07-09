@@ -1,5 +1,8 @@
 package tcc.conexao_alimentar.service;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +54,9 @@ public class OngService {
     OngModel ong = (OngModel) usuario;
     return OngMapper.toResponse(ong);
     }
-    
+     public Optional<OngModel> buscarPorId(Long id) {
+        return ongRepository.findById(id);
+    }
 
 
 }

@@ -1,6 +1,9 @@
 package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
+
+import org.hibernate.generator.OnExecutionGenerator;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,7 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
+import tcc.conexao_alimentar.DTO.OngResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.mapper.ComercioMapper;
+import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.service.OngService;
 
 @RestController
@@ -33,5 +41,49 @@ public class OngController {
         ongService.cadastrar(dto);
         return ResponseEntity.ok("ONG cadastrada com sucesso! Aguarde aprovação.");
     }
+
+    
+    @Operation(summary = "Atualizar e-mail",description = "Permite que a ONG atualize seu endereço de e-mail.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "E-mail atualizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "ONG não encontrada")
+    })
+    @PatchMapping("/{id}/email")
+    @PreAuthorize("hasRole('ONG')")
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
+       ongService.atualizarEmail(id, novoEmail);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Atualizar senha",description = "Permite que a ONG atualize sua senha.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "ONG não encontrado")
+    })
+    @PatchMapping("/{id}/senha")
+    @PreAuthorize("hasRole('ONG')")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
+        ongService.atualizarSenha(id, novaSenha);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Visualizar perfil",description = "Retorna os dados do perfil da ONG.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil retornado com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "ONG não encontrada")
+    })
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ONG')")
+    public ResponseEntity<OngResponseDTO> visualizarPerfil(@PathVariable Long id) {
+        var ong = ongService.buscarPorId(id)
+                          .orElseThrow(() -> new RegraDeNegocioException("ONG não encontrado."));
+        return ResponseEntity.ok(OngMapper.toResponse(ong));
+    }
+
 
 }

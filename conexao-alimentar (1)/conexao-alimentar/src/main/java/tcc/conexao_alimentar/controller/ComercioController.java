@@ -37,12 +37,12 @@ public class ComercioController {
         return ResponseEntity.ok("Comércio cadastrado com sucesso! Aguarde aprovação.");
     }
 
-    @Operation(summary = "Atualizar e-mail",description = "Permite que o usuário atualize seu endereço de e-mail.")
+    @Operation(summary = "Atualizar e-mail",description = "Permite que o comércio atualize seu endereço de e-mail.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "E-mail atualizado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+        @ApiResponse(responseCode = "404", description = "Comércio não encontrado")
     })
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('COMERCIO')")
@@ -51,12 +51,12 @@ public class ComercioController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Atualizar senha",description = "Permite que o usuário atualize sua senha.")
+    @Operation(summary = "Atualizar senha",description = "Permite que o  comércio atualize sua senha.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+        @ApiResponse(responseCode = "404", description = "Comércio não encontrado")
     })
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('COMERCIO')")
@@ -65,17 +65,17 @@ public class ComercioController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Visualizar perfil",description = "Retorna os dados do perfil do usuário.")
+    @Operation(summary = "Visualizar perfil",description = "Retorna os dados do perfil do comércio.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Perfil retornado com sucesso"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+        @ApiResponse(responseCode = "404", description = "Comércio não encontrado")
     })
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('COMERCIO')")
     public ResponseEntity<ComercioResponseDTO> visualizarPerfil(@PathVariable Long id) {
         var comercio = comercioService.buscarPorId(id)
-                          .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+                          .orElseThrow(() -> new RegraDeNegocioException("Comércio não encontrado."));
         return ResponseEntity.ok(ComercioMapper.toResponse(comercio));
     }
 
