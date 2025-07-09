@@ -22,7 +22,7 @@ import tcc.conexao_alimentar.service.VoluntarioTiService;
 @RequestMapping("/voluntario-ti")
 @RequiredArgsConstructor
 public class VoluntarioTiController {
-     private final VoluntarioTiService voluntarioTiService;
+    private final VoluntarioTiService voluntarioTiService;
 
     @Operation(summary = "Cadastrar perfil TI",description = "Permite que o voluntário do setor TI cadastre suas informações.")
     @ApiResponses({

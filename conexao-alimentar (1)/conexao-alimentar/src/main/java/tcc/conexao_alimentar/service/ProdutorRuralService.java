@@ -37,7 +37,7 @@ public class ProdutorRuralService {
 
     @Transactional
     public void atualizarSenha(Long prId, String novaSenha) {
-        usuarioService.atualizarSenha(prId, novaSenha, passwordEncoder);
+        usuarioService.atualizarSenha(prId, novaSenha);
     }
 
     public ProdutorRuralResponseDTO visualizarPerfil(Long id) {

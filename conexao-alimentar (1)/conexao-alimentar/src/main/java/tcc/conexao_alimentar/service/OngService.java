@@ -37,7 +37,7 @@ public class OngService {
 
     @Transactional
     public void atualizarSenha(Long ongId, String novaSenha) {
-        usuarioService.atualizarSenha(ongId, novaSenha, passwordEncoder);
+        usuarioService.atualizarSenha(ongId, novaSenha);
     }
 
     public OngResponseDTO visualizarPerfil(Long id) {

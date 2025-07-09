@@ -40,7 +40,7 @@ public class PessoaFisicaService {
 
     @Transactional
     public void atualizarSenha(Long pfId, String novaSenha) {
-        usuarioService.atualizarSenha(pfId, novaSenha, passwordEncoder);
+        usuarioService.atualizarSenha(pfId, novaSenha);
     }
 
     public PessoaFisicaResponseDTO visualizarPerfil(Long id) {

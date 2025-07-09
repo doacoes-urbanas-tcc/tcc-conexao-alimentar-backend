@@ -34,6 +34,8 @@ public class ComercioController {
         return ResponseEntity.ok("Comércio cadastrado com sucesso! Aguarde aprovação.");
     }
 
+    
+
 
 
 }

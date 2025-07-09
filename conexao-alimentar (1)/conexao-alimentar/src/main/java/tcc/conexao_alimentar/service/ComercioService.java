@@ -36,7 +36,7 @@ public class ComercioService {
 
     @Transactional
     public void atualizarSenha(Long comercioId, String novaSenha) {
-        usuarioService.atualizarSenha(comercioId, novaSenha, passwordEncoder);
+        usuarioService.atualizarSenha(comercioId, novaSenha);
     }
 
     public ComercioResponseDTO visualizarPerfil(Long id) {
@@ -49,6 +49,6 @@ public class ComercioService {
 
     ComercioModel comercio = (ComercioModel) usuario;
     return ComercioMapper.toResponse(comercio);
-}
+    }
 
 }

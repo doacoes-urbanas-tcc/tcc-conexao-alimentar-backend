@@ -26,7 +26,7 @@ public class VoluntarioService {
 
     private final VoluntarioRepository voluntarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
     private VoluntarioTiRepository voluntarioTiRepository;
 
     @Transactional
@@ -66,7 +66,7 @@ public class VoluntarioService {
 
     @Transactional
     public void atualizarSenha(Long voluntarioId, String novaSenha) {
-        usuarioService.atualizarSenha(voluntarioId, novaSenha, passwordEncoder);
+        usuarioService.atualizarSenha(voluntarioId, novaSenha);
     }
 
     public VoluntarioResponseDTO visualizarPerfil(Long id) {

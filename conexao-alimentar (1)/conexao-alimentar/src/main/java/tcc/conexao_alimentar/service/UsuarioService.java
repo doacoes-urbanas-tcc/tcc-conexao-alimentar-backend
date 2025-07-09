@@ -47,6 +47,7 @@ public class UsuarioService {
     private final ComercioRepository comercioRepository;
     private final ProdutorRuralRepository produtorRuralRepository;
     private final OngRepository ongRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaRequestDTO dto) {
         validarEmail(dto.getEmail());
@@ -104,10 +105,10 @@ public class UsuarioService {
     }
     
     @Transactional
-    public void atualizarSenha(Long id, String novaSenha, PasswordEncoder encoder) {
+    public void atualizarSenha(Long id, String novaSenha) {
         UsuarioModel usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
-        usuario.setSenha(encoder.encode(novaSenha));
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuarioRepository.save(usuario);
     }
 
