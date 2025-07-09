@@ -1,5 +1,8 @@
 package tcc.conexao_alimentar.service;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ProdutorRuralMapper;
+import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.model.ProdutorRuralModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.ProdutorRuralRepository;
@@ -50,7 +54,11 @@ public class ProdutorRuralService {
 
     ProdutorRuralModel pr= (ProdutorRuralModel) usuario;
     return ProdutorRuralMapper.toResponse(pr);
-}
+   }
+   public Optional<ProdutorRuralModel> buscarPorId(Long id) {
+        return produtorRuralRepository.findById(id);
+    }
+
     
 
 }

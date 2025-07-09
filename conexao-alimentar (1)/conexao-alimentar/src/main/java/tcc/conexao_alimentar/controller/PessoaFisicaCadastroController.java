@@ -18,11 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
-import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 

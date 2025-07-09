@@ -1,7 +1,6 @@
 package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
-import org.hibernate.generator.OnExecutionGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
-import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.service.OngService;
 
