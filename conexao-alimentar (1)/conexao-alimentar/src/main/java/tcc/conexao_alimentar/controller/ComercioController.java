@@ -75,7 +75,7 @@ public class ComercioController {
     @PreAuthorize("hasRole('COMERCIO')")
     public ResponseEntity<ComercioResponseDTO> visualizarPerfil(@PathVariable Long id) {
         var comercio = comercioService.buscarPorId(id)
-                          .orElseThrow(() -> new RegraDeNegocioException("Comércio não encontrado."));
+                          .orElseThrow(() -> new RegraDeNegocioException(" não encontrado."));
         return ResponseEntity.ok(ComercioMapper.toResponse(comercio));
     }
 

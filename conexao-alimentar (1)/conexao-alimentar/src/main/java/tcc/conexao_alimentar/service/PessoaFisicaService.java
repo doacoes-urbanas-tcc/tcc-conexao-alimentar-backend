@@ -1,5 +1,7 @@
 package tcc.conexao_alimentar.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
+import tcc.conexao_alimentar.model.OngModel;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.PessoaFisicaRepository;
@@ -53,7 +56,12 @@ public class PessoaFisicaService {
 
    PessoaFisicaModel pf= (PessoaFisicaModel) usuario;
     return PessoaFisicaMapper.toResponse(pf);
-}
+   }
+   
+    public Optional<PessoaFisicaModel> buscarPorId(Long id) {
+        return pessoaFisicaRepository.findById(id);
+    }
+
     
 
     

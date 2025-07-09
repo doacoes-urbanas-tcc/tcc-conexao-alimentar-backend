@@ -2,9 +2,14 @@ package tcc.conexao_alimentar.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +18,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.mapper.ComercioMapper;
+import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 
 @RestController
@@ -37,5 +47,51 @@ public class PessoaFisicaCadastroController {
         pessoaFisicaService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    
+    @Operation(summary = "Atualizar e-mail",description = "Permite que a pessoa atualize seu endereço de e-mail.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "E-mail atualizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Pessoa não encontrado")
+    })
+    @PatchMapping("/{id}/email")
+    @PreAuthorize("hasRole('PESSOA_FISICA')")
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
+       pessoaFisicaService.atualizarEmail(id, novoEmail);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Atualizar senha",description = "Permite que a pessoa atualize sua senha.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Pessoa não encontrado")
+    })
+    @PatchMapping("/{id}/senha")
+    @PreAuthorize("hasRole('PESOA_FISICA')")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
+        pessoaFisicaService.atualizarSenha(id, novaSenha);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Visualizar perfil",description = "Retorna os dados do perfil da pessoa.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil retornado com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Pessoa não encontrada")
+    })
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('PESSOA_FISICA')")
+    public ResponseEntity<PessoaFisicaResponseDTO> visualizarPerfil(@PathVariable Long id) {
+        var pf = pessoaFisicaService.buscarPorId(id)
+                          .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada."));
+        return ResponseEntity.ok(PessoaFisicaMapper.toResponse(pf));
+    }
+
+
+
 
 }
