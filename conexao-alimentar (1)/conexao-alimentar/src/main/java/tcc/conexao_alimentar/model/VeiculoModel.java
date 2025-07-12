@@ -1,5 +1,7 @@
 package tcc.conexao_alimentar.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,7 @@ public class VeiculoModel {
 
     @OneToOne
     @JoinColumn(name = "voluntario_id")
+    @JsonBackReference
     private VoluntarioModel voluntario;
 
 }

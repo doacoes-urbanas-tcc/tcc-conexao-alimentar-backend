@@ -76,7 +76,7 @@ public class DoacaoController {
 
     })
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMERCIO', 'PRODUTOR_RURAL', 'PESSOA_FISICA')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA') or hasRole('ADMIN')")
     public ResponseEntity<Void> remover(@PathVariable Long id, @RequestParam Long doadorId) {
         service.removerDoacao(id, doadorId);
         return ResponseEntity.noContent().build();
