@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,8 @@ import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
 
@@ -55,6 +58,42 @@ public class VoluntarioController {
         return ResponseEntity.ok("Veículo cadastrado com sucesso para voluntário!");
     }
 
+    @Operation(summary = "Cadastrar perfil TI", description = "Permite que o voluntário do setor TI cadastre suas informações técnicas")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil TI cadastrado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @PostMapping("/{voluntarioId}/perfil-ti")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<Void> cadastrarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
+        voluntarioService.cadastrarPerfilTI(voluntarioId, dto);
+        return ResponseEntity.ok().build();
+    }
+    
+    @Operation(summary = "Visualizar perfil TI", description = "Retorna o perfil TI do voluntário")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil TI retornado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Perfil não encontrado")
+    })
+    @GetMapping("/{voluntarioId}/perfil-ti")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<VoluntarioTiResponseDTO> visualizarPerfilTI(@PathVariable Long voluntarioId) {
+        var perfil = voluntarioService.visualizarPerfilTI(voluntarioId);
+        return ResponseEntity.ok(perfil);
+    }
+
+    @Operation(summary = "Atualizar perfil TI", description = "Permite que o voluntário de TI atualize suas informações técnicas")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil TI atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Perfil não encontrado")
+    })
+    @PatchMapping("/{voluntarioId}/perfil-ti")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<Void> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
+        voluntarioService.atualizarPerfilTI(voluntarioId, dto);
+        return ResponseEntity.ok().build();
+    }
     
     @Operation(summary = "Listar todos os voluntários",description = "Lista todos os voluntários cadastrados no sistema")
     @ApiResponses(value = {
