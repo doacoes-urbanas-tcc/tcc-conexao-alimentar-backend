@@ -97,6 +97,22 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
     }
 
-
     
+    @Operation(summary = "Listar os usuários ativos por tipo",description = "Lista todos os cadastros ativos de um determinado tipo de usuário. Somente ADMIN pode acessar")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+    })
+    @GetMapping ("/{tipo}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> listarUsuariosPorTipo() {
+    List<UsuarioModel>  ativos = usuarioRepository.findByAtivo();
+    Map<TipoUsuario, List<UsuarioModel>> agrupados = ativos.stream()
+            .collect(Collectors.groupingBy(UsuarioModel::getTipoUsuario));
+    return ResponseEntity.ok(agrupados);
+   }
+
+
+
 }
