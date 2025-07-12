@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,19 +16,19 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "veiculos")
+@Table(name = "veiculo")
 public class VeiculoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "placa", nullable = false, unique = true)
     private String placa;
-
+    @Column(name = "modelo", nullable = false)
     private String modelo;
-
+    @Column(name = "cor", nullable = false)
     private String cor;
-
+    @Column(name = "capacidade_carga", nullable = false)
     private String capacidadeCarga;
 
     @OneToOne

@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -25,23 +26,26 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuario")
 public abstract class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "nome", nullable = false)
     private String nome;
     @Column(nullable = false, unique = true)
     private String email;
+    @Column(name = "senha", nullable = false)
     private String senha;
+    @Column(name = "telefone", nullable = false)
     private String telefone;
-
     @Embedded
     private EnderecoModel endereco;
+    @Column(name = "tipo_usuario", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
-
+    @Column(name = "ativo", nullable = false)
     private boolean ativo;
 
 }
