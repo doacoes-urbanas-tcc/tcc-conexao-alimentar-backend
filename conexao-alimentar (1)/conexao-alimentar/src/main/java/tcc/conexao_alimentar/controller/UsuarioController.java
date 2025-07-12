@@ -77,6 +77,14 @@ public class UsuarioController {
         usuarioRepository.save(usuario);
         return ResponseEntity.ok("Usuário aprovado com sucesso!");
     }
+    
+    @Operation(summary = "Permite reprovar ou desativar cadastro por id",description = "Permite reprovar ou desativar um cadastro pelo id. Somente ADMIN pode acessar")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário reprovado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+    })
     @PatchMapping("/aprovar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> reprovarouDesativarUsuario(@PathVariable Long id) {
@@ -90,5 +98,5 @@ public class UsuarioController {
     }
 
 
-
+    
 }
