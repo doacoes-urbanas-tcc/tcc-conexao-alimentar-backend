@@ -113,6 +113,20 @@ public class UsuarioController {
     return ResponseEntity.ok(agrupados);
    }
 
+    @Operation(summary = "Listar todos usuários ativos ",description = "Lista todos os cadastros ativos. Somente ADMIN pode acessar")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+    })
+    @GetMapping 
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> listarUsuarios() {
+    List<UsuarioModel>  usuarios = usuarioRepository.findByAtivo();
+    return ResponseEntity.ok(usuarios);
+   }
+
+
 
 
 }
