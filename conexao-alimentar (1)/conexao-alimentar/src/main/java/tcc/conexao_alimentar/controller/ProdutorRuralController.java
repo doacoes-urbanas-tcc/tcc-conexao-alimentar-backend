@@ -10,11 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
-import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.ProdutorRuralMapper;
 import tcc.conexao_alimentar.service.ProdutorRuralService;
 

@@ -56,7 +56,7 @@ public class UsuarioController {
     Map<TipoUsuario, List<UsuarioModel>> agrupados = pendentes.stream()
             .collect(Collectors.groupingBy(UsuarioModel::getTipoUsuario));
     return ResponseEntity.ok(agrupados);
-}
+   }
 
     @Operation(summary = "Permite aprovar cadastro por id",description = "Permite aprovar um cadastro pendente pelo id. Somente ADMIN pode acessar")
     @ApiResponses(value = {
@@ -77,5 +77,18 @@ public class UsuarioController {
         usuarioRepository.save(usuario);
         return ResponseEntity.ok("Usuário aprovado com sucesso!");
     }
+    @PatchMapping("/aprovar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> reprovarouDesativarUsuario(@PathVariable Long id) {
+        UsuarioModel usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        usuario.setAtivo(false);
+        usuarioRepository.save(usuario);
+        return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
+    }
+
+
 
 }

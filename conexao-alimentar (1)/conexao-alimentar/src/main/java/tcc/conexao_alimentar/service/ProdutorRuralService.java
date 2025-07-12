@@ -12,7 +12,6 @@ import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ProdutorRuralMapper;
-import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.model.ProdutorRuralModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.ProdutorRuralRepository;
