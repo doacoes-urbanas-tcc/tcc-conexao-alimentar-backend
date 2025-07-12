@@ -86,7 +86,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarVoluntariosPendentes());
     }
 
-       @Operation(summary = "Listar Comércios ativos", description = "Lista todos os comércios ativos. Somente ADMIN pode acessar.")
+    @Operation(summary = "Listar Comércios ativos", description = "Lista todos os comércios ativos. Somente ADMIN pode acessar.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
