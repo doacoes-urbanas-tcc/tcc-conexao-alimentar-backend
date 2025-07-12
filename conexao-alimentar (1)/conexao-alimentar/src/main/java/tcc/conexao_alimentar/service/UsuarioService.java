@@ -1,6 +1,8 @@
 package tcc.conexao_alimentar.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -111,5 +113,60 @@ public class UsuarioService {
         usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuarioRepository.save(usuario);
     }
+
+    public List<ComercioResponseDTO> listarComerciosPendentes(){
+        return usuarioRepository.findByAtivo(false)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              ComercioModel)
+              .map(usuario ->
+              ComercioMapper.toResponse((ComercioModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<OngResponseDTO> listarOngsPendentes(){
+        return usuarioRepository.findByAtivo(false)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              OngModel)
+              .map(usuario ->
+              OngMapper.toResponse((OngModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<PessoaFisicaResponseDTO> listarPessoasFisicasPendentes(){
+        return usuarioRepository.findByAtivo(false)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              PessoaFisicaModel)
+              .map(usuario ->
+              PessoaFisicaMapper.toResponse((PessoaFisicaModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<ProdutorRuralResponseDTO> listarProdutoresRuraisPendentes(){
+        return usuarioRepository.findByAtivo(false)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              ProdutorRuralModel)
+              .map(usuario ->
+              ProdutorRuralMapper.toResponse((ProdutorRuralModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<VoluntarioResponseDTO> listarVoluntariosPendentes(){
+        return usuarioRepository.findByAtivo(false)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              VoluntarioModel)
+              .map(usuario ->
+              VoluntarioMapper.toResponse((VoluntarioModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+
+
+
+
 
 }
