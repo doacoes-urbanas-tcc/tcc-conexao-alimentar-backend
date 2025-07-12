@@ -42,8 +42,7 @@ import tcc.conexao_alimentar.repository.VoluntarioRepository;
 @RequiredArgsConstructor
 public class UsuarioService {
 
-      private final UsuarioRepository usuarioRepository;
-
+    private final UsuarioRepository usuarioRepository;
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final VoluntarioRepository voluntarioRepository;
     private final ComercioRepository comercioRepository;
@@ -216,6 +215,26 @@ public class UsuarioService {
               usuario))
               .collect(Collectors.toList());
     }
+    @Transactional
+    public void aprovarUsuario(Long id) {
+    UsuarioModel usuario = usuarioRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    usuario.setAtivo(true);
+    usuarioRepository.save(usuario);
+    }
+    @Transactional
+    public void reprovarOuDesativarUsuario(Long id) {
+    UsuarioModel usuario = usuarioRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    usuario.setAtivo(false);
+    usuarioRepository.save(usuario);
+    }
+    public List<UsuarioModel> listarPendentes() {
+    return usuarioRepository.findByAtivo(false);
+}
+
+    public List<UsuarioModel> listarAtivos() {
+    return usuarioRepository.findByAtivo(true);
+    }
+
 
 
 

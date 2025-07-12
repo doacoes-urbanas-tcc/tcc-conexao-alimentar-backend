@@ -1,9 +1,6 @@
 package tcc.conexao_alimentar.controller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.enums.TipoUsuario;
+import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
+import tcc.conexao_alimentar.DTO.OngResponseDTO;
+import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
+import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.model.UsuarioModel;
-import tcc.conexao_alimentar.repository.UsuarioRepository;
+import tcc.conexao_alimentar.service.UsuarioService;
 
 @RestController
 @RequestMapping("/admin/usuarios")
@@ -27,106 +28,171 @@ import tcc.conexao_alimentar.repository.UsuarioRepository;
 @Tag(name = "Usuários", description = "Endpoints de gerenciamento de usuários e permissões")
 public class UsuarioController {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     
-    @Operation(summary = "Listar os cadastros pendentes",description = "Lista todos os cadastros pendentes de ativação. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+    @Operation(summary = "Listar Comércios pendentes", description = "Lista todos os comércios pendentes de aprovação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/pendentes/comercios")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ComercioResponseDTO>> listarComerciosPendentes() {
+        return ResponseEntity.ok(usuarioService.listarComerciosPendentes());
+    }
+
+    @Operation(summary = "Listar ONGs pendentes", description = "Lista todas as ONGs pendentes de aprovação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/pendentes/ongs")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<OngResponseDTO>> listarOngsPendentes() {
+        return ResponseEntity.ok(usuarioService.listarOngsPendentes());
+    }
+
+    @Operation(summary = "Listar Pessoas Físicas pendentes", description = "Lista todas as pessoas físicas pendentes de aprovação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/pendentes/pessoas-fisicas")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<PessoaFisicaResponseDTO>> listarPessoasFisicasPendentes() {
+        return ResponseEntity.ok(usuarioService.listarPessoasFisicasPendentes());
+    }
+
+    @Operation(summary = "Listar Produtores Rurais pendentes", description = "Lista todos os produtores rurais pendentes de aprovação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/pendentes/produtores-rurais")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ProdutorRuralResponseDTO>> listarProdutoresRuraisPendentes() {
+        return ResponseEntity.ok(usuarioService.listarProdutoresRuraisPendentes());
+    }
+
+    @Operation(summary = "Listar Voluntários pendentes", description = "Lista todos os voluntários pendentes de aprovação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/pendentes/voluntarios")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<VoluntarioResponseDTO>> listarVoluntariosPendentes() {
+        return ResponseEntity.ok(usuarioService.listarVoluntariosPendentes());
+    }
+
+       @Operation(summary = "Listar Comércios ativos", description = "Lista todos os comércios ativos. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/ativos/comercios")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ComercioResponseDTO>> listarComerciosAtivos() {
+        return ResponseEntity.ok(usuarioService.listarComerciosAtivos());
+    }
+
+    @Operation(summary = "Listar ONGs ativas", description = "Lista todas as ONGs ativas. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/ativos/ongs")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<OngResponseDTO>> listarOngsAtivas() {
+        return ResponseEntity.ok(usuarioService.listarOngsAtivas());
+    }
+
+    @Operation(summary = "Listar Pessoas Físicas ativas", description = "Lista todas as pessoas físicas ativas. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/ativos/pessoas-fisicas")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<PessoaFisicaResponseDTO>> listarPessoasFisicasAtivas() {
+        return ResponseEntity.ok(usuarioService.listarPessoasFisicasAtivas());
+    }
+
+    @Operation(summary = "Listar Produtores Rurais ativos", description = "Lista todos os produtores rurais ativos. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/ativos/produtores-rurais")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ProdutorRuralResponseDTO>> listarProdutoresRuraisAtivos() {
+        return ResponseEntity.ok(usuarioService.listarProdutoresRuraisAtivos());
+    }
+
+    @Operation(summary = "Listar Voluntários ativos", description = "Lista todos os voluntários ativos. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
+    @GetMapping("/ativos/voluntarios")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<VoluntarioResponseDTO>> listarVoluntariosAtivos() {
+        return ResponseEntity.ok(usuarioService.listarVoluntariosAtivos());
+    }
+
+
+    
+
+    @Operation(summary = "Listar os cadastros pendentes", description = "Lista todos os cadastros pendentes de ativação. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
     @GetMapping("/pendentes")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> listarPendentes() {
-        List<UsuarioModel> pendentes = usuarioRepository.findByAtivoFalse();
-        return ResponseEntity.ok(pendentes);
+    public ResponseEntity<List<UsuarioModel>> listarPendentes() {
+        return ResponseEntity.ok(usuarioService.listarPendentes());
     }
 
-    @Operation(summary = "Listar os cadastros pendentes por tipo",description = "Lista todos os cadastros pendentes de ativação de um determinado tipo de usuário. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+    @Operation(summary = "Listar todos usuários ativos", description = "Lista todos os cadastros ativos. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
-    @GetMapping("/pendentes/{tipo}")
+    @GetMapping("/ativos")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> listarPendentesPorTipo() {
-    List<UsuarioModel> pendentes = usuarioRepository.findByAtivoFalse();
-    Map<TipoUsuario, List<UsuarioModel>> agrupados = pendentes.stream()
-            .collect(Collectors.groupingBy(UsuarioModel::getTipoUsuario));
-    return ResponseEntity.ok(agrupados);
-   }
+    public ResponseEntity<List<UsuarioModel>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.listarAtivos());
+    }
 
-    @Operation(summary = "Permite aprovar cadastro por id",description = "Permite aprovar um cadastro pendente pelo id. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
+    @Operation(summary = "Aprovar usuário por id", description = "Permite aprovar um cadastro pendente. Somente ADMIN pode acessar.")
+    @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Usuário aprovado com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
-
     @PatchMapping("/aprovar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> aprovarUsuario(@PathVariable Long id) {
-        UsuarioModel usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        usuario.setAtivo(true);
-        usuarioRepository.save(usuario);
+        usuarioService.aprovarUsuario(id);
         return ResponseEntity.ok("Usuário aprovado com sucesso!");
     }
-    
-    @Operation(summary = "Permite reprovar ou desativar cadastro por id",description = "Permite reprovar ou desativar um cadastro pelo id. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Usuário reprovado com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+
+     @Operation(summary = "Reprovar ou desativar usuário por id", description = "Permite reprovar ou desativar um cadastro. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Usuário reprovado/desativado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
     @PatchMapping("/reprovar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> reprovarouDesativarUsuario(@PathVariable Long id) {
-        UsuarioModel usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        usuario.setAtivo(false);
-        usuarioRepository.save(usuario);
+    public ResponseEntity<String> reprovarOuDesativarUsuario(@PathVariable Long id) {
+        usuarioService.reprovarOuDesativarUsuario(id);
         return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
     }
-
-    
-    @Operation(summary = "Listar os usuários ativos por tipo",description = "Lista todos os cadastros ativos de um determinado tipo de usuário. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
-    })
-    @GetMapping ("/{tipo}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> listarUsuariosPorTipo() {
-    List<UsuarioModel>  ativos = usuarioRepository.findByAtivo(true);
-    Map<TipoUsuario, List<UsuarioModel>> agrupados = ativos.stream()
-            .collect(Collectors.groupingBy(UsuarioModel::getTipoUsuario));
-    return ResponseEntity.ok(agrupados);
-   }
-
-    @Operation(summary = "Listar todos usuários ativos ",description = "Lista todos os cadastros ativos. Somente ADMIN pode acessar")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
-    })
-    @GetMapping 
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> listarUsuarios() {
-    List<UsuarioModel>  usuarios = usuarioRepository.findByAtivo(true);
-    return ResponseEntity.ok(usuarios);
-   }
-
-
-
-
 }
+
+
+
+
