@@ -27,7 +27,7 @@ public class VoluntarioService {
     private final VoluntarioRepository voluntarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
-    private VoluntarioTiRepository voluntarioTiRepository;
+    private final VoluntarioTiRepository voluntarioTiRepository;
 
     @Transactional
     public void cadastrar(VoluntarioRequestDTO dto) {
