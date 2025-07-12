@@ -107,7 +107,7 @@ public class UsuarioController {
     @GetMapping ("/{tipo}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> listarUsuariosPorTipo() {
-    List<UsuarioModel>  ativos = usuarioRepository.findByAtivo();
+    List<UsuarioModel>  ativos = usuarioRepository.findByAtivo(true);
     Map<TipoUsuario, List<UsuarioModel>> agrupados = ativos.stream()
             .collect(Collectors.groupingBy(UsuarioModel::getTipoUsuario));
     return ResponseEntity.ok(agrupados);
@@ -122,7 +122,7 @@ public class UsuarioController {
     @GetMapping 
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> listarUsuarios() {
-    List<UsuarioModel>  usuarios = usuarioRepository.findByAtivo();
+    List<UsuarioModel>  usuarios = usuarioRepository.findByAtivo(true);
     return ResponseEntity.ok(usuarios);
    }
 
