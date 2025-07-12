@@ -164,6 +164,59 @@ public class UsuarioService {
               usuario))
               .collect(Collectors.toList());
     }
+    
+    public List<ComercioResponseDTO> listarComerciosAtivos(){
+        return usuarioRepository.findByAtivo(true)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              ComercioModel)
+              .map(usuario ->
+              ComercioMapper.toResponse((ComercioModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    
+    public List<OngResponseDTO> listarOngsAtivas(){
+        return usuarioRepository.findByAtivo(true)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              OngModel)
+              .map(usuario ->
+              OngMapper.toResponse((OngModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<PessoaFisicaResponseDTO> listarPessoasFisicasAtivas(){
+        return usuarioRepository.findByAtivo(true)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              PessoaFisicaModel)
+              .map(usuario ->
+              PessoaFisicaMapper.toResponse((PessoaFisicaModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<ProdutorRuralResponseDTO> listarProdutoresRuraisAtivos(){
+        return usuarioRepository.findByAtivo(true)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              ProdutorRuralModel)
+              .map(usuario ->
+              ProdutorRuralMapper.toResponse((ProdutorRuralModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+    public List<VoluntarioResponseDTO> listarVoluntariosAtivos(){
+        return usuarioRepository.findByAtivo(true)
+              .stream()
+              .filter(usuario -> usuario instanceof 
+              VoluntarioModel)
+              .map(usuario ->
+              VoluntarioMapper.toResponse((VoluntarioModel)
+              usuario))
+              .collect(Collectors.toList());
+    }
+
 
 
 
