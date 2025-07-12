@@ -81,7 +81,8 @@ public class VoluntarioController {
         VoluntarioResponseDTO dto = voluntarioService.buscarPorId(id);
         return ResponseEntity.ok(dto);
     }
-    
+
+
 
     
 
