@@ -85,7 +85,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
-    @PatchMapping("/aprovar/{id}")
+    @PatchMapping("/reprovar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> reprovarouDesativarUsuario(@PathVariable Long id) {
         UsuarioModel usuario = usuarioRepository.findById(id).orElse(null);

@@ -40,7 +40,7 @@ public class PessoaFisicaCadastroController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 
     })
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid  PessoaFisicaRequestDTO dto) {
         pessoaFisicaService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
