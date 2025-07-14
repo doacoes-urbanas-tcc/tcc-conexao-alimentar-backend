@@ -40,13 +40,9 @@ public class VoluntarioService {
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
     model.setAtivo(false);
 
-    VoluntarioModel salvo = voluntarioRepository.save(model);
+    voluntarioRepository.save(model);
 
-    if (dto.getSetorAtuacao().equals(SetorAtuacao.TI)) {
-        VoluntarioTiModel ti = new VoluntarioTiModel();
-        ti.setVoluntario(salvo);
-        voluntarioTiRepository.save(ti);
-    }
+
 
 }
     public List<VoluntarioResponseDTO> listarTodos() {
