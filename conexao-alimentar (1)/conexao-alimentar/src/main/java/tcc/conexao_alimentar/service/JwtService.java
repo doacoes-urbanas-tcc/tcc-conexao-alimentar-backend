@@ -3,6 +3,8 @@ package tcc.conexao_alimentar.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,9 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private final String secret = "#fr5rtfi7ygo87yh98uj6526oj8ts3a7sdcxes3wss8u54supfrtxzekçlm*kkxm#sszx#ku";
+    @Value("${jwt.secret}")
+    private String secret;
+
 
     private Key getSignInKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));

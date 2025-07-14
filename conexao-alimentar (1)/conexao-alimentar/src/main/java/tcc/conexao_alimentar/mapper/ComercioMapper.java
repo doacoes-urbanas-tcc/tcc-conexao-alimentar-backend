@@ -1,13 +1,13 @@
 package tcc.conexao_alimentar.mapper;
 
-import tcc.conexao_alimentar.DTO.ComercioCadastroDTO;
+import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.ComercioModel;
 
 public class ComercioMapper {
 
-     public static ComercioModel toEntity(ComercioCadastroDTO dto) {
+     public static ComercioModel toEntity(ComercioRequestDTO dto) {
         ComercioModel c = new ComercioModel();
         c.setNome(dto.getNome());
         c.setEmail(dto.getEmail());

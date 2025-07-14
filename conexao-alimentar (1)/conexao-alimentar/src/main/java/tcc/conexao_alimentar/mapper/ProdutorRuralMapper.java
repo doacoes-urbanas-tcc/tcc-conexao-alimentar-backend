@@ -1,13 +1,13 @@
 package tcc.conexao_alimentar.mapper;
 
-import tcc.conexao_alimentar.DTO.ProdutorRuralCadastroDTO;
+import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.ProdutorRuralModel;
 
 public class ProdutorRuralMapper {
 
-    public static ProdutorRuralModel toEntity(ProdutorRuralCadastroDTO dto) {
+    public static ProdutorRuralModel toEntity(ProdutorRuralRequestDTO dto) {
         ProdutorRuralModel p = new ProdutorRuralModel();
         p.setNome(dto.getNome());
         p.setEmail(dto.getEmail());

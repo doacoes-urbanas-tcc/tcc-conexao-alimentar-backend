@@ -1,13 +1,13 @@
 package tcc.conexao_alimentar.mapper;
 
-import tcc.conexao_alimentar.DTO.VoluntarioCadastroDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 
 public class VoluntarioMapper {
 
-      public static VoluntarioModel toEntity(VoluntarioCadastroDTO dto) {
+      public static VoluntarioModel toEntity(VoluntarioRequestDTO dto) {
         VoluntarioModel v = new VoluntarioModel();
         v.setNome(dto.getNome());
         v.setEmail(dto.getEmail());

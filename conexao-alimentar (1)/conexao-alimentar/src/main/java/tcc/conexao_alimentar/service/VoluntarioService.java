@@ -1,14 +1,27 @@
 package tcc.conexao_alimentar.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import tcc.conexao_alimentar.DTO.VoluntarioCadastroDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
+import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
+import tcc.conexao_alimentar.enums.SetorAtuacao;
 import tcc.conexao_alimentar.enums.TipoUsuario;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
+import tcc.conexao_alimentar.mapper.VoluntarioTiMapper;
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
+import tcc.conexao_alimentar.model.VoluntarioTiModel;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
+import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -16,13 +29,91 @@ public class VoluntarioService {
 
     private final VoluntarioRepository voluntarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UsuarioService usuarioService;
+    private final VoluntarioTiRepository voluntarioTiRepository;
 
-    public void cadastrar(VoluntarioCadastroDTO dto) {
-        VoluntarioModel model = VoluntarioMapper.toEntity(dto);
-        model.setSenha(passwordEncoder.encode(dto.getSenha()));
-        model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
-        model.setAtivo(false);
-        voluntarioRepository.save(model);
+    @Transactional
+    public void cadastrar(VoluntarioRequestDTO dto) {
+    VoluntarioModel model = VoluntarioMapper.toEntity(dto);
+    model.setSenha(passwordEncoder.encode(dto.getSenha()));
+
+    model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
+    model.setAtivo(false);
+
+    voluntarioRepository.save(model);
+
+
+
+}
+    public List<VoluntarioResponseDTO> listarTodos() {
+        return voluntarioRepository.findAll()         
+            .stream()                              
+            .map(VoluntarioMapper::toResponse)        
+            .collect(Collectors.toList());         
     }
 
+    public VoluntarioResponseDTO buscarPorId(Long id) {
+    VoluntarioModel voluntario = voluntarioRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+     return VoluntarioMapper.toResponse(voluntario);
+    }
+    
+    @Transactional
+    public void atualizarEmail(Long voluntarioId, String novoEmail) {
+        usuarioService.atualizarEmail(voluntarioId, novoEmail);
+    }
+
+    @Transactional
+    public void atualizarSenha(Long voluntarioId, String novaSenha) {
+        usuarioService.atualizarSenha(voluntarioId, novaSenha);
+    }
+
+    public VoluntarioResponseDTO visualizarPerfil(Long id) {
+    UsuarioModel usuario = usuarioService.buscarPorId(id)
+     .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+
+    if (!(usuario instanceof VoluntarioModel)) {
+        throw new RegraDeNegocioException("Usuário não é um voluntário.");
+    }
+
+   VoluntarioModel voluntario= (VoluntarioModel) usuario;
+    return VoluntarioMapper.toResponse(voluntario);
+   }
+    public void cadastrarPerfilTI(Long voluntarioId, VoluntarioTiRequestDTO dto) {
+        VoluntarioModel voluntario = voluntarioRepository.findById(voluntarioId)
+            .orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+
+        if (!voluntario.getSetorAtuacao().equals(SetorAtuacao.TI)) {
+            throw new RegraDeNegocioException("Este voluntário não é do setor TI.");
+        }
+
+        VoluntarioTiModel model = VoluntarioTiMapper.toEntity(dto);
+        model.setVoluntario(voluntario);
+
+        voluntarioTiRepository.save(model);
+    }
+
+    public VoluntarioTiResponseDTO visualizarPerfilTI(Long voluntarioId) {
+        VoluntarioTiModel model = voluntarioTiRepository.findByVoluntarioId(voluntarioId)
+            .orElseThrow(() -> new RegraDeNegocioException("Perfil TI não encontrado."));
+        return VoluntarioTiMapper.toResponse(model);
+    }
+
+    @Transactional
+    public void atualizarPerfilTI(Long voluntarioId, VoluntarioTiRequestDTO dto) {
+        VoluntarioTiModel model = voluntarioTiRepository.findByVoluntarioId(voluntarioId)
+            .orElseThrow(() -> new RegraDeNegocioException("Perfil TI não encontrado."));
+
+        model.setSetorTi(dto.getSetorTi());
+        model.setStackConhecimento(dto.getStackConhecimento());
+        model.setCertificacoes(dto.getCertificacoes());
+        model.setExperiencia(dto.getExperiencia());
+        model.setLinkedin(dto.getLinkedin());
+        model.setGithub(dto.getGithub());
+        model.setDisponibilidadeHoras(dto.getDisponibilidadeHoras());
+
+        voluntarioTiRepository.save(model);
+    }
+
+    
 }

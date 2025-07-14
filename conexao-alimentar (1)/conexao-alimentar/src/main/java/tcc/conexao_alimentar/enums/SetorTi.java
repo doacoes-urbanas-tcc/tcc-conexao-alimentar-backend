@@ -1,0 +1,11 @@
+package tcc.conexao_alimentar.enums;
+
+public enum SetorTi {
+    DESENVOLVIMENTO_BACKEND,
+    DESENVOLVIMENTO_FORNTND,
+    BANCO_DE_DADOS,
+    SUPORTE_TECNICO,
+    SEGURANCA_DA_INFORMACAO,
+    DEVOPS_E_INFRAESTRUTURA;
+
+}
