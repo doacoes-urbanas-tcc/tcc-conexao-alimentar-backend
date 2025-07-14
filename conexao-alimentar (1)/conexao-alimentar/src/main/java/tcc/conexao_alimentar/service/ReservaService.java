@@ -31,13 +31,9 @@ public class ReservaService {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void cadastrar(ReservaRequestDTO dto) {
+public void cadastrar(ReservaRequestDTO dto) {
     DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
         .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-System.out.println("Auth: " + auth);
-System.out.println("Principal: " + (auth != null ? auth.getPrincipal() : "null"));
-System.out.println("Name: " + (auth != null ? auth.getName() : "null"));
 
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     UsuarioModel beneficiario = usuarioRepository.findByEmail(email)
@@ -45,7 +41,8 @@ System.out.println("Name: " + (auth != null ? auth.getName() : "null"));
 
     ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
     reservaRepository.save(reserva);
-    }
+}
+
     public List<ReservaResponseDTO> listarTodas() {
         return reservaRepository.findAll()
                 .stream()

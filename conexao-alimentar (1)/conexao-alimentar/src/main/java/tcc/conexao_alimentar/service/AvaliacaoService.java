@@ -41,19 +41,14 @@ public class AvaliacaoService {
     private UsuarioModel obterUsuarioLogado() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    System.out.println("[DEBUG] Authentication: " + authentication);
-
     if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-        System.out.println("[DEBUG] Authentication está vazio ou usuário é anonymous");
         throw new RuntimeException("Usuário logado não encontrado");
     }
 
     String email = authentication.getName();
-    System.out.println("[DEBUG] Email extraído do SecurityContext: " + email);
 
     return usuarioRepository.findByEmail(email)
         .orElseThrow(() -> {
-            System.out.println("[DEBUG] Nenhum usuário encontrado no banco com email: " + email);
             return new RuntimeException("Usuário logado não encontrado");
         });
 }
