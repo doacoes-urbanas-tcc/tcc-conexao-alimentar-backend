@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#Ignora arquivos de configuração sensíveis
+src/main/resources/application.properties
+src/main/resources/application-test.properties
+
