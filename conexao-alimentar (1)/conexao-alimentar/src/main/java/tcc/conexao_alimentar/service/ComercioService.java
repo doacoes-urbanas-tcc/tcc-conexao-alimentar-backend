@@ -22,7 +22,7 @@ public class ComercioService {
 
     private final ComercioRepository comercioRepository;
     private final PasswordEncoder passwordEncoder;
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     public void cadastrar(ComercioRequestDTO dto) {
         ComercioModel model = ComercioMapper.toEntity(dto);

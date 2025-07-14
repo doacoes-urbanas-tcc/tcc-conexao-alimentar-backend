@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.DoacaoMapper;
 import tcc.conexao_alimentar.model.DoacaoModel;
@@ -76,7 +77,7 @@ public class DoacaoService {
     return DoacaoMapper.toResponse(doacao);
     }
 
-    public void removerDoacao(Long id, Long doadorId) {
+    public void removerDoacao(Long id) {
      String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
             .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado."));
@@ -84,7 +85,7 @@ public class DoacaoService {
         DoacaoModel doacao = doacaoRepository.findById(id)
             .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
 
-        if (!doacao.getDoador().getId().equals(doador.getId())) {
+        if (!doacao.getDoador().getId().equals(doador.getId()) && ! doador.getTipoUsuario().equals(TipoUsuario.ADMIN)) {
             throw new RegraDeNegocioException("Você não tem permissão para excluir esta doação.");
         }
 

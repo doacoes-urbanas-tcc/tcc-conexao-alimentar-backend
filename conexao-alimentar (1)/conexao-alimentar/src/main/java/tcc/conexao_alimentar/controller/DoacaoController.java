@@ -61,7 +61,7 @@ public class DoacaoController {
 
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ONG') or hasAuthority('ROLE_VOLUNTARIO') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ONG') or hasRole('VOLUNTARIO') or hasRole('ADMIN')")
     public ResponseEntity<DoacaoResponseDTO> buscarPorId(@PathVariable Long id) {
     DoacaoResponseDTO dto = service.buscarPorId(id);
     return ResponseEntity.ok(dto);
@@ -77,8 +77,8 @@ public class DoacaoController {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA') or hasRole('ADMIN')")
-    public ResponseEntity<Void> remover(@PathVariable Long id, @RequestParam Long doadorId) {
-        service.removerDoacao(id, doadorId);
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        service.removerDoacao(id);
         return ResponseEntity.noContent().build();
     }
 
