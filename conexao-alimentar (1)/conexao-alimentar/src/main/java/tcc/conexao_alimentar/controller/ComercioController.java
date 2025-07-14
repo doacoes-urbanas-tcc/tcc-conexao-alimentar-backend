@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
+import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -46,8 +48,8 @@ public class ComercioController {
     })
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('COMERCIO')")
-    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
-       comercioService.atualizarEmail(id, novoEmail);
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
+       comercioService.atualizarEmail(id, dto.getNovoEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -60,8 +62,8 @@ public class ComercioController {
     })
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('COMERCIO')")
-    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
-        comercioService.atualizarSenha(id, novaSenha);
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
+        comercioService.atualizarSenha(id, dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

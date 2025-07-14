@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
+import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -47,8 +49,8 @@ public class ProdutorRuralController {
     })
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('PRODUTOR_RURAL')")
-    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
-       produtorRuralService.atualizarEmail(id, novoEmail);
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
+       produtorRuralService.atualizarEmail(id, dto.getNovoEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -61,8 +63,8 @@ public class ProdutorRuralController {
     })
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PRODUTOR_RURAL')")
-    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
-        produtorRuralService.atualizarSenha(id, novaSenha);
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
+        produtorRuralService.atualizarSenha(id, dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

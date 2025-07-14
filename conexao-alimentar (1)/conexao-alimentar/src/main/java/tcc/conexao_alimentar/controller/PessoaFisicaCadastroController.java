@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
+import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -56,8 +57,8 @@ public class PessoaFisicaCadastroController {
     })
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('PESSOA_FISICA')")
-    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
-       pessoaFisicaService.atualizarEmail(id, novoEmail);
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
+       pessoaFisicaService.atualizarEmail(id, dto.getNovoEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -70,8 +71,8 @@ public class PessoaFisicaCadastroController {
     })
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PESOA_FISICA')")
-    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
-        pessoaFisicaService.atualizarSenha(id, novaSenha);
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
+        pessoaFisicaService.atualizarSenha(id, dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

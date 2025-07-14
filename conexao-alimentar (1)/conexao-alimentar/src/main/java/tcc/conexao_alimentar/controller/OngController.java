@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
+import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -49,8 +51,8 @@ public class OngController {
     })
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('ONG')")
-    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestParam String novoEmail) {
-       ongService.atualizarEmail(id, novoEmail);
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
+       ongService.atualizarEmail(id, dto.getNovoEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -63,8 +65,8 @@ public class OngController {
     })
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('ONG')")
-    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestParam String novaSenha) {
-        ongService.atualizarSenha(id, novaSenha);
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
+        ongService.atualizarSenha(id, dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 
