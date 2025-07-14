@@ -3,6 +3,8 @@ package tcc.conexao_alimentar.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -30,16 +32,20 @@ public class ReservaService {
 
     @Transactional
     public void cadastrar(ReservaRequestDTO dto) {
-        DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
-            .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
+    DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
+        .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+System.out.println("Auth: " + auth);
+System.out.println("Principal: " + (auth != null ? auth.getPrincipal() : "null"));
+System.out.println("Name: " + (auth != null ? auth.getName() : "null"));
 
-        UsuarioModel beneficiario = usuarioRepository.findById(dto.getBeneficiarioId())
-            .orElseThrow(() -> new RegraDeNegocioException("Beneficiário não encontrado."));
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    UsuarioModel beneficiario = usuarioRepository.findByEmail(email)
+        .orElseThrow(() -> new RegraDeNegocioException("Beneficiário não encontrado."));
 
-        ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
-        reservaRepository.save(reserva);
+    ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
+    reservaRepository.save(reserva);
     }
-
     public List<ReservaResponseDTO> listarTodas() {
         return reservaRepository.findAll()
                 .stream()

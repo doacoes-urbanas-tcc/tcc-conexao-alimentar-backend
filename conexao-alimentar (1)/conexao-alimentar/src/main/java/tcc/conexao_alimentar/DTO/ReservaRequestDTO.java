@@ -10,6 +10,5 @@ public class ReservaRequestDTO {
 
     @NotNull(message = "ID da doação é obrigatório.")
     private Long doacaoId;
-    @NotNull(message = "ID do beneficiário é obrigatório.")
-    private Long beneficiarioId;
+   
 }

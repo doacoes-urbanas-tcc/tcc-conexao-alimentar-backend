@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -50,7 +49,7 @@ public class ReservaController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_ONG')")
-    public ResponseEntity<Void> cancelar(@PathVariable Long id, @RequestParam String justificativa) {
+    public ResponseEntity<Void> cancelar(@PathVariable Long id, @RequestBody String justificativa) {
         reservaService.cancelarReserva(id, justificativa);
         return ResponseEntity.noContent().build();
     }

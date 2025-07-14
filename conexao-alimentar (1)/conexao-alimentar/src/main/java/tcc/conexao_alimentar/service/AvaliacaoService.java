@@ -3,6 +3,7 @@ package tcc.conexao_alimentar.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +38,25 @@ public class AvaliacaoService {
                 .map(AvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
     }
-
     private UsuarioModel obterUsuarioLogado() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = principal.toString(); 
-        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário logado não encontrado"));
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    System.out.println("[DEBUG] Authentication: " + authentication);
+
+    if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+        System.out.println("[DEBUG] Authentication está vazio ou usuário é anonymous");
+        throw new RuntimeException("Usuário logado não encontrado");
     }
+
+    String email = authentication.getName();
+    System.out.println("[DEBUG] Email extraído do SecurityContext: " + email);
+
+    return usuarioRepository.findByEmail(email)
+        .orElseThrow(() -> {
+            System.out.println("[DEBUG] Nenhum usuário encontrado no banco com email: " + email);
+            return new RuntimeException("Usuário logado não encontrado");
+        });
+}
+
 
 }
