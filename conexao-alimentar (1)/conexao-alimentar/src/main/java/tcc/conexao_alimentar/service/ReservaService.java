@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
+import tcc.conexao_alimentar.enums.StatusDoacao;
 import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ReservaMapper;
@@ -29,6 +30,14 @@ public class ReservaService {
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
 
+    private void validarDisponibilidadeDoacao(DoacaoModel doacao) {
+   if (doacao.getStatus() == StatusDoacao.EXPIRADA) {
+       throw new RegraDeNegocioException("Doação expirada.");
+   }
+   if (doacao.getStatus() != StatusDoacao.PENDENTE) {
+       throw new RegraDeNegocioException("Doação indisponível para reserva.");
+   }
+   }
     @Transactional
     public void cadastrar(ReservaRequestDTO dto) {
     DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
@@ -38,6 +47,7 @@ public class ReservaService {
     UsuarioModel beneficiario = usuarioRepository.findByEmail(email)
         .orElseThrow(() -> new RegraDeNegocioException("Beneficiário não encontrado."));
 
+    validarDisponibilidadeDoacao(doacao);
     ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
     reservaRepository.save(reserva);
 }
