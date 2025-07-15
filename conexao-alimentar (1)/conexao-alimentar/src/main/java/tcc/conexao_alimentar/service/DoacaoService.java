@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
@@ -31,6 +30,7 @@ public class DoacaoService {
 
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FileUploadService fileUploadService;
 
     public void cadastrar(DoacaoRequestDTO dto) {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();

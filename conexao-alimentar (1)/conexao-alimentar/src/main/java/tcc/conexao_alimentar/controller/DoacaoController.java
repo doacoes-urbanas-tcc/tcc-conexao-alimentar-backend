@@ -3,16 +3,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.service.DoacaoService;
+import tcc.conexao_alimentar.service.FileUploadService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,7 @@ import java.util.List;
 public class DoacaoController {
 
     private final DoacaoService service;
+    private final FileUploadService fileUploadService;
     
     @Operation(summary = "Cadastrar nova doação",description = "Permite que um usuário do tipo COMERCIO, PRODUTOR_RURAL ou PESSOA_FISICA cadastre uma nova doação.")
     @ApiResponses(value = {
@@ -31,11 +35,17 @@ public class DoacaoController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
-    @PostMapping
+    @PostMapping("/cadastrar")
     @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
-    public ResponseEntity<?> criar(@RequestBody @Valid DoacaoRequestDTO dto) {
-        service.cadastrar(dto);
-        return ResponseEntity.ok("Doação cadastrada com sucesso!");
+    public ResponseEntity<String> cadastrarDoacao(@ModelAttribute DoacaoRequestDTO dto,@RequestParam("file") MultipartFile file) throws IOException {
+    if (file.isEmpty()) {
+        throw new RegraDeNegocioException("Imagem é obrigatória.");
+    }
+
+    String url = fileUploadService.salvarArquivo(file, "doacoes");
+    dto.setUrlImagem(url);
+    service.cadastrar(dto);
+    return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }
 
     @Operation(summary = "Listar todas as doações",description = "Retorna uma lista de todas as doações disponíveis. Somente ONG, VOLUNTÁRIO ou ADMIN podem acessar.")

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,7 +34,7 @@ public class DoacaoRequestDTO {
     @NotBlank(message = "Categoria é obrigatória")
     @Pattern(regexp = "^(HORTIFRUTI|PADARIA|GRAOS|CARNES|LATICINIOS|BEBIDAS|CONSERVAS|MASSAS|DOCES|OUTROS)$", message = "Categoria deve ser válida")
     private String categoria;
-
+    private String urlImagem;
  
 
 }
