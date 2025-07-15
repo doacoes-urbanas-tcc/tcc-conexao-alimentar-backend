@@ -30,7 +30,7 @@ public class ReservaService {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-public void cadastrar(ReservaRequestDTO dto) {
+    public void cadastrar(ReservaRequestDTO dto) {
     DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
         .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada."));
 
