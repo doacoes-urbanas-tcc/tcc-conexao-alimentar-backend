@@ -33,7 +33,6 @@ public class DoacaoRequestDTO {
     @NotBlank(message = "Categoria é obrigatória")
     @Pattern(regexp = "^(HORTIFRUTI|PADARIA|GRAOS|CARNES|LATICINIOS|BEBIDAS|CONSERVAS|MASSAS|DOCES|OUTROS)$", message = "Categoria deve ser válida")
     private String categoria;
-    private String urlImagem;
 
  
 

@@ -32,7 +32,7 @@ public class DoacaoService {
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public void cadastrar(DoacaoRequestDTO dto, MultipartFile imagem) {
+    public void cadastrar(DoacaoRequestDTO dto) {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
             .orElseThrow(() -> new RuntimeException("Doador não encontrado."));

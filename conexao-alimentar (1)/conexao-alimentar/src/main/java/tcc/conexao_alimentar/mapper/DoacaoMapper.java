@@ -27,7 +27,6 @@ public class DoacaoMapper {
         model.setDataCadastro(LocalDateTime.now());
         model.setStatus(StatusDoacao.PENDENTE);
         model.setDoador(doador);
-        model.setUrlImagem(dto.getUrlImagem());
         return model;
     }
 
