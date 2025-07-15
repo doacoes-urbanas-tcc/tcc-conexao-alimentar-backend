@@ -32,6 +32,8 @@ public class VoluntarioModel extends UsuarioModel{
     @OneToOne(mappedBy = "voluntario", cascade = CascadeType.ALL)
     @JsonManagedReference
     private VeiculoModel veiculo;
+    @Column(name = "cnh")
+    private String urlCnh;
 
 
 }
