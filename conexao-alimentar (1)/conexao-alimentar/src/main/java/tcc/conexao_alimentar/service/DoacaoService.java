@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.enums.StatusDoacao;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.DoacaoMapper;
@@ -92,6 +93,17 @@ public class DoacaoService {
         doacaoRepository.deleteById(id);
         log.info("Doação {} removida pelo doador {}", id, doador.getEmail());
     }
+    public void validarQrCode(Long id) {
+    DoacaoModel doacao = doacaoRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada"));
+    if (doacao.getStatus() != StatusDoacao.AGUARDANDO_RETIRADA) {
+        throw new RegraDeNegocioException("Doação não pode ser validada neste status.");
+    }
+    doacao.setStatus(StatusDoacao.CONCLUIDA);
+    doacaoRepository.save(doacao);
+}
+
+
 }
 
 

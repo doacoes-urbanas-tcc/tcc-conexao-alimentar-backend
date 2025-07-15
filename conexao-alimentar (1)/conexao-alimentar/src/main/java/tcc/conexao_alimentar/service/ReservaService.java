@@ -1,13 +1,17 @@
 package tcc.conexao_alimentar.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.google.zxing.WriterException;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.QrCodeDTO;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
@@ -29,6 +33,7 @@ public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final QrCodeService qrCodeService;
 
     private void validarDisponibilidadeDoacao(DoacaoModel doacao) {
    if (doacao.getStatus() == StatusDoacao.EXPIRADA) {
@@ -48,8 +53,24 @@ public class ReservaService {
         .orElseThrow(() -> new RegraDeNegocioException("Beneficiário não encontrado."));
 
     validarDisponibilidadeDoacao(doacao);
+    doacao.setStatus(StatusDoacao.AGUARDANDO_RETIRADA);
     ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
     reservaRepository.save(reserva);
+    QrCodeDTO qrCodeDTO = new QrCodeDTO();
+    qrCodeDTO.setDoacaoId(doacao.getId());
+    qrCodeDTO.setNomeAlimento(doacao.getNomeAlimento());
+    qrCodeDTO.setUnidadeMedida(doacao.getUnidadeMedida().toString());
+    qrCodeDTO.setQuantidade(doacao.getQuantidade());
+    qrCodeDTO.setDataValidade(doacao.getDataValidade().toString());
+    qrCodeDTO.setDescricao(doacao.getDescricao());
+    qrCodeDTO.setCategoria(doacao.getCategoria().toString());
+
+    try {
+    qrCodeService.generateQRCode(qrCodeDTO, doacao.getId());
+   } catch (WriterException | IOException e) {
+    throw new RuntimeException("Erro ao gerar QR Code", e);
+   }
+
 }
 
     public List<ReservaResponseDTO> listarTodas() {

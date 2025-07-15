@@ -81,6 +81,12 @@ public class DoacaoController {
         service.removerDoacao(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/validar-qr/{id}")
+    public ResponseEntity<String> validarQr(@PathVariable Long id) {
+    service.validarQrCode(id);
+    return ResponseEntity.ok("Doação validada com sucesso!");
+}
+
 
 
     

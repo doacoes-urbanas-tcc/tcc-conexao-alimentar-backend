@@ -36,3 +36,5 @@ build/
 src/main/resources/application.properties
 src/main/resources/application-test.properties
 
+#Ignora pasta com os qrcodes gerados das reservas
+/qrcodes
