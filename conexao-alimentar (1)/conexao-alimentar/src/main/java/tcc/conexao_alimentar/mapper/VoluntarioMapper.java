@@ -14,7 +14,6 @@ public class VoluntarioMapper {
         v.setSenha(dto.getSenha());
         v.setTelefone(dto.getTelefone());
         v.setCpf(dto.getCpf());
-        v.setDocumentoComprovante(dto.getDocumentoComprovante());
         v.setSetorAtuacao(dto.getSetorAtuacao());
         v.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         v.setTipoUsuario(TipoUsuario.VOLUNTARIO);

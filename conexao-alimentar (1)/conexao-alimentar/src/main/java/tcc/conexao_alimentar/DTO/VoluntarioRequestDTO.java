@@ -35,7 +35,6 @@ public class VoluntarioRequestDTO {
     message = "CPF inválido. Use 000.000.000-00 ou apenas números"
     )
     private String cpf;
-    private String documentoComprovante;
     private SetorAtuacao setorAtuacao;
     private TipoUsuario tipoUsuario;
 
