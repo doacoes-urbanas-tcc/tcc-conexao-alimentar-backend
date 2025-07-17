@@ -23,5 +23,6 @@ public class DoacaoResponseDTO {
     private StatusDoacao status;
     private String doadorNome;
     private Long doadorId;
+    private String urlImagem;
 
 }

@@ -35,5 +35,6 @@ public class VeiculoModel {
     @JoinColumn(name = "voluntario_id")
     @JsonBackReference
     private VoluntarioModel voluntario;
+    private String urlCnh;
 
 }

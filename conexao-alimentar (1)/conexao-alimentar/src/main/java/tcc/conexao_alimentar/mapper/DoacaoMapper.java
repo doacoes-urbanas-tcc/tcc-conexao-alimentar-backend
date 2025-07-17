@@ -43,7 +43,8 @@ public class DoacaoMapper {
             model.getCategoria() != null ? model.getCategoria().name() : null,
             model.getStatus(),
             model.getDoador() != null ? model.getDoador().getNome() : null,
-            model.getDoador() != null ? model.getDoador().getId() : null
+            model.getDoador() != null ? model.getDoador().getId() : null,
+            model.getUrlImagem()
         
         );
     }

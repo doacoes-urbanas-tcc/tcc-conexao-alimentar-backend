@@ -2,8 +2,9 @@ package tcc.conexao_alimentar.enums;
 
 public enum StatusDoacao {
     PENDENTE,
-    EM_ANDAMENTO,
+    AGUARDANDO_RETIRADA,
     CONCLUIDA,
-    CANCELADA
+    CANCELADA,
+    EXPIRADA;
 
 }

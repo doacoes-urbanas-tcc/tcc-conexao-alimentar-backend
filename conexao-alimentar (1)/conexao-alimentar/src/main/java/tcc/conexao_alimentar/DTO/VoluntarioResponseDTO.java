@@ -17,6 +17,7 @@ public class VoluntarioResponseDTO {
     private SetorAtuacao setorAtuacao;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String urlCnh;
 
     public VoluntarioResponseDTO(Long id, String nome, String email, String telefone,
     String cpf, String documentoComprovante, SetorAtuacao setorAtuacao,

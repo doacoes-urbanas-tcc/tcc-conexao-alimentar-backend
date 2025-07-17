@@ -1,10 +1,12 @@
 package tcc.conexao_alimentar.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +33,20 @@ public class VoluntarioService {
     private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
     private final VoluntarioTiRepository voluntarioTiRepository;
+    private final FileUploadService fileUploadService;
 
     @Transactional
-    public void cadastrar(VoluntarioRequestDTO dto) {
+    public void cadastrar(VoluntarioRequestDTO dto, MultipartFile arquivo) throws IOException {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
-
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
     model.setAtivo(false);
 
-    voluntarioRepository.save(model);
+    String caminhoArquivo = fileUploadService.salvarArquivo(arquivo, "docs_comprovantes_voluntarios");
+    model.setDocumentoComprovante(caminhoArquivo);
 
-
-
-}
+     voluntarioRepository.save(model);
+    }
     public List<VoluntarioResponseDTO> listarTodos() {
         return voluntarioRepository.findAll()         
             .stream()                              
