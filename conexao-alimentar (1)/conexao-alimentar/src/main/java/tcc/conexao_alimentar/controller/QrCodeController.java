@@ -29,7 +29,7 @@ public class QrCodeController {
             dto.setDescricao("Arroz integral");
             dto.setCategoria("Grãos");
 
-            qrCodeService.generateQRCode(dto, doacaoId);
+            qrCodeService.generateQRCodeAndUpload(dto, doacaoId);
             return ResponseEntity.ok("QR Code gerado com sucesso!");
         } catch (Exception e) {
             e.printStackTrace();
