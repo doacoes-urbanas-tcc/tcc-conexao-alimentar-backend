@@ -42,7 +42,7 @@ public class VoluntarioService {
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
     model.setAtivo(false);
 
-    String caminhoArquivo = fileUploadService.salvarArquivo(arquivo, "voluntarios");
+    String caminhoArquivo = fileUploadService.salvarArquivo(arquivo, "docs_comprovantes_voluntarios");
     model.setDocumentoComprovante(caminhoArquivo);
 
      voluntarioRepository.save(model);

@@ -37,4 +37,8 @@ src/main/resources/application.properties
 src/main/resources/application-test.properties
 
 #Ignora pasta com os qrcodes gerados das reservas
-/qrcodes
+tcc-conexao-alimentar-backend/qrcodes
+tcc-conexao-alimentar-backend/static/imagens
+tcc-conexao-alimentar-backend/static/imagens/cnhs
+tcc-conexao-alimentar-backend/static/imagens/docs_comprovantes_voluntarios
+

@@ -56,12 +56,15 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
     })
-    @PostMapping("/{voluntarioId}/veiculo")
-    public ResponseEntity<String> cadastrarVeiculo(@PathVariable @Valid Long voluntarioId,@RequestBody VeiculoRequestDTO dto) {
-        dto.setVoluntarioId(voluntarioId);  
-        veiculoService.cadastrarVeiculo(dto);
-        return ResponseEntity.ok("Veículo cadastrado com sucesso para voluntário!");
-    }
+    @PostMapping(value = "/{voluntarioId}/veiculo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> cadastrarVeiculo(@PathVariable Long voluntarioId,@RequestPart("dados") @Valid VeiculoRequestDTO dto,@RequestPart("cnh") MultipartFile cnh) throws IOException {
+    dto.setVoluntarioId(voluntarioId);
+    veiculoService.cadastrarVeiculo(dto, cnh);
+    return ResponseEntity.ok("Veículo cadastrado com sucesso!");
+   }
+
+
+
 
     @Operation(summary = "Cadastrar perfil TI", description = "Permite que o voluntário do setor TI cadastre suas informações técnicas")
     @ApiResponses({
