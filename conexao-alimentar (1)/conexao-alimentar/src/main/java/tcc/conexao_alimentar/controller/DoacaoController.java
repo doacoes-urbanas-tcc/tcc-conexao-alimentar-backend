@@ -37,7 +37,7 @@ public class DoacaoController {
     })
     @PostMapping("/cadastrar")
     @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
-    public ResponseEntity<String> cadastrarDoacao(@ModelAttribute DoacaoRequestDTO dto,@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> cadastrarDoacao( @RequestPart("dto") DoacaoRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
     if (file.isEmpty()) {
         throw new RegraDeNegocioException("Imagem é obrigatória.");
     }

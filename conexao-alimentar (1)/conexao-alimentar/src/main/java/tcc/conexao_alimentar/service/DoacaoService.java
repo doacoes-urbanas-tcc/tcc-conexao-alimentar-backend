@@ -55,6 +55,8 @@ public class DoacaoService {
                 throw new RegraDeNegocioException("Categoria é obrigatóira.");
                 
             }
+            dto.setUrlImagem(dto.getUrlImagem()); 
+
             
            
         DoacaoModel model = DoacaoMapper.toEntity(dto, doador);
