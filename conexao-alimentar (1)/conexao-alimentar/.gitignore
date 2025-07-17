@@ -30,7 +30,7 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+tcc-conexao-alimentar-backend/.vscode
 
 #Ignora arquivos de configuração sensíveis
 src/main/resources/application.properties
