@@ -30,7 +30,6 @@ public class DoacaoService {
 
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final FileUploadService fileUploadService;
 
     public void cadastrar(DoacaoRequestDTO dto) {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
