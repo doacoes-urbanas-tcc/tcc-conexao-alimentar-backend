@@ -21,6 +21,7 @@ import tcc.conexao_alimentar.service.ProdutorRuralService;
 @RestController
 @RequestMapping("/produtor-rural")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Produtores Rurais", description = "Endpoints para gerenciamento de produtores rurais")
 public class ProdutorRuralController {
 
