@@ -65,11 +65,13 @@ public class ReservaService {
     qrCodeDTO.setDescricao(doacao.getDescricao());
     qrCodeDTO.setCategoria(doacao.getCategoria().toString());
 
+
     try {
-        String qrCodeUrl = qrCodeService.generateQRCodeAndUpload(qrCodeDTO, doacao.getId());
+    qrCodeService.generateQRCodeAndUpload(qrCodeDTO, doacao.getId());
    } catch (WriterException | IOException e) {
     throw new RuntimeException("Erro ao gerar QR Code", e);
    }
+
 
 }
 

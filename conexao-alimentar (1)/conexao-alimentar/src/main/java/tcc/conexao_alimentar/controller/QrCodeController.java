@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
+import tcc.conexao_alimentar.service.CloudinaryService;
 import tcc.conexao_alimentar.service.QrCodeService;
 @RequiredArgsConstructor
 @RestController
@@ -18,6 +20,7 @@ public class QrCodeController {
 
     
     private final QrCodeService qrCodeService;
+    private final CloudinaryService cloudinaryService;
 
     @PostMapping("/generate/{doacaoId}")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
@@ -37,5 +40,13 @@ public class QrCodeController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Erro ao gerar QR Code.");
         }
+    }
+    @GetMapping("/url/{doacaoId}")
+    public ResponseEntity<String> buscarUrlQrCode(@PathVariable Long doacaoId) {
+        String publicId = "qrcodes/doacao-" + doacaoId;
+
+        String url = cloudinaryService.getPublicUrl(publicId);
+
+        return ResponseEntity.ok(url);
     }
 }
