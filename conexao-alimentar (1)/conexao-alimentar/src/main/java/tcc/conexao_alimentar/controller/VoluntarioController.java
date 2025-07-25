@@ -27,6 +27,7 @@ import tcc.conexao_alimentar.service.VoluntarioService;
 
 @RestController
 @RequestMapping("/voluntario")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Voluntários", description = "Endpoints para gerenciamento de voluntários")
 public class VoluntarioController {

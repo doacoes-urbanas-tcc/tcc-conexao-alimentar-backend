@@ -21,6 +21,7 @@ import tcc.conexao_alimentar.service.ComercioService;
 @RequestMapping("/comercio")
 @RequiredArgsConstructor
 @Tag(name = "Comércios", description = "Endpoints para gerenciamento de comércios")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ComercioController {
 
     

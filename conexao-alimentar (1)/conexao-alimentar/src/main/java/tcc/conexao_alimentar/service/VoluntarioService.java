@@ -90,6 +90,8 @@ public class VoluntarioService {
         }
 
         VoluntarioTiModel model = VoluntarioTiMapper.toEntity(dto);
+        
+
         model.setVoluntario(voluntario);
 
         voluntarioTiRepository.save(model);
@@ -108,7 +110,6 @@ public class VoluntarioService {
 
         model.setSetorTi(dto.getSetorTi());
         model.setStackConhecimento(dto.getStackConhecimento());
-        model.setCertificacoes(dto.getCertificacoes());
         model.setExperiencia(dto.getExperiencia());
         model.setLinkedin(dto.getLinkedin());
         model.setGithub(dto.getGithub());

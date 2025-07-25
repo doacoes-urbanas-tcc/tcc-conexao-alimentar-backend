@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/doacoes")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Doações", description = "Endpoints para gerenciamento de doações")
 public class DoacaoController {
