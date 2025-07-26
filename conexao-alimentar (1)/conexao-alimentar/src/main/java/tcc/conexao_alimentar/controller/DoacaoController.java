@@ -96,7 +96,20 @@ public class DoacaoController {
     public ResponseEntity<String> validarQr(@PathVariable Long id) {
     service.validarQrCode(id);
     return ResponseEntity.ok("Doação validada com sucesso!");
-}
+    }
+    @Operation(summary = "Listar doações do doador logado", description = "Retorna uma lista das doações cadastradas pelo doador logado.")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+    @ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
+    @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+   })
+    @GetMapping("/minhas-doacoes")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
+    public ResponseEntity<List<DoacaoResponseDTO>> listarMinhasDoacoes() {
+    List<DoacaoResponseDTO> minhasDoacoes = service.listarDoacoesDoDoador();
+    return ResponseEntity.ok(minhasDoacoes);
+    }
+
 
 
 

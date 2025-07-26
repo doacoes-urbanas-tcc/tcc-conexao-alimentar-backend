@@ -103,7 +103,20 @@ public class DoacaoService {
     }
     doacao.setStatus(StatusDoacao.CONCLUIDA);
     doacaoRepository.save(doacao);
-}
+    }
+    public List<DoacaoResponseDTO> listarDoacoesDoDoador() {
+    String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+    UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
+        .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+    List<DoacaoModel> doacoes = doacaoRepository.findByDoador(doador);
+
+    return doacoes.stream()
+        .map(DoacaoMapper::toResponse)
+        .collect(Collectors.toList());
+    }
+
+
 
 
 }
