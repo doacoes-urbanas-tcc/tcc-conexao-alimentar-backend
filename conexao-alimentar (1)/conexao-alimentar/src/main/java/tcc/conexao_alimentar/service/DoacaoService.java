@@ -18,7 +18,9 @@ import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.DoacaoRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,12 +100,23 @@ public class DoacaoService {
     public void validarQrCode(Long id) {
     DoacaoModel doacao = doacaoRepository.findById(id)
         .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada"));
+
     if (doacao.getStatus() != StatusDoacao.AGUARDANDO_RETIRADA) {
         throw new RegraDeNegocioException("Doação não pode ser validada neste status.");
     }
+
+    if (doacao.getDataCadastro() == null) {
+        throw new RegraDeNegocioException("Doação não possui data de reserva definida.");
+    }
+
+    Duration duracao = Duration.between(doacao.getDataCadastro(), LocalDateTime.now());
+    if (duracao.toHours() >= 2) {
+        throw new RegraDeNegocioException("QR Code expirado. A reserva passou do prazo de 2 horas.");
+    }
+
     doacao.setStatus(StatusDoacao.CONCLUIDA);
     doacaoRepository.save(doacao);
-    }
+}
     public List<DoacaoResponseDTO> listarDoacoesDoDoador() {
     String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
     UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
