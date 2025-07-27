@@ -112,5 +112,12 @@ public class ReservaService {
             }
         });
     }
+    public List<ReservaResponseDTO> listarMinhasReservas(Long usuarioId) {
+        List<ReservaModel> reservas = reservaRepository.findByReceptorId(usuarioId);
+        return reservas.stream()
+                .map(ReservaMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
 
 }

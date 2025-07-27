@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.service.ReservaService;
 
 @RestController
@@ -54,5 +56,10 @@ public class ReservaController {
     public ResponseEntity<Void> cancelar(@PathVariable Long id, @RequestBody String justificativa) {
         reservaService.cancelarReserva(id, justificativa);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/minhas-reservas")
+    public ResponseEntity<List<ReservaResponseDTO>> minhasReservas(@AuthenticationPrincipal UsuarioModel usuario) {
+        List<ReservaResponseDTO> reservas = reservaService.listarMinhasReservas(usuario.getId());
+        return ResponseEntity.ok(reservas);
     }
 }
