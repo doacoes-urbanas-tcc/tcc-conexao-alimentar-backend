@@ -37,6 +37,7 @@ public class VoluntarioRequestDTO {
     private String cpf;
     private SetorAtuacao setorAtuacao;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
 
 
 }

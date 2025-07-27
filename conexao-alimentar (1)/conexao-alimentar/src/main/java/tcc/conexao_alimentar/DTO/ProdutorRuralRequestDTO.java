@@ -28,5 +28,6 @@ public class ProdutorRuralRequestDTO {
     private EnderecoDTO endereco;
     
     private String numeroRegistroRural;
+    private String fotoUrl;
 
 }

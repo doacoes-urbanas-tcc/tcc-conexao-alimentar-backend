@@ -36,5 +36,6 @@ public class OngRequestDTO {
     @NotBlank(message = "Descrição é obrigatória")
     @Size(max = 255, message = "Descrição não pode passar de 255 caracteres")
     private String descricao;
+    private String fotoUrl;
 
 }

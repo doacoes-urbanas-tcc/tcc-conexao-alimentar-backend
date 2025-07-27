@@ -16,5 +16,6 @@ public class OngResponseDTO {
     private String descricao;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
 
 }

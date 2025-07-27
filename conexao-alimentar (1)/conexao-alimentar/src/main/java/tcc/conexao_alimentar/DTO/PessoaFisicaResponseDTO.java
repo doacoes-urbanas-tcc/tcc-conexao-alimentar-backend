@@ -18,4 +18,5 @@ public class PessoaFisicaResponseDTO {
     private String documentoComprovante;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
 }

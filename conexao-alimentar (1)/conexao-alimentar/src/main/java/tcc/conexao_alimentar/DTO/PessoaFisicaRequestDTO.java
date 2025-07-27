@@ -32,5 +32,6 @@ public class PessoaFisicaRequestDTO {
     )
     private String cpf;
     private String documentoComprovante;
+    private String fotoUrl;
 
 }

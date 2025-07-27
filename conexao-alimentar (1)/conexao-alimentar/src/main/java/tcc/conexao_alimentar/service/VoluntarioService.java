@@ -1,8 +1,6 @@
 package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,23 +34,21 @@ public class VoluntarioService {
     private final FileUploadService fileUploadService;
 
     @Transactional
-    public void cadastrar(VoluntarioRequestDTO dto, MultipartFile arquivo) throws IOException {
+    public void cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
     model.setAtivo(false);
 
-    String caminhoArquivo = fileUploadService.salvarArquivo(arquivo, "docs_comprovantes_voluntarios");
-    model.setDocumentoComprovante(caminhoArquivo);
+    String comprovanteUrl = fileUploadService.salvarArquivo(comprovante, "docs_comprovantes_voluntarios");
+    model.setDocumentoComprovante(comprovanteUrl);
 
-     voluntarioRepository.save(model);
+    String fotoUrl = fileUploadService.salvarArquivo(foto, "usuarios");
+    model.setFotoUrl(fotoUrl);
+
+    voluntarioRepository.save(model);
     }
-    public List<VoluntarioResponseDTO> listarTodos() {
-        return voluntarioRepository.findAll()         
-            .stream()                              
-            .map(VoluntarioMapper::toResponse)        
-            .collect(Collectors.toList());         
-    }
+
 
     public VoluntarioResponseDTO buscarPorId(Long id) {
     VoluntarioModel voluntario = voluntarioRepository.findById(id)

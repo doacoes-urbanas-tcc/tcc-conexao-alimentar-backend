@@ -18,20 +18,32 @@ public class VoluntarioResponseDTO {
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
     private String urlCnh;
+    private String fotoUrl;
 
-    public VoluntarioResponseDTO(Long id, String nome, String email, String telefone,
-    String cpf, String documentoComprovante, SetorAtuacao setorAtuacao,
-    EnderecoDTO endereco, TipoUsuario tipoUsuario) {
-    this.id = id;
-    this.nome = nome;
-    this.email = email;
-    this.telefone = telefone;
-    this.cpf = cpf;
-    this.documentoComprovante = documentoComprovante;
-    this.setorAtuacao = setorAtuacao;
-    this.endereco = endereco;
-    this.tipoUsuario = tipoUsuario;
+    public VoluntarioResponseDTO(
+        Long id,
+        String nome,
+        String email,
+        String telefone,
+        String cpf,
+        String documentoComprovante,
+        SetorAtuacao setorAtuacao,
+        EnderecoDTO endereco,
+        TipoUsuario tipoUsuario,
+        String fotoUrl
+    ) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.cpf = cpf;
+        this.documentoComprovante = documentoComprovante;
+        this.setorAtuacao = setorAtuacao;
+        this.endereco = endereco;
+        this.tipoUsuario = tipoUsuario;
+        this.fotoUrl = fotoUrl;
+    }
 }
 
-}
+
 

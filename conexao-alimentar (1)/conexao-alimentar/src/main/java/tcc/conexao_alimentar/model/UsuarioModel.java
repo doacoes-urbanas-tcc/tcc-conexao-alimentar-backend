@@ -47,5 +47,8 @@ public abstract class UsuarioModel {
     private TipoUsuario tipoUsuario;
     @Column(name = "ativo", nullable = false)
     private boolean ativo;
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
 
 }

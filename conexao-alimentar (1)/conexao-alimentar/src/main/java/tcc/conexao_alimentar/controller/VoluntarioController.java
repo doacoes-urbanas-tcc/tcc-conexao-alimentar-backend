@@ -3,7 +3,6 @@ package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,12 +42,14 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 
-        })
+    })
     @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> cadastrar(@RequestPart("dados") @Valid VoluntarioRequestDTO dto,@RequestPart("arquivo") MultipartFile arquivo)throws IOException {
-    voluntarioService.cadastrar(dto, arquivo);
+    public ResponseEntity<String> cadastrarVoluntario(
+    @RequestPart("dados") @Valid VoluntarioRequestDTO dto,@RequestPart("comprovante") MultipartFile comprovante,@RequestPart("foto") MultipartFile foto) throws IOException {
+
+    voluntarioService.cadastrar(dto, comprovante, foto);
     return ResponseEntity.ok("Voluntário cadastrado com sucesso! Aguarde aprovação.");
-    }
+   }
 
     
     @Operation(summary = "Cadastro de veículo ",description = "Permite que um usuário que se cadastra om voluntário e escolhe ser transportador cadastre seu veículo no sistema")
@@ -102,19 +103,6 @@ public class VoluntarioController {
     public ResponseEntity<Void> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
         voluntarioService.atualizarPerfilTI(voluntarioId, dto);
         return ResponseEntity.ok().build();
-    }
-    
-    @Operation(summary = "Listar todos os voluntários",description = "Lista todos os voluntários cadastrados no sistema")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de voluntários retornada com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
-    })
-    @GetMapping
-    public ResponseEntity<List<VoluntarioResponseDTO>> listarTodos() {
-        List<VoluntarioResponseDTO> lista = voluntarioService.listarTodos();
-        return ResponseEntity.ok(lista);
     }
 
     @Operation(summary = "Listar voluntário por id",description = "Busca o voluntário por id")

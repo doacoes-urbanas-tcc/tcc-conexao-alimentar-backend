@@ -39,5 +39,6 @@ public class ComercioRequestDTO {
     @NotBlank(message = "Nome fantasia é obrigatório")
     private String nomeFantasia;
     private TipoComercio tipoComercio;
+    private String fotoUrl;
 
 }

@@ -21,8 +21,13 @@ public class ProdutorRuralMapper {
 
     public static ProdutorRuralResponseDTO toResponse(ProdutorRuralModel p) {
         return new ProdutorRuralResponseDTO(
-            p.getId(), p.getNome(), p.getEmail(), p.getTelefone(),
-            p.getNumeroRegistroRural(), EnderecoMapper.toDTO(p.getEndereco()), p.getTipoUsuario()
+            p.getId(), 
+            p.getNome(), 
+            p.getEmail(), 
+            p.getTelefone(),
+            p.getNumeroRegistroRural(), EnderecoMapper.toDTO(p.getEndereco()), 
+            p.getTipoUsuario(),
+            p.getFotoUrl()
         );
     }
 

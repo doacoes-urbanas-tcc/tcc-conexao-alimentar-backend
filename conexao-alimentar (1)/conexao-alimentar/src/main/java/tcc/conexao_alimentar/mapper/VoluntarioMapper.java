@@ -30,7 +30,8 @@ public class VoluntarioMapper {
             v.getDocumentoComprovante(),
             v.getSetorAtuacao(),
             EnderecoMapper.toDTO(v.getEndereco()),
-            v.getTipoUsuario()
+            v.getTipoUsuario(),
+            v.getFotoUrl()
 
 
         );

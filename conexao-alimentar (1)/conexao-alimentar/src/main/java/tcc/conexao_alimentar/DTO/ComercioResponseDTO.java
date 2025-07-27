@@ -21,5 +21,6 @@ public class ComercioResponseDTO {
     private TipoComercio tipoComercio;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
 
 }

@@ -16,5 +16,6 @@ public class ProdutorRuralResponseDTO {
     private String numeroRegistroRural;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
 
 }

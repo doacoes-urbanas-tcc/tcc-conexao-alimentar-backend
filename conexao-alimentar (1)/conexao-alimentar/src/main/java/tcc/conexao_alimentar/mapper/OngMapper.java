@@ -22,8 +22,15 @@ public class OngMapper {
 
     public static OngResponseDTO toResponse(OngModel o) {
         return new OngResponseDTO(
-            o.getId(), o.getNome(), o.getEmail(), o.getTelefone(),
-            o.getCnpj(), o.getDescricao(), EnderecoMapper.toDTO(o.getEndereco()), o.getTipoUsuario()
+            o.getId(), 
+            o.getNome(), 
+            o.getEmail(), 
+            o.getTelefone(),
+            o.getCnpj(), 
+            o.getDescricao(), 
+            EnderecoMapper.toDTO(o.getEndereco()), 
+            o.getTipoUsuario(),
+            o.getFotoUrl()
         );
     }
 

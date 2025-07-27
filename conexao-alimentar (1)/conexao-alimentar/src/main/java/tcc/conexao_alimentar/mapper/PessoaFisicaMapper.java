@@ -22,9 +22,15 @@ public class PessoaFisicaMapper {
 
     public static PessoaFisicaResponseDTO toResponse(PessoaFisicaModel pf) {
         return new PessoaFisicaResponseDTO(
-            pf.getId(), pf.getNome(), pf.getEmail(), pf.getTelefone(),
-            pf.getCpf(), pf.getDocumentoComprovante(),
-            EnderecoMapper.toDTO(pf.getEndereco()), pf.getTipoUsuario()
+            pf.getId(), 
+            pf.getNome(), 
+            pf.getEmail(), 
+            pf.getTelefone(),
+            pf.getCpf(), 
+            pf.getDocumentoComprovante(),
+            EnderecoMapper.toDTO(pf.getEndereco()), 
+            pf.getTipoUsuario(),
+            pf.getFotoUrl()
         );
     }
 

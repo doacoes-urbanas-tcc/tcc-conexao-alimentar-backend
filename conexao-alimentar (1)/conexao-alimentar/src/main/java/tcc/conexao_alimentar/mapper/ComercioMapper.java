@@ -23,9 +23,16 @@ public class ComercioMapper {
 
     public static ComercioResponseDTO toResponse(ComercioModel c) {
         return new ComercioResponseDTO(
-            c.getId(), c.getNome(), c.getEmail(), c.getTelefone(),
-            c.getCnpj(), c.getNomeFantasia(), c.getTipoComercio(),
-            EnderecoMapper.toDTO(c.getEndereco()), c.getTipoUsuario()
+            c.getId(), 
+            c.getNome(),
+            c.getEmail(), 
+            c.getTelefone(),
+            c.getCnpj(), 
+            c.getNomeFantasia(), 
+            c.getTipoComercio(),
+            EnderecoMapper.toDTO(c.getEndereco()), 
+            c.getTipoUsuario(),
+            c.getFotoUrl()
         );
     }
 
