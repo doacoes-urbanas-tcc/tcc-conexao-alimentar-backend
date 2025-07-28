@@ -12,24 +12,23 @@ import java.time.LocalDateTime;
 public class DoacaoMapper {
 
     public static DoacaoModel toEntity(DoacaoRequestDTO dto, UsuarioModel doador) {
-        DoacaoModel model = new DoacaoModel();
-        model.setNomeAlimento(dto.getNomeAlimento());
-        if (dto.getUnidadeMedida() != null) {
-            model.setUnidadeMedida(Medida.valueOf(dto.getUnidadeMedida().toUpperCase()));
-
-        }
-        model.setQuantidade(dto.getQuantidade());
-        model.setDataValidade(dto.getDataValidade());
-        model.setDescricao(dto.getDescricao());
-        if (dto.getCategoria() != null) {
-            model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
-        }
-        model.setDataCadastro(LocalDateTime.now());
-        model.setStatus(StatusDoacao.PENDENTE);
-        model.setDoador(doador);
-        return model;
+    DoacaoModel model = new DoacaoModel();
+    model.setNomeAlimento(dto.getNomeAlimento());
+    if (dto.getUnidadeMedida() != null) {
+        model.setUnidadeMedida(Medida.valueOf(dto.getUnidadeMedida().toUpperCase()));
     }
-
+    model.setQuantidade(dto.getQuantidade());
+    model.setDataValidade(dto.getDataValidade());
+    model.setDescricao(dto.getDescricao());
+    if (dto.getCategoria() != null) {
+        model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
+    }
+    model.setDataCadastro(LocalDateTime.now());
+    model.setStatus(StatusDoacao.PENDENTE);
+    model.setDoador(doador);
+    model.setUrlImagem(dto.getUrlImagem());
+    return model;
+}
     public static DoacaoResponseDTO toResponse(DoacaoModel model) {
         return new DoacaoResponseDTO(
             model.getId(),

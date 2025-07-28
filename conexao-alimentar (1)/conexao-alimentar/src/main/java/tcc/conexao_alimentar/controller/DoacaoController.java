@@ -36,17 +36,20 @@ public class DoacaoController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
     @PostMapping("/cadastrar")
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
-    public ResponseEntity<String> cadastrarDoacao( @RequestPart("dto") DoacaoRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> cadastrarDoacao(
+    @RequestPart("dto") DoacaoRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
     if (file.isEmpty()) {
         throw new RegraDeNegocioException("Imagem é obrigatória.");
     }
 
     String url = fileUploadService.salvarArquivo(file, "doacoes");
-    dto.setUrlImagem(url);
-    service.cadastrar(dto);
+    dto.setUrlImagem(url); 
+
+    service.cadastrar(dto,file);
+
     return ResponseEntity.ok("Doação cadastrada com sucesso!");
     }
+
 
     @Operation(summary = "Listar todas as doações",description = "Retorna uma lista de todas as doações disponíveis. Somente ONG, VOLUNTÁRIO ou ADMIN podem acessar.")
     @ApiResponses(value = {

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
@@ -18,6 +19,7 @@ import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.DoacaoRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,8 +34,9 @@ public class DoacaoService {
 
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FileUploadService fileUploadService; 
 
-    public void cadastrar(DoacaoRequestDTO dto) {
+    public void cadastrar(DoacaoRequestDTO dto, MultipartFile file) throws IOException {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
             .orElseThrow(() -> new RuntimeException("Doador não encontrado."));
@@ -57,13 +60,14 @@ public class DoacaoService {
                 throw new RegraDeNegocioException("Categoria é obrigatóira.");
                 
             }
-            dto.setUrlImagem(dto.getUrlImagem()); 
+            String url = fileUploadService.salvarArquivo(file, "doacoes"); 
+            dto.setUrlImagem(url); 
+
 
             
            
         DoacaoModel model = DoacaoMapper.toEntity(dto, doador);
         model.setDataExpiracao(model.getDataCadastro().plusHours(48));
-        log.info("Doação cadastrada para {}", doador.getEmail());
 
         doacaoRepository.save(model);
 
