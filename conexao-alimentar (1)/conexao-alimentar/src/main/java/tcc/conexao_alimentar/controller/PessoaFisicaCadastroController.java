@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,6 @@ import tcc.conexao_alimentar.service.PessoaFisicaService;
 @RestController
 @RequestMapping("pessoa-fisica")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Pessoas Físicas", description = "Endpoints para gerenciamento de pessoas físicas")
 public class PessoaFisicaCadastroController {
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +21,6 @@ import tcc.conexao_alimentar.service.AvaliacaoService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/avaliacoes")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AvaliacaoController {
     private final AvaliacaoService avaliacaoService;
 

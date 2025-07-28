@@ -113,7 +113,7 @@ public class ReservaService {
         });
     }
     public List<ReservaResponseDTO> listarMinhasReservas(Long usuarioId) {
-        List<ReservaModel> reservas = reservaRepository.findByReceptorId(usuarioId);
+        List<ReservaModel> reservas = reservaRepository.findByBeneficiarioId(usuarioId);
         return reservas.stream()
                 .map(ReservaMapper::toResponse)
                 .collect(Collectors.toList());

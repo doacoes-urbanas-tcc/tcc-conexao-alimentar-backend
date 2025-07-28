@@ -12,7 +12,6 @@ public interface ReservaRepository extends JpaRepository<ReservaModel,Long>{
     boolean existsByDoacaoIdAndStatus(Long doacaoId, StatusReserva status);
     List<ReservaModel> findByBeneficiarioId(Long beneficiarioId);
     List<ReservaModel> findByStatus(StatusReserva status);
-    List<ReservaModel> findByReceptorId(Long receptorId);
 
 
 }

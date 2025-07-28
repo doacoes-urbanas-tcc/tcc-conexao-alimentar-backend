@@ -25,7 +25,6 @@ import tcc.conexao_alimentar.service.OngService;
 @RequestMapping("/ong")
 @RequiredArgsConstructor
 @Tag(name = "ONG's", description = "Endpoints para gerenciamento de ONG's")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OngController {
 
     
