@@ -1,5 +1,6 @@
 package tcc.conexao_alimentar.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.model.ReservaModel;
+import tcc.conexao_alimentar.repository.ReservaRepository;
 import tcc.conexao_alimentar.service.CloudinaryService;
 import tcc.conexao_alimentar.service.QrCodeService;
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class QrCodeController {
     
     private final QrCodeService qrCodeService;
     private final CloudinaryService cloudinaryService;
+    private final ReservaRepository reservaRepository;
 
     @PostMapping("/generate/{doacaoId}")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
@@ -41,10 +46,15 @@ public class QrCodeController {
     }
     @GetMapping("/url/{doacaoId}")
     public ResponseEntity<String> buscarUrlQrCode(@PathVariable Long doacaoId) {
-        String publicId = "qrcodes/doacao-" + doacaoId;
+         ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
 
-        String url = cloudinaryService.getPublicUrl(publicId);
+    String url = reserva.getUrlQrCode();
 
-        return ResponseEntity.ok(url);
+    if (url == null || url.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("QR Code ainda não disponível.");
+    }
+
+    return ResponseEntity.ok(url);
     }
 }

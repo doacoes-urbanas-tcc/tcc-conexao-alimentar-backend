@@ -42,7 +42,12 @@ public class ReservaService {
    if (doacao.getStatus() != StatusDoacao.PENDENTE) {
        throw new RegraDeNegocioException("Doação indisponível para reserva.");
    }
+   if (reservaRepository.existsByDoacao(doacao)) {
+    throw new RegraDeNegocioException("Esta doação já foi reservada.");
+  }
+
    }
+   
     @Transactional
     public void cadastrar(ReservaRequestDTO dto) {
     DoacaoModel doacao = doacaoRepository.findById(dto.getDoacaoId())
@@ -54,6 +59,7 @@ public class ReservaService {
 
     validarDisponibilidadeDoacao(doacao);
     doacao.setStatus(StatusDoacao.AGUARDANDO_RETIRADA);
+    doacaoRepository.save(doacao);
     ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, beneficiario);
     reservaRepository.save(reserva);
     QrCodeDTO qrCodeDTO = new QrCodeDTO();
@@ -67,7 +73,9 @@ public class ReservaService {
 
 
     try {
-    qrCodeService.generateQRCodeAndUpload(qrCodeDTO, doacao.getId());
+        String url = qrCodeService.generateQRCodeAndUpload(qrCodeDTO, doacao.getId());
+        reserva.setUrlQrCode(url); 
+        reservaRepository.save(reserva);
    } catch (WriterException | IOException e) {
     throw new RuntimeException("Erro ao gerar QR Code", e);
    }

@@ -43,6 +43,10 @@ public class ReservaModel {
 
     @Column(name = "justificativa")
     private String justificativaCancelamento;
+
+    @Column(name = "url_qrcode")
+    private String urlQrCode;
+
     
 
 

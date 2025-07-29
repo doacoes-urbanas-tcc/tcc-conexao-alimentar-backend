@@ -18,7 +18,8 @@ public class ReservaMapper {
             model.getBeneficiario().getId(),
             model.getDataReserva(),
             model.getStatus(),
-            model.getJustificativaCancelamento()
+            model.getJustificativaCancelamento(),
+            model.getUrlQrCode()
         );
     }
 

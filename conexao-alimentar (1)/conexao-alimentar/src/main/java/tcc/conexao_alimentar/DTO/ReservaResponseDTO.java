@@ -15,5 +15,6 @@ public class ReservaResponseDTO {
     private LocalDateTime dataReserva;
     private StatusReserva status;
     private String justificativaCancelamento;
+    private String urlQrCode;
 
 }
