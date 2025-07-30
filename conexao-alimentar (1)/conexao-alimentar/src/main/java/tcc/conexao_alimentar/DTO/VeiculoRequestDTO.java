@@ -30,5 +30,6 @@ public class VeiculoRequestDTO {
     private String capacidadeCarga;
     @NotNull(message = "ID do voluntário é obrigatório.")
     private Long voluntarioId;
+    private String urlCnh; 
 
 }

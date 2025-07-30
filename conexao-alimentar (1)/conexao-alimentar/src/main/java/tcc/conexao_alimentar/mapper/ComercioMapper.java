@@ -18,6 +18,7 @@ public class ComercioMapper {
         c.setTipoComercio(dto.getTipoComercio());
         c.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         c.setTipoUsuario(TipoUsuario.COMERCIO);
+        c.setFotoUrl(dto.getFotoUrl());
         return c;
     }
 

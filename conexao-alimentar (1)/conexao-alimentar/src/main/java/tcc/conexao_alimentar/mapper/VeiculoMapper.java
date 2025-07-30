@@ -14,6 +14,7 @@ public class VeiculoMapper {
         veiculo.setCor(dto.getCor());
         veiculo.setCapacidadeCarga(dto.getCapacidadeCarga());
         veiculo.setVoluntario(voluntario);
+        veiculo.setUrlCnh(dto.getUrlCnh());
         return veiculo;
     }
 

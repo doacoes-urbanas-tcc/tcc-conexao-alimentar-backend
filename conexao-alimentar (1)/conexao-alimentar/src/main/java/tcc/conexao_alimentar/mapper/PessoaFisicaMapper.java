@@ -17,6 +17,7 @@ public class PessoaFisicaMapper {
         pf.setDocumentoComprovante(dto.getDocumentoComprovante());
         pf.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         pf.setTipoUsuario(TipoUsuario.PESSOA_FISICA);
+        pf.setFotoUrl(dto.getFotoUrl());
         return pf;
     }
 

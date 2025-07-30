@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tcc.conexao_alimentar.enums.SetorAtuacao;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 @Data
 @NoArgsConstructor
@@ -35,7 +34,8 @@ public class VoluntarioRequestDTO {
     message = "CPF inválido. Use 000.000.000-00 ou apenas números"
     )
     private String cpf;
-    private SetorAtuacao setorAtuacao;
+    @NotBlank(message = "Setor de atuação é obrigatório")
+    private String setorAtuacao;
     private TipoUsuario tipoUsuario;
     private String fotoUrl;
 

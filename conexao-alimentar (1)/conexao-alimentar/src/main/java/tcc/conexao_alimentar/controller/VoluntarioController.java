@@ -44,8 +44,7 @@ public class VoluntarioController {
     })
     @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> cadastrarVoluntario(
-    @RequestPart("dados") @Valid VoluntarioRequestDTO dto,@RequestPart("comprovante") MultipartFile comprovante,@RequestPart("foto") MultipartFile foto) throws IOException {
-
+    @RequestPart("dto") @Valid VoluntarioRequestDTO dto,@RequestPart("comprovante") MultipartFile comprovante,@RequestPart("file") MultipartFile foto) throws IOException {
     voluntarioService.cadastrar(dto, comprovante, foto);
     return ResponseEntity.ok("Voluntário cadastrado com sucesso! Aguarde aprovação.");
    }

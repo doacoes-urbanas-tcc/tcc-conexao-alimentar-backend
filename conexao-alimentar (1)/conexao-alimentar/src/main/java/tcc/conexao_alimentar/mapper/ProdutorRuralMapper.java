@@ -16,6 +16,7 @@ public class ProdutorRuralMapper {
         p.setNumeroRegistroRural(dto.getNumeroRegistroRural());
         p.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         p.setTipoUsuario(TipoUsuario.PRODUTOR_RURAL);
+        p.setFotoUrl(dto.getFotoUrl());
         return p;
     }
 

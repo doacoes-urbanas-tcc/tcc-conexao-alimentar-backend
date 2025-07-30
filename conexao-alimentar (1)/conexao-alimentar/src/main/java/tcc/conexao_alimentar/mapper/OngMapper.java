@@ -17,6 +17,7 @@ public class OngMapper {
         o.setDescricao(dto.getDescricao());
         o.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         o.setTipoUsuario(TipoUsuario.ONG);
+        o.setFotoUrl(dto.getFotoUrl());
         return o;
     }
 
