@@ -33,8 +33,8 @@ public class VoluntarioService {
     private final VoluntarioTiRepository voluntarioTiRepository;
     private final FileUploadService fileUploadService;
 
-    @Transactional
-    public void cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
+   @Transactional
+   public VoluntarioModel cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
@@ -46,8 +46,8 @@ public class VoluntarioService {
     String fotoUrl = fileUploadService.salvarArquivo(foto, "usuarios");
     model.setFotoUrl(fotoUrl);
 
-    voluntarioRepository.save(model);
-    }
+    return voluntarioRepository.save(model); }
+
 
 
     public VoluntarioResponseDTO buscarPorId(Long id) {

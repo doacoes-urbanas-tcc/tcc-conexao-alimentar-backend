@@ -3,6 +3,8 @@ package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
+import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
@@ -43,10 +46,17 @@ public class VoluntarioController {
 
     })
     @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> cadastrarVoluntario(
-    @RequestPart("dto") @Valid VoluntarioRequestDTO dto,@RequestPart("comprovante") MultipartFile comprovante,@RequestPart("file") MultipartFile foto) throws IOException {
-    voluntarioService.cadastrar(dto, comprovante, foto);
-    return ResponseEntity.ok("Voluntário cadastrado com sucesso! Aguarde aprovação.");
+    public ResponseEntity<Map<String, Object>> cadastrarVoluntario(
+    @RequestPart("dto") @Valid VoluntarioRequestDTO dto,
+    @RequestPart("comprovante") MultipartFile comprovante,
+    @RequestPart("file") MultipartFile foto) throws IOException {
+
+    VoluntarioModel voluntario = voluntarioService.cadastrar(dto, comprovante, foto);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", voluntario.getId());
+
+    return ResponseEntity.ok(response);
    }
 
     
@@ -100,9 +110,9 @@ public class VoluntarioController {
     })
     @PatchMapping("/{voluntarioId}/perfil-ti")
     @PreAuthorize("hasRole('VOLUNTARIO')")
-    public ResponseEntity<Void> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
+    public ResponseEntity<Map<String, Long>> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
         voluntarioService.atualizarPerfilTI(voluntarioId, dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(Map.of("id", voluntarioId));
     }
 
     @Operation(summary = "Listar voluntário por id",description = "Busca o voluntário por id")
