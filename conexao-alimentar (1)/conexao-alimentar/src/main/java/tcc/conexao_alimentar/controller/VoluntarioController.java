@@ -72,12 +72,14 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
-    @PostMapping("/{voluntarioId}/perfil-ti")
-    @PreAuthorize("hasRole('VOLUNTARIO')")
-    public ResponseEntity<Void> cadastrarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
-        voluntarioService.cadastrarPerfilTI(voluntarioId, dto);
-        return ResponseEntity.ok().build();
-    }
+    @PostMapping(value = "/{voluntarioId}/perfil-ti", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> cadastrarPerfilTI(@PathVariable Long voluntarioId,@RequestPart("dados") @Valid VoluntarioTiRequestDTO dto,@RequestPart("certificacoesFile") MultipartFile certificacoesFile) throws IOException {
+    String url = fileUploadService.salvarArquivo(certificacoesFile, "certificacoes_ti");
+    dto.setCertificacoes(url);
+
+    voluntarioService.cadastrarPerfilTI(voluntarioId, dto);
+    return ResponseEntity.ok().build();
+   }
     
     @Operation(summary = "Visualizar perfil TI", description = "Retorna o perfil TI do voluntário")
     @ApiResponses({
