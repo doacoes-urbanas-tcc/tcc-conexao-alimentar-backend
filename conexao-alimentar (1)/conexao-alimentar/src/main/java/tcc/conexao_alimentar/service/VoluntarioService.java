@@ -1,6 +1,8 @@
 package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -113,6 +115,43 @@ public class VoluntarioService {
 
         voluntarioTiRepository.save(model);
     }
+    public Map<String, Object> visualizarPerfilVoluntario(Long id) {
+    VoluntarioModel voluntario = voluntarioRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+
+    Map<String, Object> dto = new HashMap<>();
+    dto.put("id", voluntario.getId());
+    dto.put("nome", voluntario.getNome());
+    dto.put("email", voluntario.getEmail());
+    dto.put("telefone", voluntario.getTelefone());
+    dto.put("cpf", voluntario.getCpf());
+    dto.put("setorAtuacao", voluntario.getSetorAtuacao().name());
+    dto.put("documentoComprovante", voluntario.getDocumentoComprovante());
+    dto.put("fotoUrl", voluntario.getFotoUrl());
+
+    if (voluntario.getSetorAtuacao() == SetorAtuacao.TI) {
+        voluntarioTiRepository.findByVoluntarioId(id).ifPresent(perfilTi -> {
+            dto.put("stackConhecimento", perfilTi.getStackConhecimento());
+            dto.put("certificacoes", perfilTi.getCertificacoes());
+            dto.put("experiencia", perfilTi.getExperiencia());
+            dto.put("linkedin", perfilTi.getLinkedin());
+            dto.put("github", perfilTi.getGithub());
+            dto.put("disponibilidadeHoras", perfilTi.getDisponibilidadeHoras());
+        });
+    }
+
+    if (voluntario.getSetorAtuacao() == SetorAtuacao.TRANSPORTE) {
+        if (voluntario.getVeiculo() != null) {
+            dto.put("placaVeiculo", voluntario.getVeiculo().getPlaca());
+            dto.put("modeloVeiculo", voluntario.getVeiculo().getModelo());
+            dto.put("corVeiculo", voluntario.getVeiculo().getCor());
+            dto.put("capacidadeCarga", voluntario.getVeiculo().getCapacidadeCarga());
+            dto.put("fotoCNH", voluntario.getVeiculo().getUrlCnh());
+        }
+    }
+
+    return dto;
+}
+
 
     
 }

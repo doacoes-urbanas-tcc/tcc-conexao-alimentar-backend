@@ -203,7 +203,7 @@ public class UsuarioController {
         usuarioService.reprovarOuDesativarUsuario(id);
         return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
     }
-    
+
     @Operation(summary = "Visualizar perfil de um usuário por tipo", description = "Permite que o admin visualize o perfil detalhado do usuário antes de aprovar ou reprovar.")
     @GetMapping("/perfil")
     @PreAuthorize("hasRole('ADMIN')")
@@ -219,7 +219,7 @@ public class UsuarioController {
         case "PRODUTOR_RURAL":
             return ResponseEntity.ok(produtorRuralService.visualizarPerfil(id));
         case "VOLUNTARIO":
-            return ResponseEntity.ok(voluntarioService.visualizarPerfil(id));
+            return ResponseEntity.ok(voluntarioService.visualizarPerfilVoluntario(id));
         default:
             throw new RegraDeNegocioException("Tipo de usuário inválido.");
     }

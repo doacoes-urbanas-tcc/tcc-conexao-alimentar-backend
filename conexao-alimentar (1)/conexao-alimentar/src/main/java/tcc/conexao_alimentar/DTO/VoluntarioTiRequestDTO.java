@@ -1,5 +1,7 @@
 package tcc.conexao_alimentar.DTO;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import tcc.conexao_alimentar.enums.SetorTi;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoluntarioTiRequestDTO {
-    
+    @Enumerated(EnumType.STRING)
     private SetorTi setorTi;
     private String stackConhecimento;
     private String certificacoes;
