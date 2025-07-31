@@ -49,6 +49,9 @@ public abstract class UsuarioModel {
     private boolean ativo;
     @Column(name = "foto_url")
     private String fotoUrl;
+    @Column(name = "justificativa_reprovacao")
+    private String justificativaReprovacao;
+
 
 
 }

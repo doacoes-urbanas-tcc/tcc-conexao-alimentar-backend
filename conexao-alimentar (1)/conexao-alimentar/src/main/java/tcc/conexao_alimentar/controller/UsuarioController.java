@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +17,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
+import tcc.conexao_alimentar.DTO.JustificativaRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
+import tcc.conexao_alimentar.DTO.UsuarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.UsuarioModel;
@@ -163,10 +166,9 @@ public class UsuarioController {
     })
     @GetMapping("/pendentes")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UsuarioModel>> listarPendentes() {
-        return ResponseEntity.ok(usuarioService.listarPendentes());
+    public ResponseEntity<List<Object>> listarUsuariosPendentes() {
+    return ResponseEntity.ok(usuarioService.listarUsuariosPendentes());
     }
-
     @Operation(summary = "Listar todos usuários ativos", description = "Lista todos os cadastros ativos. Somente ADMIN pode acessar.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
@@ -191,17 +193,16 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuário aprovado com sucesso!");
     }
 
-     @Operation(summary = "Reprovar ou desativar usuário por id", description = "Permite reprovar ou desativar um cadastro. Somente ADMIN pode acessar.")
+    @Operation(summary = "Reprovar ou desativar usuário por id", description = "Permite reprovar ou desativar um cadastro. Somente ADMIN pode acessar.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Usuário reprovado/desativado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
     @PatchMapping("/reprovar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> reprovarOuDesativarUsuario(@PathVariable Long id) {
-        usuarioService.reprovarOuDesativarUsuario(id);
-        return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
+    public ResponseEntity<Void> reprovarUsuario(@PathVariable Long id,@RequestBody JustificativaRequestDTO justificativaRequest) {
+    usuarioService.reprovarUsuario(id, justificativaRequest.getMotivo());
+    return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Visualizar perfil de um usuário por tipo", description = "Permite que o admin visualize o perfil detalhado do usuário antes de aprovar ou reprovar.")
@@ -223,7 +224,21 @@ public class UsuarioController {
         default:
             throw new RegraDeNegocioException("Tipo de usuário inválido.");
     }
-}
+    }
+    @GetMapping("/reprovados")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Listar usuários reprovados", description = "Lista todos os usuários reprovados. Somente ADMIN pode acessar.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Nenhum usuário reprovado encontrado")
+    })
+    public ResponseEntity<List<Object>> listarUsuariosReprovados() {
+    return ResponseEntity.ok(usuarioService.listarUsuariosReprovados());
+    }
+
+    
+
 
 }
 

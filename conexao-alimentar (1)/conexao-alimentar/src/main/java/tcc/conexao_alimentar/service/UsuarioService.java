@@ -17,6 +17,7 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
+import tcc.conexao_alimentar.DTO.UsuarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
@@ -163,7 +164,28 @@ public class UsuarioService {
               usuario))
               .collect(Collectors.toList());
     }
-    
+    public List<Object> listarUsuariosPendentes() {
+        List<UsuarioModel> usuarios = usuarioRepository.findByAtivoFalse();
+
+        return usuarios.stream()
+            .map(usuario -> {
+                if (usuario instanceof VoluntarioModel) {
+                    return VoluntarioMapper.toResponse((VoluntarioModel) usuario);
+                } else if (usuario instanceof ComercioModel) {
+                    return ComercioMapper.toResponse((ComercioModel) usuario);
+                } else if (usuario instanceof OngModel) {
+                    return OngMapper.toResponse((OngModel) usuario);
+                } else if (usuario instanceof PessoaFisicaModel) {
+                    return PessoaFisicaMapper.toResponse((PessoaFisicaModel) usuario);
+                } else if (usuario instanceof ProdutorRuralModel) {
+                    return ProdutorRuralMapper.toResponse((ProdutorRuralModel) usuario);
+                } else {
+                    throw new RegraDeNegocioException("Tipo de usuário desconhecido");
+                }
+            })
+            .collect(Collectors.toList());
+    }
+
     public List<ComercioResponseDTO> listarComerciosAtivos(){
         return usuarioRepository.findByAtivo(true)
               .stream()
@@ -221,24 +243,47 @@ public class UsuarioService {
     usuario.setAtivo(true);
     usuarioRepository.save(usuario);
     }
-    @Transactional
-    public void reprovarOuDesativarUsuario(Long id) {
-    UsuarioModel usuario = usuarioRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    public void reprovarUsuario(Long id, String justificativa) {
+    UsuarioModel usuario = usuarioRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
     usuario.setAtivo(false);
+    usuario.setJustificativaReprovacao(justificativa);
     usuarioRepository.save(usuario);
-    }
-    public List<UsuarioModel> listarPendentes() {
-    return usuarioRepository.findByAtivo(false);
 }
+
+
 
     public List<UsuarioModel> listarAtivos() {
     return usuarioRepository.findByAtivo(true);
     }
 
+    public List<Object> listarUsuariosReprovados() {
+    List<UsuarioModel> usuarios = usuarioRepository.findByAtivoFalse();
 
-
-
-
-
+    return usuarios.stream()
+        .filter(usuario -> usuario.getJustificativaReprovacao() != null)
+        .map(usuario -> {
+            if (usuario instanceof VoluntarioModel) {
+                VoluntarioModel voluntario = (VoluntarioModel) usuario;
+                return VoluntarioMapper.toResponse(voluntario);
+            } else if (usuario instanceof ComercioModel) {
+                ComercioModel comercio = (ComercioModel) usuario;
+                return ComercioMapper.toResponse(comercio);
+            } else if (usuario instanceof OngModel) {
+                OngModel ong = (OngModel) usuario;
+                return OngMapper.toResponse(ong);
+            } else if (usuario instanceof PessoaFisicaModel) {
+                PessoaFisicaModel pf = (PessoaFisicaModel) usuario;
+                return PessoaFisicaMapper.toResponse(pf);
+            } else if (usuario instanceof ProdutorRuralModel) {
+                ProdutorRuralModel pr = (ProdutorRuralModel) usuario;
+                return ProdutorRuralMapper.toResponse(pr);
+            } else {
+                throw new RegraDeNegocioException("Tipo de usuário desconhecido.");
+            }
+        })
+        .collect(Collectors.toList());
+}
 
 }

@@ -20,6 +20,7 @@ public class VoluntarioResponseDTO {
     private TipoUsuario tipoUsuario;
     private String urlCnh;
     private String fotoUrl;
+    private String justificativaReprovacao;
 }
 
 

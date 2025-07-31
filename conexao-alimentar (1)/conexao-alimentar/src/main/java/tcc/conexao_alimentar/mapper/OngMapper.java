@@ -31,7 +31,8 @@ public class OngMapper {
             o.getDescricao(), 
             EnderecoMapper.toDTO(o.getEndereco()), 
             o.getTipoUsuario(),
-            o.getFotoUrl()
+            o.getFotoUrl(),
+            o.getJustificativaReprovacao()
         );
     }
 

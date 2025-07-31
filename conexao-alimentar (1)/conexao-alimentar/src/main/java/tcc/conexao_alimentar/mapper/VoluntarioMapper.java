@@ -42,7 +42,8 @@ public class VoluntarioMapper {
             EnderecoMapper.toDTO(v.getEndereco()), 
             v.getTipoUsuario(),
             v.getFotoUrl(),
-            v.getUrlCnh()
+            v.getUrlCnh(),
+            v.getJustificativaReprovacao()
         );
     }
 
