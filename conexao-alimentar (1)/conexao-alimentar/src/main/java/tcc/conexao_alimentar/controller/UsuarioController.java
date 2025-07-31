@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +20,14 @@ import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.UsuarioModel;
+import tcc.conexao_alimentar.service.ComercioService;
+import tcc.conexao_alimentar.service.OngService;
+import tcc.conexao_alimentar.service.PessoaFisicaService;
+import tcc.conexao_alimentar.service.ProdutorRuralService;
 import tcc.conexao_alimentar.service.UsuarioService;
+import tcc.conexao_alimentar.service.VoluntarioService;
 
 @RestController
 @RequestMapping("/admin/usuarios")
@@ -29,6 +36,11 @@ import tcc.conexao_alimentar.service.UsuarioService;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final ComercioService comercioService;
+    private final OngService ongService;
+    private final PessoaFisicaService pessoaFisicaService;
+    private final ProdutorRuralService produtorRuralService;
+    private final VoluntarioService voluntarioService;
 
     
     @Operation(summary = "Listar Comércios pendentes", description = "Lista todos os comércios pendentes de aprovação. Somente ADMIN pode acessar.")
@@ -191,6 +203,28 @@ public class UsuarioController {
         usuarioService.reprovarOuDesativarUsuario(id);
         return ResponseEntity.ok("Usuário reprovado ou desativado com sucesso!");
     }
+    
+    @Operation(summary = "Visualizar perfil de um usuário por tipo", description = "Permite que o admin visualize o perfil detalhado do usuário antes de aprovar ou reprovar.")
+    @GetMapping("/perfil")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> visualizarPerfilAdmin(@RequestParam Long id,@RequestParam String tipo) {
+
+    switch (tipo.toUpperCase()) {
+        case "COMERCIO":
+            return ResponseEntity.ok(comercioService.visualizarPerfil(id));
+        case "ONG":
+            return ResponseEntity.ok(ongService.visualizarPerfil(id));
+        case "PESSOA_FISICA":
+            return ResponseEntity.ok(pessoaFisicaService.visualizarPerfil(id));
+        case "PRODUTOR_RURAL":
+            return ResponseEntity.ok(produtorRuralService.visualizarPerfil(id));
+        case "VOLUNTARIO":
+            return ResponseEntity.ok(voluntarioService.visualizarPerfil(id));
+        default:
+            throw new RegraDeNegocioException("Tipo de usuário inválido.");
+    }
+}
+
 }
 
 
