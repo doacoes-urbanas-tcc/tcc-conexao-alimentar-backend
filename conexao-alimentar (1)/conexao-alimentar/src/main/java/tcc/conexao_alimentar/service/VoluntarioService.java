@@ -127,6 +127,8 @@ public class VoluntarioService {
     dto.put("setorAtuacao", voluntario.getSetorAtuacao().name());
     dto.put("documentoComprovante", voluntario.getDocumentoComprovante());
     dto.put("fotoUrl", voluntario.getFotoUrl());
+    dto.put("tipoUsuario", voluntario.getTipoUsuario().name());
+    dto.put("endereco", voluntario.getEndereco());
 
     if (voluntario.getSetorAtuacao() == SetorAtuacao.TI) {
         voluntarioTiRepository.findByVoluntarioId(id).ifPresent(perfilTi -> {
