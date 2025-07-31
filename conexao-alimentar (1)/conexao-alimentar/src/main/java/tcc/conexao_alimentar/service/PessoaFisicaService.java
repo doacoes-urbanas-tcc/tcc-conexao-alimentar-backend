@@ -1,9 +1,11 @@
 package tcc.conexao_alimentar.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +25,23 @@ public class PessoaFisicaService {
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
+    private final FileUploadService fileUploadService;
 
-    public void cadastrar(PessoaFisicaRequestDTO dto) {
-        PessoaFisicaModel model = PessoaFisicaMapper.toEntity(dto);
+    @Transactional
+    public PessoaFisicaModel cadastrar(PessoaFisicaRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
+    PessoaFisicaModel model = PessoaFisicaMapper.toEntity(dto);
+    
+    model.setSenha(passwordEncoder.encode(dto.getSenha()));
+    model.setTipoUsuario(TipoUsuario.PESSOA_FISICA);
+    model.setAtivo(false);
 
-        model.setSenha(passwordEncoder.encode(dto.getSenha()));
+    String comprovanteUrl = fileUploadService.salvarArquivo(comprovante, "docs_comprovantes_pessoa_fisica");
+    model.setDocumentoComprovante(comprovanteUrl);
 
-        model.setTipoUsuario(TipoUsuario.PESSOA_FISICA);
-        model.setAtivo(false);
+    String fotoUrl = fileUploadService.salvarArquivo(foto, "usuarios");
+    model.setFotoUrl(fotoUrl);
 
-        pessoaFisicaRepository.save(model);
+    return pessoaFisicaRepository.save(model);
     }
 
     @Transactional

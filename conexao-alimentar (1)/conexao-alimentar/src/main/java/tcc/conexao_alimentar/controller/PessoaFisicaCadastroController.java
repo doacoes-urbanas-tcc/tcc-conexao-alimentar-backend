@@ -1,7 +1,10 @@
 package tcc.conexao_alimentar.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
@@ -25,6 +29,7 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
+import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 
@@ -45,20 +50,20 @@ public class PessoaFisicaCadastroController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 
     })
-    @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrarPessoaFisica(
-    @RequestPart("dto") PessoaFisicaRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
+    @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> cadastrarPessoaFisica(
+    @RequestPart("dto") @Valid PessoaFisicaRequestDTO dto,
+    @RequestPart("comprovante") MultipartFile comprovante,
+    @RequestPart("file") MultipartFile foto) throws IOException {
 
-    if (file.isEmpty()) {
-        throw new RegraDeNegocioException("A foto e perfil é obrigatória.");
-    }
+    PessoaFisicaModel model = pessoaFisicaService.cadastrar(dto, comprovante, foto);
 
-    String url = fileUploadService.salvarArquivo(file, "usuarios"); 
-    dto.setFotoUrl(url); 
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", model.getId());
 
-    pessoaFisicaService.cadastrar(dto);
-    return ResponseEntity.ok("Usuário cadastrado com sucesso!");
-}
+    return ResponseEntity.ok(response);
+   }
+
 
 
     
