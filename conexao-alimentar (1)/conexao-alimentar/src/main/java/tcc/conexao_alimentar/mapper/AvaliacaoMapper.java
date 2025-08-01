@@ -26,6 +26,7 @@ public class AvaliacaoMapper {
             .nota(model.getNota())
             .comentario(model.getComentario())
             .dataCriacao(model.getDataCriacao())
+            .fotoAvaliador(model.getAvaliador().getFotoUrl())
             .build();
     }
 

@@ -17,5 +17,7 @@ public class AvaliacaoResponseDTO {
     private int nota;
     private String comentario;
     private LocalDateTime dataCriacao;
+    private String fotoAvaliador;
+
 
 }
