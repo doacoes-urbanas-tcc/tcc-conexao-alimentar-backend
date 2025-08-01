@@ -3,6 +3,7 @@ package tcc.conexao_alimentar.mapper;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.model.DoacaoModel;
+import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.enums.CategoriaAlimento;
 import tcc.conexao_alimentar.enums.Medida;
@@ -10,6 +11,7 @@ import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDateTime;
 public class DoacaoMapper {
+
 
     public static DoacaoModel toEntity(DoacaoRequestDTO dto, UsuarioModel doador) {
     DoacaoModel model = new DoacaoModel();
@@ -28,24 +30,43 @@ public class DoacaoMapper {
     model.setDoador(doador);
     model.setUrlImagem(dto.getUrlImagem());
     return model;
-}
-    public static DoacaoResponseDTO toResponse(DoacaoModel model) {
+   }
+    public static DoacaoResponseDTO toResponse(DoacaoModel doacao) {
+        ReservaModel reserva = doacao.getReserva(); 
+
+        Long idReserva = null;
+        String nomeReceptor = null;
+        Long idReceptor = null;
+        String tipoReceptor = null;
+
+        if (reserva != null && reserva.getReceptor() != null) {
+            idReserva = reserva.getId();
+            nomeReceptor = reserva.getReceptor().getNome();
+            idReceptor = reserva.getReceptor().getId();
+            tipoReceptor = reserva.getReceptor().getTipoUsuario().toString(); 
+        }
+
         return new DoacaoResponseDTO(
-            model.getId(),
-            model.getNomeAlimento(),
-            model.getUnidadeMedida() != null ? model.getUnidadeMedida().name() : null,
-            model.getQuantidade(),
-            model.getDataValidade(),
-            model.getDescricao(),
-            model.getDataCadastro(),
-            model.getDataExpiracao(),
-            model.getCategoria() != null ? model.getCategoria().name() : null,
-            model.getStatus(),
-            model.getDoador() != null ? model.getDoador().getNome() : null,
-            model.getDoador() != null ? model.getDoador().getId() : null,
-            model.getUrlImagem()
-        
+            doacao.getId(),
+            doacao.getNomeAlimento(),
+            doacao.getUnidadeMedida().toString(),
+            doacao.getQuantidade(),
+            doacao.getDataValidade(),
+            doacao.getDescricao(),
+            doacao.getDataCadastro(),
+            doacao.getDataExpiracao(),
+            doacao.getCategoria().toString(),
+            doacao.getStatus(),
+            doacao.getDoador().getNome(),
+            doacao.getDoador().getId(),
+            doacao.getUrlImagem(),
+            idReserva,
+            nomeReceptor,
+            idReceptor,
+            tipoReceptor
         );
     }
-
 }
+
+
+

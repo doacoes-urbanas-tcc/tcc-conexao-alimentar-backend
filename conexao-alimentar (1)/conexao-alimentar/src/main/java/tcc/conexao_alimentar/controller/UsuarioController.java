@@ -21,7 +21,6 @@ import tcc.conexao_alimentar.DTO.JustificativaRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
-import tcc.conexao_alimentar.DTO.UsuarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.UsuarioModel;
@@ -207,7 +206,7 @@ public class UsuarioController {
 
     @Operation(summary = "Visualizar perfil de um usuário por tipo", description = "Permite que o admin visualize o perfil detalhado do usuário antes de aprovar ou reprovar.")
     @GetMapping("/perfil")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
     public ResponseEntity<?> visualizarPerfilAdmin(@RequestParam Long id,@RequestParam String tipo) {
 
     switch (tipo.toUpperCase()) {

@@ -11,12 +11,14 @@ import com.google.zxing.WriterException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.mapper.DoacaoMapper;
 import tcc.conexao_alimentar.mapper.ReservaMapper;
 import tcc.conexao_alimentar.model.DoacaoModel;
 import tcc.conexao_alimentar.model.ReservaModel;
@@ -120,11 +122,16 @@ public class ReservaService {
             }
         });
     }
-    public List<ReservaResponseDTO> listarMinhasReservas(Long usuarioId) {
-        List<ReservaModel> reservas = reservaRepository.findByBeneficiarioId(usuarioId);
-        return reservas.stream()
-                .map(ReservaMapper::toResponse)
-                .collect(Collectors.toList());
+    public List<ReservaResponseDTO> listarReservasDoReceptor() {
+    String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+    UsuarioModel receptor = usuarioRepository.findByEmail(emailUsuario)
+        .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+    List<ReservaModel> reservas = reservaRepository.findByReceptorId(receptor.getId());
+
+    return reservas.stream()
+        .map(ReservaMapper::toResponse)
+        .collect(Collectors.toList());
     }
 
 

@@ -31,8 +31,8 @@ public class ReservaModel {
     private DoacaoModel doacao;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "beneficiario")
-    private UsuarioModel beneficiario; 
+    @JoinColumn(name = "rceptor_id")
+    private UsuarioModel receptor; 
 
     @Column(name = "data_reserva")
     private LocalDateTime dataReserva;
