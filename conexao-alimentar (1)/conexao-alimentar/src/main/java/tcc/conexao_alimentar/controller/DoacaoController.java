@@ -12,11 +12,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.model.ReservaModel;
+import tcc.conexao_alimentar.repository.ReservaRepository;
 import tcc.conexao_alimentar.service.DoacaoService;
 import tcc.conexao_alimentar.service.FileUploadService;
+import tcc.conexao_alimentar.service.ReservaService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/doacoes")
@@ -26,6 +31,8 @@ public class DoacaoController {
 
     private final DoacaoService service;
     private final FileUploadService fileUploadService;
+    private final ReservaService reservaService;
+    private final ReservaRepository reservaRepository;
     
     @Operation(summary = "Cadastrar nova doação",description = "Permite que um usuário do tipo COMERCIO, PRODUTOR_RURAL ou PESSOA_FISICA cadastre uma nova doação.")
     @ApiResponses(value = {
@@ -94,11 +101,18 @@ public class DoacaoController {
         service.removerDoacao(id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/validar-qr/{id}")
-    public ResponseEntity<String> validarQr(@PathVariable Long id) {
-    service.validarQrCode(id);
-    return ResponseEntity.ok("Doação validada com sucesso!");
-    }
+    @PostMapping("/validar-qr/{doacaoId}")
+    @PreAuthorize("hasRole('COMERCIO')")
+    public ResponseEntity<Map<String, Long>> validarQrCode(@PathVariable Long doacaoId) {
+    service.validarQrCode(doacaoId);
+    ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para essa doação."));
+
+    Map<String, Long> response = new HashMap<>();
+    response.put("idReserva", reserva.getId());
+    return ResponseEntity.ok(response);
+   }
+
     @Operation(summary = "Listar doações do doador logado", description = "Retorna uma lista das doações cadastradas pelo doador logado.")
     @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),

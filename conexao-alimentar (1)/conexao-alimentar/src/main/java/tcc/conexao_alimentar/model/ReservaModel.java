@@ -47,6 +47,14 @@ public class ReservaModel {
     @Column(name = "url_qrcode")
     private String urlQrCode;
 
+    @Column(name = "avaliacao_doador")
+    private Boolean avaliacaoFeitaPeloDoador = false;
+
+    @Column(name = "avaliacao_receptor")
+    private Boolean avaliacaoFeitaPeloReceptor = false;
+    @Column(name = "data_hora_expiracao")
+    private LocalDateTime dataHoraExpiracao;
+
     
 
 

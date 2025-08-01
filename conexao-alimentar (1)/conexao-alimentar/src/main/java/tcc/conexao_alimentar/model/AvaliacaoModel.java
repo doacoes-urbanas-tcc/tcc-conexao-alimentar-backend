@@ -2,7 +2,6 @@ package tcc.conexao_alimentar.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,24 +20,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "avaliacao")
+@Builder
 public class AvaliacaoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nota", nullable = false)
-    private int nota;  
-    @Column(name = "comentario", nullable = true)
+    private int nota;
+
     private String comentario;
-    @Column(name = "data_criacao", nullable = false)
+
     private LocalDateTime dataCriacao;
 
     @ManyToOne
-    @JoinColumn(name = "avaliador_id")
+    @JoinColumn(name = "avaliador_id", nullable = false)
     private UsuarioModel avaliador;
 
     @ManyToOne
-    @JoinColumn(name = "avaliado_id")
+    @JoinColumn(name = "avaliado_id", nullable = false)
     private UsuarioModel avaliado;
 
 }

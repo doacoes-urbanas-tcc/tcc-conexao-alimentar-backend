@@ -59,12 +59,18 @@ public class QrCodeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    LocalDateTime dataReserva = reserva.getDataReserva();
+    LocalDateTime dataReserva = reserva.getDataReserva(); 
     long segundosTotais = 7200;
     long segundosPassados = Duration.between(dataReserva, LocalDateTime.now()).getSeconds();
     long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);
 
-    QrCodeResponseDTO response = new QrCodeResponseDTO(url, segundosRestantes);
+    QrCodeResponseDTO response = new QrCodeResponseDTO();
+    response.setUrl(url);
+    response.setSegundosRestantes(segundosRestantes);
+    response.setReservaId(reserva.getId());
+    response.setDataReserva(dataReserva);
+    response.setStatusReserva(reserva.getStatus().name()); 
+
     return ResponseEntity.ok(response);
 }
 

@@ -17,13 +17,11 @@ import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
 import tcc.conexao_alimentar.service.ReservaService;
-
 @RestController
 @RequestMapping("/reservas")
 @RequiredArgsConstructor
 public class ReservaController {
 
-    
     private final ReservaService reservaService;
 
     @PostMapping
@@ -53,10 +51,30 @@ public class ReservaController {
         reservaService.cancelarReserva(id, justificativa);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/minhas-reservas")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<List<ReservaResponseDTO>> listarMinhasReservas() {
         List<ReservaResponseDTO> minhasReservas = reservaService.listarReservasDoReceptor();
         return ResponseEntity.ok(minhasReservas);
     }
+
+    @GetMapping("/avaliacoes-pendentes")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<ReservaResponseDTO>> listarReservasParaAvaliar() {
+        List<ReservaResponseDTO> pendentes = reservaService.listarReservasParaAvaliar();
+        return ResponseEntity.ok(pendentes);
+    }
+    @GetMapping("/avaliar")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ReservaResponseDTO> proximaReservaParaAvaliar() {
+    ReservaResponseDTO dto = reservaService.buscarProximaReservaParaAvaliar();
+
+    if (dto == null) {
+        return ResponseEntity.noContent().build(); 
+    }
+
+    return ResponseEntity.ok(dto);
+}
+
 }

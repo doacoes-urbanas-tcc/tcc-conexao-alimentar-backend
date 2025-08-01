@@ -19,14 +19,14 @@ public class AvaliacaoMapper {
     }
 
     public static AvaliacaoResponseDTO toResponse(AvaliacaoModel model) {
-        AvaliacaoResponseDTO dto = new AvaliacaoResponseDTO();
-        dto.setId(model.getId());
-        dto.setNota(model.getNota());
-        dto.setComentario(model.getComentario());
-        dto.setAvaliador(model.getAvaliador().getNome());
-        dto.setAvaliado(model.getAvaliado().getNome());
-        dto.setDataCriacao(model.getDataCriacao());
-        return dto;
+        return AvaliacaoResponseDTO.builder()
+            .id(model.getId())
+            .nomeAvaliador(model.getAvaliador().getNome())
+            .nomeAvaliado(model.getAvaliado().getNome())
+            .nota(model.getNota())
+            .comentario(model.getComentario())
+            .dataCriacao(model.getDataCriacao())
+            .build();
     }
 
 }

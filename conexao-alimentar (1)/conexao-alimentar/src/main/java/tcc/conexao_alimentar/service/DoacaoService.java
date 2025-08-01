@@ -11,12 +11,15 @@ import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
+import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.DoacaoMapper;
 import tcc.conexao_alimentar.model.DoacaoModel;
+import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.DoacaoRepository;
+import tcc.conexao_alimentar.repository.ReservaRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 
 import java.io.IOException;
@@ -35,6 +38,7 @@ public class DoacaoService {
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
     private final FileUploadService fileUploadService; 
+    private final ReservaRepository reservaRepository;
 
     public void cadastrar(DoacaoRequestDTO dto, MultipartFile file) throws IOException {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -120,7 +124,15 @@ public class DoacaoService {
 
     doacao.setStatus(StatusDoacao.CONCLUIDA);
     doacaoRepository.save(doacao);
-}
+
+    ReservaModel reserva = reservaRepository.findByDoacaoId(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
+
+    reserva.setStatus(StatusReserva.RETIRADA);
+    reserva.setDataReserva(LocalDateTime.now());
+    reservaRepository.save(reserva);
+    }
+
     public List<DoacaoResponseDTO> listarDoacoesDoDoador() {
     String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
     UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
