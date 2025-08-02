@@ -95,4 +95,14 @@ public class TaskTiController {
         RespostaTaskModel resposta = respostaService.responder(id, dto.getVoluntarioId(), dto.getLinkSolucao());
         return ResponseEntity.ok(RespostaTaskMapper.toDTO(resposta));
     }
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<TaskTiResponseDTO>> listarTodasTasks() {
+    List<TaskTiModel> tasks = taskService.listarTodas(); 
+    List<TaskTiResponseDTO> dtos = tasks.stream()
+        .map(TaskTiMapper::toDTO)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(dtos);
+}
+
 }
