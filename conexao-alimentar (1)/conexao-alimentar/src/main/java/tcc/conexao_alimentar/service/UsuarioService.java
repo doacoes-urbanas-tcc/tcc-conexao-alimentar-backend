@@ -17,7 +17,6 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
-import tcc.conexao_alimentar.DTO.UsuarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
