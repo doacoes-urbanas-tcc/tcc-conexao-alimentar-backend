@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
 
 public interface UsuarioRepository  extends JpaRepository<UsuarioModel,Long>{
@@ -16,4 +17,9 @@ public interface UsuarioRepository  extends JpaRepository<UsuarioModel,Long>{
     List<UsuarioModel> findByAtivoFalse();
 
     List<UsuarioModel> findByAtivo(boolean ativo);;
+
+    long countByAtivoIsTrueAndTipoUsuarioNot(TipoUsuario tipo); 
+    
+    long countByAtivoIsFalseAndTipoUsuarioNot(TipoUsuario tipo); 
+
 }

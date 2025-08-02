@@ -42,5 +42,7 @@ public class TasksTiService {
     return taskTiRepository.findAll(Sort.by(Sort.Direction.DESC, "dataCriacao"));
     }
 
-
+    public long contarTasksAbertas() {
+    return taskTiRepository.countByFechadaFalse();
+    }
 }

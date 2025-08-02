@@ -8,6 +8,8 @@ import tcc.conexao_alimentar.model.TaskTiModel;
 
 public interface TaskTiRepository extends JpaRepository<TaskTiModel, Long> {
     List<TaskTiModel> findByFechadaFalseOrderByDataCriacaoDesc();
+    long countByFechadaFalse(); 
+    long countByFechadaTrue();
 
 
 

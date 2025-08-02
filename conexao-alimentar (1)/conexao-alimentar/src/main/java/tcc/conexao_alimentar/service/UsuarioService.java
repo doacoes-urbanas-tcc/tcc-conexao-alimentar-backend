@@ -19,6 +19,7 @@ import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
+import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.mapper.OngMapper;
@@ -283,6 +284,13 @@ public class UsuarioService {
             }
         })
         .collect(Collectors.toList());
-}
+    }
 
+     public long contarUsuariosAtivos() {
+        return usuarioRepository.countByAtivoIsTrueAndTipoUsuarioNot(TipoUsuario.ADMIN);
+    }
+
+    public long contarUsuariosInativos() {
+        return usuarioRepository.countByAtivoIsFalseAndTipoUsuarioNot(TipoUsuario.ADMIN);
+    }
 }

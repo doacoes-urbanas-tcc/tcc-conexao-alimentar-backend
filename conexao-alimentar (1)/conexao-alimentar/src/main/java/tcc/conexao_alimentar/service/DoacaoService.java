@@ -144,6 +144,12 @@ public class DoacaoService {
         .map(DoacaoMapper::toResponse)
         .collect(Collectors.toList());
     }
+    public long contarDoacoesAtivas() {
+    return doacaoRepository.countByStatus(StatusDoacao.PENDENTE) +
+           doacaoRepository.countByStatus(StatusDoacao.AGUARDANDO_RETIRADA);
+        }
+
+
 
 
 
