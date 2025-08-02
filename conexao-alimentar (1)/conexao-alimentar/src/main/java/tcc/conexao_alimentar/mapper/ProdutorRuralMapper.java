@@ -30,7 +30,7 @@ public class ProdutorRuralMapper {
             p.getTipoUsuario(),
             p.getFotoUrl(),
             p.getJustificativaReprovacao(),
-            p.isAtivo()
+            p.getStatus()
         );
     }
 

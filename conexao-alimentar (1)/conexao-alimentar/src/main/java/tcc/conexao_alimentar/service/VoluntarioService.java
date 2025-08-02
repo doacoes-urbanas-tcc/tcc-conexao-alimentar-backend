@@ -15,6 +15,7 @@ import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
 import tcc.conexao_alimentar.enums.SetorAtuacao;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
@@ -42,7 +43,7 @@ public class VoluntarioService {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
-    model.setAtivo(false);
+    model.setStatus(StatusUsuario.PENDENTE);
 
     String comprovanteUrl = fileUploadService.salvarArquivo(comprovante, "docs_comprovantes_voluntarios");
     model.setDocumentoComprovante(comprovanteUrl);
@@ -131,8 +132,7 @@ public class VoluntarioService {
     dto.put("fotoUrl", voluntario.getFotoUrl());
     dto.put("tipoUsuario", voluntario.getTipoUsuario().name());
     dto.put("endereco", voluntario.getEndereco());
-    dto.put("ativo", voluntario.isAtivo());
-
+    dto.put("status", voluntario.getStatus().name());
 
     if (voluntario.getSetorAtuacao() == SetorAtuacao.TI) {
         voluntarioTiRepository.findByVoluntarioId(id).ifPresent(perfilTi -> {

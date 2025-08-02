@@ -33,7 +33,7 @@ public class OngMapper {
             o.getTipoUsuario(),
             o.getFotoUrl(),
             o.getJustificativaReprovacao(),
-            o.isAtivo()
+            o.getStatus()
         );
     }
 

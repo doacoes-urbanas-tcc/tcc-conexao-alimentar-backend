@@ -33,7 +33,7 @@ public class PessoaFisicaMapper {
             pf.getTipoUsuario(),
             pf.getFotoUrl(),
             pf.getJustificativaReprovacao(),
-            pf.isAtivo()
+            pf.getStatus()
         );
     }
 

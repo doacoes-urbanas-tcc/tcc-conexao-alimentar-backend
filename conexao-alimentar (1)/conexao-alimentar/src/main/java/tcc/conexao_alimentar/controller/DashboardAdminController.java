@@ -1,8 +1,6 @@
 package tcc.conexao_alimentar.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.DashboardResumoDTO;
 import tcc.conexao_alimentar.DTO.UsuarioResponseDTO;
 import tcc.conexao_alimentar.mapper.UsuarioMapper;
 import tcc.conexao_alimentar.model.UsuarioModel;
@@ -28,18 +27,11 @@ public class DashboardAdminController {
     private final DoacaoService doacaoService;
     private final TasksTiService taskTiService;
 
-
     @GetMapping("/resumo")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Long>> obterResumo() {
-        Map<String, Long> resumo = new HashMap<>();
-
-    resumo.put("usuariosAtivos", usuarioService.contarUsuariosAtivos());
-    resumo.put("usuariosInativos", usuarioService.contarUsuariosInativos());
-    resumo.put("doacoesAtivas", doacaoService.contarDoacoesAtivas());
-    resumo.put("tasksAbertas", taskTiService.contarTasksAbertas());
-
-    return ResponseEntity.ok(resumo);
+    public ResponseEntity<DashboardResumoDTO> getResumoDashboard() {
+        DashboardResumoDTO resumo = usuarioService.montarResumo();
+        return ResponseEntity.ok(resumo);
     }
     @GetMapping("/usuarios/pendentes")
     @PreAuthorize("hasRole('ADMIN')")

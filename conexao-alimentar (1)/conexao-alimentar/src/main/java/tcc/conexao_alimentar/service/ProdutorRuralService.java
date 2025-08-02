@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.ProdutorRuralRequestDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ProdutorRuralMapper;
@@ -28,7 +29,7 @@ public class ProdutorRuralService {
         ProdutorRuralModel model = ProdutorRuralMapper.toEntity(dto);
         model.setSenha(passwordEncoder.encode(dto.getSenha()));
         model.setTipoUsuario(TipoUsuario.PRODUTOR_RURAL);
-        model.setAtivo(false);
+        model.setStatus(StatusUsuario.PENDENTE);
         produtorRuralRepository.save(model);
     }
 

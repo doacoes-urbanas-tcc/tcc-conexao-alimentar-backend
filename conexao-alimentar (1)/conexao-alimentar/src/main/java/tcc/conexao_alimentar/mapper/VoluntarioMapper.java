@@ -43,7 +43,8 @@ public class VoluntarioMapper {
             v.getTipoUsuario(),
             v.getFotoUrl(),
             v.getUrlCnh(),
-            v.getJustificativaReprovacao()
+            v.getJustificativaReprovacao(),
+            v.getStatus()
         );
     }
 

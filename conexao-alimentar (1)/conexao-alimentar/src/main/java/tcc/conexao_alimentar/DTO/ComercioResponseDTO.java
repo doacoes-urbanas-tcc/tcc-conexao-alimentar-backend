@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoComercio;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
@@ -23,6 +24,6 @@ public class ComercioResponseDTO {
     private TipoUsuario tipoUsuario;
     private String fotoUrl;
     private String justificativaReprovacao;
-    private Boolean ativo;
+   private StatusUsuario status;
 
 }

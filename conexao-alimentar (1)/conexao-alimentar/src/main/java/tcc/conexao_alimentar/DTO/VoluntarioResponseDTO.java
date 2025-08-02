@@ -3,6 +3,7 @@ package tcc.conexao_alimentar.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
@@ -21,6 +22,7 @@ public class VoluntarioResponseDTO {
     private String urlCnh;
     private String fotoUrl;
     private String justificativaReprovacao;
+    private StatusUsuario status;
 }
 
 

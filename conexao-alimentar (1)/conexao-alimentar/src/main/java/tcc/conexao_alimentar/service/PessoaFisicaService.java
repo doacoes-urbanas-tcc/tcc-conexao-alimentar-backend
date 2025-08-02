@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
@@ -33,7 +34,7 @@ public class PessoaFisicaService {
     
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
     model.setTipoUsuario(TipoUsuario.PESSOA_FISICA);
-    model.setAtivo(false);
+    model.setStatus(StatusUsuario.PENDENTE);
 
     String comprovanteUrl = fileUploadService.salvarArquivo(comprovante, "docs_comprovantes_pessoa_fisica");
     model.setDocumentoComprovante(comprovanteUrl);
