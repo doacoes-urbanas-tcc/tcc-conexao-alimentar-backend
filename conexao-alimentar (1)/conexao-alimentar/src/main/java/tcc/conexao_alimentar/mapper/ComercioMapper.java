@@ -34,7 +34,8 @@ public class ComercioMapper {
             EnderecoMapper.toDTO(c.getEndereco()), 
             c.getTipoUsuario(),
             c.getFotoUrl(),
-            c.getJustificativaReprovacao()
+            c.getJustificativaReprovacao(),
+            c.isAtivo()
         );
     }
 

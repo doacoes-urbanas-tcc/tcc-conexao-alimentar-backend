@@ -23,5 +23,6 @@ public class ComercioResponseDTO {
     private TipoUsuario tipoUsuario;
     private String fotoUrl;
     private String justificativaReprovacao;
+    private Boolean ativo;
 
 }

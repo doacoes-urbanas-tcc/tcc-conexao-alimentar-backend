@@ -22,6 +22,7 @@ import tcc.conexao_alimentar.mapper.VoluntarioTiMapper;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.model.VoluntarioTiModel;
+import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
@@ -34,7 +35,8 @@ public class VoluntarioService {
     private final UsuarioService usuarioService;
     private final VoluntarioTiRepository voluntarioTiRepository;
     private final FileUploadService fileUploadService;
-
+    private final UsuarioRepository usuarioRepository;
+    
    @Transactional
    public VoluntarioModel cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
@@ -129,6 +131,8 @@ public class VoluntarioService {
     dto.put("fotoUrl", voluntario.getFotoUrl());
     dto.put("tipoUsuario", voluntario.getTipoUsuario().name());
     dto.put("endereco", voluntario.getEndereco());
+    dto.put("ativo", voluntario.isAtivo());
+
 
     if (voluntario.getSetorAtuacao() == SetorAtuacao.TI) {
         voluntarioTiRepository.findByVoluntarioId(id).ifPresent(perfilTi -> {

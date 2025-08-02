@@ -32,7 +32,8 @@ public class PessoaFisicaMapper {
             EnderecoMapper.toDTO(pf.getEndereco()), 
             pf.getTipoUsuario(),
             pf.getFotoUrl(),
-            pf.getJustificativaReprovacao()
+            pf.getJustificativaReprovacao(),
+            pf.isAtivo()
         );
     }
 

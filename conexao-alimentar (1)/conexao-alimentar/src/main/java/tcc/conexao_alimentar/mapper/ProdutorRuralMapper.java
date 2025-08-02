@@ -29,7 +29,8 @@ public class ProdutorRuralMapper {
             p.getNumeroRegistroRural(), EnderecoMapper.toDTO(p.getEndereco()), 
             p.getTipoUsuario(),
             p.getFotoUrl(),
-            p.getJustificativaReprovacao()
+            p.getJustificativaReprovacao(),
+            p.isAtivo()
         );
     }
 
