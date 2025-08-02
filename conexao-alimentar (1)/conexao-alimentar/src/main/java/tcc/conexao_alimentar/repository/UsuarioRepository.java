@@ -22,4 +22,9 @@ public interface UsuarioRepository  extends JpaRepository<UsuarioModel,Long>{
     
     long countByAtivoIsFalseAndTipoUsuarioNot(TipoUsuario tipo); 
 
+    List<UsuarioModel> findTop5ByAtivoIsFalseAndTipoUsuarioNotOrderByIdDesc(TipoUsuario tipoExcluido);
+
+    
+
+
 }

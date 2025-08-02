@@ -293,4 +293,9 @@ public class UsuarioService {
     public long contarUsuariosInativos() {
         return usuarioRepository.countByAtivoIsFalseAndTipoUsuarioNot(TipoUsuario.ADMIN);
     }
+    public List<UsuarioModel> buscarUltimosPendentes() {
+    return usuarioRepository.findTop5ByAtivoIsFalseAndTipoUsuarioNotOrderByIdDesc(TipoUsuario.ADMIN);
+    }
+    
+
 }

@@ -13,5 +13,6 @@ public class UsuarioResponseDTO {
     private String email;
     private String telefone;
     private TipoUsuario tipoUsuario;
+    private String status;
 
 }
