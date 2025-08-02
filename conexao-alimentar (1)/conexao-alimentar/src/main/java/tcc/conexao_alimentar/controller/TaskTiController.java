@@ -103,6 +103,13 @@ public class TaskTiController {
         .map(TaskTiMapper::toDTO)
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
+   }
+   @GetMapping("/admin/{id}")
+   @PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<TaskTiResponseDTO> detalhesTaskAdmin(@PathVariable Long id) {
+    TaskTiModel task = taskService.buscarPorId(id);
+    return ResponseEntity.ok(TaskTiMapper.toDTO(task));
 }
+
 
 }
