@@ -123,6 +123,7 @@ public class DoacaoService {
     }
 
     doacao.setStatus(StatusDoacao.CONCLUIDA);
+    doacao.setDataConclusao(LocalDateTime.now()); 
     doacaoRepository.save(doacao);
 
     ReservaModel reserva = reservaRepository.findByDoacaoId(id)
@@ -132,22 +133,21 @@ public class DoacaoService {
     reserva.setDataReserva(LocalDateTime.now());
     reservaRepository.save(reserva);
     }
-
     public List<DoacaoResponseDTO> listarDoacoesDoDoador() {
     String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+    log.info("Email do doador autenticado: {}", emailUsuario);
+
     UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
         .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
 
     List<DoacaoModel> doacoes = doacaoRepository.findByDoador(doador);
+    log.info("Quantidade de doações encontradas: {}", doacoes.size());
 
     return doacoes.stream()
         .map(DoacaoMapper::toResponse)
         .collect(Collectors.toList());
     }
-    public long contarDoacoesAtivas() {
-    return doacaoRepository.countByStatus(StatusDoacao.PENDENTE) +
-           doacaoRepository.countByStatus(StatusDoacao.AGUARDANDO_RETIRADA);
-        }
+
 
 
 

@@ -63,7 +63,8 @@ public class DoacaoMapper {
             idReserva,
             nomeReceptor,
             idReceptor,
-            tipoReceptor
+            tipoReceptor,
+            doacao.getDataConclusao() != null ? doacao.getDataConclusao() : null
         );
     }
 }

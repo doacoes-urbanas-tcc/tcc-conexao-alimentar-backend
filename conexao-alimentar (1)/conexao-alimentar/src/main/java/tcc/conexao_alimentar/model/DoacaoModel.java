@@ -47,6 +47,8 @@ public class DoacaoModel {
     private UsuarioModel doador;
     @OneToOne(mappedBy = "doacao", cascade = CascadeType.ALL)
     private ReservaModel reserva;
+    @Column(name = "data_conclusao")
+    private LocalDateTime dataConclusao;
 
     
 }

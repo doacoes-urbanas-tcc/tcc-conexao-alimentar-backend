@@ -16,6 +16,7 @@ public interface ReservaRepository extends JpaRepository<ReservaModel,Long>{
     boolean existsByDoacao(DoacaoModel doacao);
     Optional<ReservaModel> findByDoacaoId(Long doacaoId);
     List<ReservaModel> findByReceptorId(Long receptor);
+    Optional<ReservaModel> findByDoacao(DoacaoModel doacao);
 
 
 

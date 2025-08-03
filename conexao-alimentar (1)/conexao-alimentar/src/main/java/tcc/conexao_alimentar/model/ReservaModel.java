@@ -31,7 +31,7 @@ public class ReservaModel {
     private DoacaoModel doacao;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "rceptor_id")
+    @JoinColumn(name = "receptor_id")
     private UsuarioModel receptor; 
 
     @Column(name = "data_reserva")

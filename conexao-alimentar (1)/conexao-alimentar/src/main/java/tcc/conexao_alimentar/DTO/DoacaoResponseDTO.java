@@ -28,5 +28,6 @@ public class DoacaoResponseDTO {
     private String nomeReceptor;
     private Long idReceptor;
     private String tipoReceptor;
+    private LocalDateTime DataConclusao;
 
 }
