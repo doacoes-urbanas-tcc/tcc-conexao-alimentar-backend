@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
+import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
@@ -127,6 +129,24 @@ public class VoluntarioController {
         VoluntarioResponseDTO dto = voluntarioService.buscarPorId(id);
         return ResponseEntity.ok(dto);
     }
+
+    @PatchMapping("/{id}/email")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
+       voluntarioService.atualizarEmail(id, dto.getNovoEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/senha")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
+    voluntarioService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
 
 
 

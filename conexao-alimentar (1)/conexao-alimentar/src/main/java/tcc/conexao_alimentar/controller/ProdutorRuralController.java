@@ -79,7 +79,7 @@ public class ProdutorRuralController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PRODUTOR_RURAL')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        produtorRuralService.atualizarSenha(id, dto.getNovaSenha());
+        produtorRuralService.atualizarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

@@ -91,7 +91,7 @@ public class PessoaFisicaCadastroController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PESOA_FISICA')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        pessoaFisicaService.atualizarSenha(id, dto.getNovaSenha());
+        pessoaFisicaService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

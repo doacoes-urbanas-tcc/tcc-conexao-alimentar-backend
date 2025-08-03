@@ -114,12 +114,17 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    @Transactional
-    public void atualizarSenha(Long id, String novaSenha) {
-        UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
-        usuario.setSenha(passwordEncoder.encode(novaSenha));
-        usuarioRepository.save(usuario);
+   public void atualizarSenha(Long id, String senhaAtual, String novaSenha) {
+    UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    
+    if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+        throw new RegraDeNegocioException("Senha atual incorreta.");
     }
+
+    usuario.setSenha(passwordEncoder.encode(novaSenha));
+    usuarioRepository.save(usuario);
+   }
+
 
     public List<Object> listarUsuariosPorStatus(StatusUsuario status) {
         return usuarioRepository.findByStatus(status).stream().map(usuario -> {

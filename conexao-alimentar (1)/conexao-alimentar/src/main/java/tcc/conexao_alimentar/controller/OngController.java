@@ -80,7 +80,7 @@ public class OngController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        ongService.atualizarSenha(id, dto.getNovaSenha());
+        ongService.atualizarSenha(id,dto.getSenhaAtual(), dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 
