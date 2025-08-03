@@ -45,7 +45,12 @@ public class SecurityConfig {
                     "/produtor-rural/**",
                     "/ong/**",
                     "/swagger-ui/**",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/teste-email",
+                    "/recuperar-senha",        
+                    "/redefinir-senha",         
+                    "/redefinir-senha.html",    
+                    "/js/**", "/css/**", "/img/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
