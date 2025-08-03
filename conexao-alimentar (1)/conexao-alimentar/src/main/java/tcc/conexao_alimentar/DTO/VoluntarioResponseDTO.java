@@ -1,12 +1,14 @@
 package tcc.conexao_alimentar.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tcc.conexao_alimentar.enums.SetorAtuacao;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class VoluntarioResponseDTO {
     private Long id;
     private String nome;
@@ -14,24 +16,14 @@ public class VoluntarioResponseDTO {
     private String telefone;
     private String cpf;
     private String documentoComprovante;
-    private SetorAtuacao setorAtuacao;
+    private String setorAtuacao;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
     private String urlCnh;
-
-    public VoluntarioResponseDTO(Long id, String nome, String email, String telefone,
-    String cpf, String documentoComprovante, SetorAtuacao setorAtuacao,
-    EnderecoDTO endereco, TipoUsuario tipoUsuario) {
-    this.id = id;
-    this.nome = nome;
-    this.email = email;
-    this.telefone = telefone;
-    this.cpf = cpf;
-    this.documentoComprovante = documentoComprovante;
-    this.setorAtuacao = setorAtuacao;
-    this.endereco = endereco;
-    this.tipoUsuario = tipoUsuario;
+    private String fotoUrl;
+    private String justificativaReprovacao;
+    private StatusUsuario status;
 }
 
-}
+
 

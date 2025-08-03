@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,24 +21,23 @@ import tcc.conexao_alimentar.service.AvaliacaoService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/avaliacoes")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AvaliacaoController {
     private final AvaliacaoService avaliacaoService;
 
-    @Operation(summary = "Avaliar um usuário")
-    @PostMapping("/avaliar/{avaliadoId}")
+    @PostMapping("/{reservaId}/avaliar")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AvaliacaoResponseDTO> avaliar(@PathVariable Long avaliadoId,@RequestBody @Valid AvaliacaoRequestDTO dto) {
-        AvaliacaoResponseDTO response = avaliacaoService.avaliar(avaliadoId, dto);
-        return ResponseEntity.ok(response);
-    }
+    public ResponseEntity<AvaliacaoResponseDTO> avaliarPorReserva(@PathVariable Long reservaId,@RequestBody @Valid AvaliacaoRequestDTO dto) {
+    AvaliacaoResponseDTO response = avaliacaoService.avaliarPorReserva(reservaId, dto);
+    return ResponseEntity.ok(response);
+   }
+
 
     @Operation(summary = "Listar avaliações de um usuário")
     @GetMapping("/{avaliadoId}")
     @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
-    public ResponseEntity<List<AvaliacaoResponseDTO>> listarAvaliacoes(
-            @PathVariable Long avaliadoId) {
+    public ResponseEntity<List<AvaliacaoResponseDTO>> listarAvaliacoes(@PathVariable Long avaliadoId) {
         return ResponseEntity.ok(avaliacaoService.listarAvaliacoesDoUsuario(avaliadoId));
     }
+
 
 }

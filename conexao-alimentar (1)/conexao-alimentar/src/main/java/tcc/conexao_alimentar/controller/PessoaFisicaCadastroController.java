@@ -1,16 +1,21 @@
 package tcc.conexao_alimentar.controller;
 
-import org.springframework.http.HttpStatus;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,16 +29,18 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaRequestDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
+import tcc.conexao_alimentar.model.PessoaFisicaModel;
+import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 
 @RestController
 @RequestMapping("pessoa-fisica")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Pessoas Físicas", description = "Endpoints para gerenciamento de pessoas físicas")
 public class PessoaFisicaCadastroController {
 
     private final PessoaFisicaService pessoaFisicaService;
+    private final FileUploadService fileUploadService;
 
     
     @Operation(summary = "Cadastro de pessoa física",description = "Permite que uma pessoa física se cadastre no sistema")
@@ -43,11 +50,21 @@ public class PessoaFisicaCadastroController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 
     })
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid  PessoaFisicaRequestDTO dto) {
-        pessoaFisicaService.cadastrar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+    @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> cadastrarPessoaFisica(
+    @RequestPart("dto") @Valid PessoaFisicaRequestDTO dto,
+    @RequestPart("comprovante") MultipartFile comprovante,
+    @RequestPart("file") MultipartFile foto) throws IOException {
+
+    PessoaFisicaModel model = pessoaFisicaService.cadastrar(dto, comprovante, foto);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", model.getId());
+
+    return ResponseEntity.ok(response);
+   }
+
+
 
     
     @Operation(summary = "Atualizar e-mail",description = "Permite que a pessoa atualize seu endereço de e-mail.")

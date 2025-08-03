@@ -1,7 +1,11 @@
 package tcc.conexao_alimentar.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,15 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
+import tcc.conexao_alimentar.DTO.QrCodeResponseDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.model.ReservaModel;
+import tcc.conexao_alimentar.repository.ReservaRepository;
+import tcc.conexao_alimentar.service.CloudinaryService;
 import tcc.conexao_alimentar.service.QrCodeService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/qr-code")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QrCodeController {
 
     
     private final QrCodeService qrCodeService;
+    private final CloudinaryService cloudinaryService;
+    private final ReservaRepository reservaRepository;
 
     @PostMapping("/generate/{doacaoId}")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
@@ -38,4 +48,30 @@ public class QrCodeController {
             return ResponseEntity.status(500).body("Erro ao gerar QR Code.");
         }
     }
+    @GetMapping("/url/{doacaoId}")
+    public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {
+    ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
+
+    String url = reserva.getUrlQrCode();
+
+    if (url == null || url.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    LocalDateTime dataReserva = reserva.getDataReserva(); 
+    long segundosTotais = 7200;
+    long segundosPassados = Duration.between(dataReserva, LocalDateTime.now()).getSeconds();
+    long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);
+
+    QrCodeResponseDTO response = new QrCodeResponseDTO();
+    response.setUrl(url);
+    response.setSegundosRestantes(segundosRestantes);
+    response.setReservaId(reserva.getId());
+    response.setDataReserva(dataReserva);
+    response.setStatusReserva(reserva.getStatus().name()); 
+
+    return ResponseEntity.ok(response);
+}
+
 }

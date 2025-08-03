@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
@@ -28,7 +29,7 @@ public class ComercioService {
         ComercioModel model = ComercioMapper.toEntity(dto);
         model.setSenha(passwordEncoder.encode(dto.getSenha()));
         model.setTipoUsuario(TipoUsuario.COMERCIO);
-        model.setAtivo(false);
+        model.setStatus(StatusUsuario.PENDENTE);
         comercioRepository.save(model);
     }
 

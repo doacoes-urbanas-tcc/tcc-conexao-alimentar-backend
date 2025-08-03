@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.OngMapper;
@@ -28,7 +29,7 @@ public class OngService {
         OngModel model = OngMapper.toEntity(dto);
         model.setSenha(passwordEncoder.encode(dto.getSenha()));
         model.setTipoUsuario(TipoUsuario.ONG);
-        model.setAtivo(false);
+        model.setStatus(StatusUsuario.PENDENTE);
         ongRepository.save(model);
     }
 

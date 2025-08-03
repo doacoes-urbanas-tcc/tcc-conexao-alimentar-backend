@@ -25,7 +25,7 @@ public class VoluntarioModel extends UsuarioModel{
     private String cpf;
     @Column(name = "documento_comprovante", nullable = false)
     private String documentoComprovante;
-    @Column(name = "seto_atuacao", nullable = false)
+    @Column(name = "setor_atuacao", nullable = false)
     @Enumerated(EnumType.STRING)
     private SetorAtuacao setorAtuacao;
 

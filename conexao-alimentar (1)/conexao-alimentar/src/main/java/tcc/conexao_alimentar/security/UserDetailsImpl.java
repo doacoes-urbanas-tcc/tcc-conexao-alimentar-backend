@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -42,6 +43,9 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() { return usuario.isAtivo(); }
+    public boolean isEnabled() {
+    return usuario.getStatus() == StatusUsuario.ATIVO;
+}
+
 }
 

@@ -31,8 +31,8 @@ public class ReservaModel {
     private DoacaoModel doacao;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "beneficiario")
-    private UsuarioModel beneficiario; 
+    @JoinColumn(name = "receptor_id")
+    private UsuarioModel receptor; 
 
     @Column(name = "data_reserva")
     private LocalDateTime dataReserva;
@@ -43,6 +43,18 @@ public class ReservaModel {
 
     @Column(name = "justificativa")
     private String justificativaCancelamento;
+
+    @Column(name = "url_qrcode")
+    private String urlQrCode;
+
+    @Column(name = "avaliacao_doador")
+    private Boolean avaliacaoFeitaPeloDoador = false;
+
+    @Column(name = "avaliacao_receptor")
+    private Boolean avaliacaoFeitaPeloReceptor = false;
+    @Column(name = "data_hora_expiracao")
+    private LocalDateTime dataHoraExpiracao;
+
     
 
 

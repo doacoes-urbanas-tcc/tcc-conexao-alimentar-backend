@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
@@ -45,7 +46,14 @@ public abstract class UsuarioModel {
     @Column(name = "tipo_usuario", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
-    @Column(name = "ativo", nullable = false)
-    private boolean ativo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusUsuario status;
+    @Column(name = "foto_url")
+    private String fotoUrl;
+    @Column(name = "justificativa_reprovacao")
+    private String justificativaReprovacao;
+
+
 
 }

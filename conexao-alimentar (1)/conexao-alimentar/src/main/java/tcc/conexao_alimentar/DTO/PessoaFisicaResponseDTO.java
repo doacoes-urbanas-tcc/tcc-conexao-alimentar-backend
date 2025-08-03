@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 
 @Data
@@ -18,4 +19,7 @@ public class PessoaFisicaResponseDTO {
     private String documentoComprovante;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
+    private String justificativaReprovacao;
+    private StatusUsuario status;
 }

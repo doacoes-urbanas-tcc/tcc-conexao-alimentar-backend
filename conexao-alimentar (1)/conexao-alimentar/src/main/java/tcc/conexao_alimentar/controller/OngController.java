@@ -1,32 +1,35 @@
 package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.OngMapper;
+import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.OngService;
 
 @RestController
 @RequestMapping("/ong")
 @RequiredArgsConstructor
 @Tag(name = "ONG's", description = "Endpoints para gerenciamento de ONG's")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OngController {
 
     
     private final OngService ongService;
+    private final FileUploadService fileUploadService;
 
     
     @Operation(summary = "Cadastro de ONG",description = "Permite que uma ONG se cadastre no sistema")
@@ -37,11 +40,21 @@ public class OngController {
 
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid OngRequestDTO dto) {
-        ongService.cadastrar(dto);
-        return ResponseEntity.ok("ONG cadastrada com sucesso! Aguarde aprovação.");
+    public ResponseEntity<String> cadastrarOng(
+    @RequestPart("dto") OngRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
+
+    if (file.isEmpty()) {
+        throw new RegraDeNegocioException("Logo da ong é obrigatória.");
     }
 
+    String url = fileUploadService.salvarArquivo(file, "usuarios"); 
+    dto.setFotoUrl(url); 
+
+    ongService.cadastrar(dto);
+    return ResponseEntity.ok("Comércio cadastrado com sucesso!");
+}
+
+    
     
     @Operation(summary = "Atualizar e-mail",description = "Permite que a ONG atualize seu endereço de e-mail.")
     @ApiResponses({

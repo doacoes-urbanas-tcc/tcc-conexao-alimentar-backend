@@ -3,7 +3,8 @@ package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
+import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
 
 @RestController
 @RequestMapping("/voluntario")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Voluntários", description = "Endpoints para gerenciamento de voluntários")
 public class VoluntarioController {
@@ -43,12 +44,20 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 
-        })
+    })
     @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> cadastrar(@RequestPart("dados") @Valid VoluntarioRequestDTO dto,@RequestPart("arquivo") MultipartFile arquivo)throws IOException {
-    voluntarioService.cadastrar(dto, arquivo);
-    return ResponseEntity.ok("Voluntário cadastrado com sucesso! Aguarde aprovação.");
-    }
+    public ResponseEntity<Map<String, Object>> cadastrarVoluntario(
+    @RequestPart("dto") @Valid VoluntarioRequestDTO dto,
+    @RequestPart("comprovante") MultipartFile comprovante,
+    @RequestPart("file") MultipartFile foto) throws IOException {
+
+    VoluntarioModel voluntario = voluntarioService.cadastrar(dto, comprovante, foto);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", voluntario.getId());
+
+    return ResponseEntity.ok(response);
+   }
 
     
     @Operation(summary = "Cadastro de veículo ",description = "Permite que um usuário que se cadastra om voluntário e escolhe ser transportador cadastre seu veículo no sistema")
@@ -73,12 +82,14 @@ public class VoluntarioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
-    @PostMapping("/{voluntarioId}/perfil-ti")
-    @PreAuthorize("hasRole('VOLUNTARIO')")
-    public ResponseEntity<Void> cadastrarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
-        voluntarioService.cadastrarPerfilTI(voluntarioId, dto);
-        return ResponseEntity.ok().build();
-    }
+    @PostMapping(value = "/{voluntarioId}/perfil-ti", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> cadastrarPerfilTI(@PathVariable Long voluntarioId,@RequestPart("dados") @Valid VoluntarioTiRequestDTO dto,@RequestPart("certificacoesFile") MultipartFile certificacoesFile) throws IOException {
+    String url = fileUploadService.salvarArquivo(certificacoesFile, "certificacoes_ti");
+    dto.setCertificacoes(url);
+
+    voluntarioService.cadastrarPerfilTI(voluntarioId, dto);
+    return ResponseEntity.ok().build();
+   }
     
     @Operation(summary = "Visualizar perfil TI", description = "Retorna o perfil TI do voluntário")
     @ApiResponses({
@@ -99,22 +110,9 @@ public class VoluntarioController {
     })
     @PatchMapping("/{voluntarioId}/perfil-ti")
     @PreAuthorize("hasRole('VOLUNTARIO')")
-    public ResponseEntity<Void> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
+    public ResponseEntity<Map<String, Long>> atualizarPerfilTI(@PathVariable Long voluntarioId, @RequestBody @Valid VoluntarioTiRequestDTO dto) {
         voluntarioService.atualizarPerfilTI(voluntarioId, dto);
-        return ResponseEntity.ok().build();
-    }
-    
-    @Operation(summary = "Listar todos os voluntários",description = "Lista todos os voluntários cadastrados no sistema")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de voluntários retornada com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
-    })
-    @GetMapping
-    public ResponseEntity<List<VoluntarioResponseDTO>> listarTodos() {
-        List<VoluntarioResponseDTO> lista = voluntarioService.listarTodos();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(Map.of("id", voluntarioId));
     }
 
     @Operation(summary = "Listar voluntário por id",description = "Busca o voluntário por id")

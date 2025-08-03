@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 @Data
 @NoArgsConstructor
@@ -16,5 +17,8 @@ public class OngResponseDTO {
     private String descricao;
     private EnderecoDTO endereco;
     private TipoUsuario tipoUsuario;
+    private String fotoUrl;
+    private String justificativaReprovacao;
+    private StatusUsuario status;
 
 }

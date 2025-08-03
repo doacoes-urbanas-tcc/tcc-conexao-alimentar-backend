@@ -1,14 +1,17 @@
 package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.ComercioRequestDTO;
@@ -16,16 +19,17 @@ import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.ComercioMapper;
 import tcc.conexao_alimentar.service.ComercioService;
+import tcc.conexao_alimentar.service.FileUploadService;
 
 @RestController
 @RequestMapping("/comercio")
 @RequiredArgsConstructor
 @Tag(name = "Comércios", description = "Endpoints para gerenciamento de comércios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ComercioController {
 
     
     private final ComercioService comercioService;
+    private final FileUploadService fileUploadService;
 
     @Operation(summary = "Cadastro de comércio",description = "Permite que um usuário cadastre um comércio no sistema")
     @ApiResponses(value = {
@@ -35,10 +39,19 @@ public class ComercioController {
 
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid ComercioRequestDTO dto) {
-        comercioService.cadastrar(dto);
-        return ResponseEntity.ok("Comércio cadastrado com sucesso! Aguarde aprovação.");
+    public ResponseEntity<String> cadastrarComercio(
+    @RequestPart("dto") ComercioRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
+
+    if (file.isEmpty()) {
+        throw new RegraDeNegocioException("Logo da empresa é obrigatória.");
     }
+
+    String url = fileUploadService.salvarArquivo(file, "usuarios"); 
+    dto.setFotoUrl(url); 
+
+    comercioService.cadastrar(dto);
+    return ResponseEntity.ok("Comércio cadastrado com sucesso!");
+}
 
     @Operation(summary = "Atualizar e-mail",description = "Permite que o comércio atualize seu endereço de e-mail.")
     @ApiResponses({

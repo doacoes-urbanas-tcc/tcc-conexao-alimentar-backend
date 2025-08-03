@@ -5,20 +5,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
+import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.DoacaoMapper;
 import tcc.conexao_alimentar.model.DoacaoModel;
+import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.DoacaoRepository;
+import tcc.conexao_alimentar.repository.ReservaRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 
+import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +37,10 @@ public class DoacaoService {
 
     private final DoacaoRepository doacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FileUploadService fileUploadService; 
+    private final ReservaRepository reservaRepository;
 
-    public void cadastrar(DoacaoRequestDTO dto) {
+    public void cadastrar(DoacaoRequestDTO dto, MultipartFile file) throws IOException {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
             .orElseThrow(() -> new RuntimeException("Doador não encontrado."));
@@ -55,13 +64,14 @@ public class DoacaoService {
                 throw new RegraDeNegocioException("Categoria é obrigatóira.");
                 
             }
-            dto.setUrlImagem(dto.getUrlImagem()); 
+            String url = fileUploadService.salvarArquivo(file, "doacoes"); 
+            dto.setUrlImagem(url); 
+
 
             
            
         DoacaoModel model = DoacaoMapper.toEntity(dto, doador);
         model.setDataExpiracao(model.getDataCadastro().plusHours(48));
-        log.info("Doação cadastrada para {}", doador.getEmail());
 
         doacaoRepository.save(model);
 
@@ -98,12 +108,50 @@ public class DoacaoService {
     public void validarQrCode(Long id) {
     DoacaoModel doacao = doacaoRepository.findById(id)
         .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada"));
+
     if (doacao.getStatus() != StatusDoacao.AGUARDANDO_RETIRADA) {
         throw new RegraDeNegocioException("Doação não pode ser validada neste status.");
     }
+
+    if (doacao.getDataCadastro() == null) {
+        throw new RegraDeNegocioException("Doação não possui data de reserva definida.");
+    }
+
+    Duration duracao = Duration.between(doacao.getDataCadastro(), LocalDateTime.now());
+    if (duracao.toHours() >= 2) {
+        throw new RegraDeNegocioException("QR Code expirado. A reserva passou do prazo de 2 horas.");
+    }
+
     doacao.setStatus(StatusDoacao.CONCLUIDA);
+    doacao.setDataConclusao(LocalDateTime.now()); 
     doacaoRepository.save(doacao);
-}
+
+    ReservaModel reserva = reservaRepository.findByDoacaoId(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
+
+    reserva.setStatus(StatusReserva.RETIRADA);
+    reserva.setDataReserva(LocalDateTime.now());
+    reservaRepository.save(reserva);
+    }
+    public List<DoacaoResponseDTO> listarDoacoesDoDoador() {
+    String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+    log.info("Email do doador autenticado: {}", emailUsuario);
+
+    UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
+        .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
+
+    List<DoacaoModel> doacoes = doacaoRepository.findByDoador(doador);
+    log.info("Quantidade de doações encontradas: {}", doacoes.size());
+
+    return doacoes.stream()
+        .map(DoacaoMapper::toResponse)
+        .collect(Collectors.toList());
+    }
+
+
+
+
+
 
 
 }

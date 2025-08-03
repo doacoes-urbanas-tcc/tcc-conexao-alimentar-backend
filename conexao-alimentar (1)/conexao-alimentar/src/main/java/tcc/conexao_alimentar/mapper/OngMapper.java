@@ -17,13 +17,23 @@ public class OngMapper {
         o.setDescricao(dto.getDescricao());
         o.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         o.setTipoUsuario(TipoUsuario.ONG);
+        o.setFotoUrl(dto.getFotoUrl());
         return o;
     }
 
     public static OngResponseDTO toResponse(OngModel o) {
         return new OngResponseDTO(
-            o.getId(), o.getNome(), o.getEmail(), o.getTelefone(),
-            o.getCnpj(), o.getDescricao(), EnderecoMapper.toDTO(o.getEndereco()), o.getTipoUsuario()
+            o.getId(), 
+            o.getNome(), 
+            o.getEmail(), 
+            o.getTelefone(),
+            o.getCnpj(), 
+            o.getDescricao(), 
+            EnderecoMapper.toDTO(o.getEndereco()), 
+            o.getTipoUsuario(),
+            o.getFotoUrl(),
+            o.getJustificativaReprovacao(),
+            o.getStatus()
         );
     }
 

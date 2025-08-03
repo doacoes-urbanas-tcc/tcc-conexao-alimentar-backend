@@ -1,8 +1,8 @@
 package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
 import tcc.conexao_alimentar.enums.SetorAtuacao;
+import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
@@ -22,6 +23,7 @@ import tcc.conexao_alimentar.mapper.VoluntarioTiMapper;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.model.VoluntarioTiModel;
+import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
@@ -34,25 +36,24 @@ public class VoluntarioService {
     private final UsuarioService usuarioService;
     private final VoluntarioTiRepository voluntarioTiRepository;
     private final FileUploadService fileUploadService;
-
-    @Transactional
-    public void cadastrar(VoluntarioRequestDTO dto, MultipartFile arquivo) throws IOException {
+    private final UsuarioRepository usuarioRepository;
+    
+   @Transactional
+   public VoluntarioModel cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
     VoluntarioModel model = VoluntarioMapper.toEntity(dto);
     model.setSenha(passwordEncoder.encode(dto.getSenha()));
     model.setTipoUsuario(TipoUsuario.VOLUNTARIO);
-    model.setAtivo(false);
+    model.setStatus(StatusUsuario.PENDENTE);
 
-    String caminhoArquivo = fileUploadService.salvarArquivo(arquivo, "docs_comprovantes_voluntarios");
-    model.setDocumentoComprovante(caminhoArquivo);
+    String comprovanteUrl = fileUploadService.salvarArquivo(comprovante, "docs_comprovantes_voluntarios");
+    model.setDocumentoComprovante(comprovanteUrl);
 
-     voluntarioRepository.save(model);
-    }
-    public List<VoluntarioResponseDTO> listarTodos() {
-        return voluntarioRepository.findAll()         
-            .stream()                              
-            .map(VoluntarioMapper::toResponse)        
-            .collect(Collectors.toList());         
-    }
+    String fotoUrl = fileUploadService.salvarArquivo(foto, "usuarios");
+    model.setFotoUrl(fotoUrl);
+
+    return voluntarioRepository.save(model); }
+
+
 
     public VoluntarioResponseDTO buscarPorId(Long id) {
     VoluntarioModel voluntario = voluntarioRepository.findById(id)
@@ -117,6 +118,46 @@ public class VoluntarioService {
 
         voluntarioTiRepository.save(model);
     }
+    public Map<String, Object> visualizarPerfilVoluntario(Long id) {
+    VoluntarioModel voluntario = voluntarioRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+
+    Map<String, Object> dto = new HashMap<>();
+    dto.put("id", voluntario.getId());
+    dto.put("nome", voluntario.getNome());
+    dto.put("email", voluntario.getEmail());
+    dto.put("telefone", voluntario.getTelefone());
+    dto.put("cpf", voluntario.getCpf());
+    dto.put("setorAtuacao", voluntario.getSetorAtuacao().name());
+    dto.put("documentoComprovante", voluntario.getDocumentoComprovante());
+    dto.put("fotoUrl", voluntario.getFotoUrl());
+    dto.put("tipoUsuario", voluntario.getTipoUsuario().name());
+    dto.put("endereco", voluntario.getEndereco());
+    dto.put("status", voluntario.getStatus().name());
+
+    if (voluntario.getSetorAtuacao() == SetorAtuacao.TI) {
+        voluntarioTiRepository.findByVoluntarioId(id).ifPresent(perfilTi -> {
+            dto.put("stackConhecimento", perfilTi.getStackConhecimento());
+            dto.put("certificacoes", perfilTi.getCertificacoes());
+            dto.put("experiencia", perfilTi.getExperiencia());
+            dto.put("linkedin", perfilTi.getLinkedin());
+            dto.put("github", perfilTi.getGithub());
+            dto.put("disponibilidadeHoras", perfilTi.getDisponibilidadeHoras());
+        });
+    }
+
+    if (voluntario.getSetorAtuacao() == SetorAtuacao.TRANSPORTE) {
+        if (voluntario.getVeiculo() != null) {
+            dto.put("placaVeiculo", voluntario.getVeiculo().getPlaca());
+            dto.put("modeloVeiculo", voluntario.getVeiculo().getModelo());
+            dto.put("corVeiculo", voluntario.getVeiculo().getCor());
+            dto.put("capacidadeCarga", voluntario.getVeiculo().getCapacidadeCarga());
+            dto.put("fotoCNH", voluntario.getVeiculo().getUrlCnh());
+        }
+    }
+
+    return dto;
+}
+
 
     
 }

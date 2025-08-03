@@ -35,6 +35,10 @@ public class CloudinaryService {
 
     Map uploadResult = cloudinary.uploader().upload(dataUri, uploadParams);
     return uploadResult.get("secure_url").toString();
+   }
+   public String getPublicUrl(String publicId) {
+    return "https://res.cloudinary.com/du9zmknbe/image/upload/" + publicId + ".png";
 }
+
 
 }

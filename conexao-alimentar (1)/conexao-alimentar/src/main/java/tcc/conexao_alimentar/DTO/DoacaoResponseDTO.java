@@ -24,5 +24,10 @@ public class DoacaoResponseDTO {
     private String doadorNome;
     private Long doadorId;
     private String urlImagem;
+    private Long idReserva;
+    private String nomeReceptor;
+    private Long idReceptor;
+    private String tipoReceptor;
+    private LocalDateTime DataConclusao;
 
 }

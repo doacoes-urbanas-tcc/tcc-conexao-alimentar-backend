@@ -11,5 +11,6 @@ public class QrCodeDTO {
     private String dataValidade;
     private String descricao;
     private String categoria;
+    
 
 }

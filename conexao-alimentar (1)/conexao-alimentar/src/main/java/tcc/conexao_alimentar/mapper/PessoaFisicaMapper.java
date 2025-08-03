@@ -17,14 +17,23 @@ public class PessoaFisicaMapper {
         pf.setDocumentoComprovante(dto.getDocumentoComprovante());
         pf.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         pf.setTipoUsuario(TipoUsuario.PESSOA_FISICA);
+        pf.setFotoUrl(dto.getFotoUrl());
         return pf;
     }
 
     public static PessoaFisicaResponseDTO toResponse(PessoaFisicaModel pf) {
         return new PessoaFisicaResponseDTO(
-            pf.getId(), pf.getNome(), pf.getEmail(), pf.getTelefone(),
-            pf.getCpf(), pf.getDocumentoComprovante(),
-            EnderecoMapper.toDTO(pf.getEndereco()), pf.getTipoUsuario()
+            pf.getId(), 
+            pf.getNome(), 
+            pf.getEmail(), 
+            pf.getTelefone(),
+            pf.getCpf(), 
+            pf.getDocumentoComprovante(),
+            EnderecoMapper.toDTO(pf.getEndereco()), 
+            pf.getTipoUsuario(),
+            pf.getFotoUrl(),
+            pf.getJustificativaReprovacao(),
+            pf.getStatus()
         );
     }
 

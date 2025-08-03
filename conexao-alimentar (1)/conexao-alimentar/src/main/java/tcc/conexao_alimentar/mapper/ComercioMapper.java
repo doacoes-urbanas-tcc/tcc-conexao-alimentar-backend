@@ -18,15 +18,25 @@ public class ComercioMapper {
         c.setTipoComercio(dto.getTipoComercio());
         c.setEndereco(EnderecoMapper.toEntity(dto.getEndereco()));
         c.setTipoUsuario(TipoUsuario.COMERCIO);
+        c.setFotoUrl(dto.getFotoUrl());
         return c;
     }
 
-    public static ComercioResponseDTO toResponse(ComercioModel c) {
-        return new ComercioResponseDTO(
-            c.getId(), c.getNome(), c.getEmail(), c.getTelefone(),
-            c.getCnpj(), c.getNomeFantasia(), c.getTipoComercio(),
-            EnderecoMapper.toDTO(c.getEndereco()), c.getTipoUsuario()
-        );
-    }
+   public static ComercioResponseDTO toResponse(ComercioModel c) {
+    return new ComercioResponseDTO(
+        c.getId(),
+        c.getNome(),
+        c.getEmail(),
+        c.getTelefone(),
+        c.getCnpj(),
+        c.getNomeFantasia(),
+        c.getTipoComercio(),
+        EnderecoMapper.toDTO(c.getEndereco()),
+        c.getTipoUsuario(),
+        c.getFotoUrl(),
+        c.getJustificativaReprovacao(),
+        c.getStatus()
+    );
+}
 
 }
