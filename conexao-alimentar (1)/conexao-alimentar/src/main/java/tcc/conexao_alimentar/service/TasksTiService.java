@@ -1,23 +1,33 @@
 package tcc.conexao_alimentar.service;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.TaskTiRequestDTO;
 import tcc.conexao_alimentar.mapper.TaskTiMapper;
 import tcc.conexao_alimentar.model.TaskTiModel;
+import tcc.conexao_alimentar.model.UsuarioModel;
+import tcc.conexao_alimentar.model.VoluntarioModel;
+import tcc.conexao_alimentar.model.VoluntarioTiModel;
 import tcc.conexao_alimentar.repository.TaskTiRepository;
+import tcc.conexao_alimentar.repository.UsuarioRepository;
+import tcc.conexao_alimentar.repository.VoluntarioRepository;
+import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
 @Service
+@RequiredArgsConstructor
 public class TasksTiService {
 
-    @Autowired
-    private TaskTiRepository taskTiRepository;
+    private final TaskTiRepository taskTiRepository;
+    private final VoluntarioTiRepository voluntarioTiRepository;
+    private final VoluntarioRepository voluntarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public TaskTiModel criar(TaskTiRequestDTO dto) {
         TaskTiModel model = TaskTiMapper.toEntity(dto);
@@ -44,5 +54,26 @@ public class TasksTiService {
 
     public long contarTasksAbertas() {
     return taskTiRepository.countByFechadaFalse();
+    }
+
+    public List<TaskTiModel> listarRecomendadasParaVoluntario(UsuarioModel usuario) {
+        VoluntarioModel voluntario = voluntarioRepository.findByUsuarioId(usuario.getId())
+                .orElseThrow(() -> new RuntimeException("Voluntário não encontrado"));
+
+        VoluntarioTiModel ti = voluntarioTiRepository.findByVoluntarioId(voluntario.getId())
+                .orElseThrow(() -> new RuntimeException("Perfil de TI não encontrado"));
+
+        String stack = ti.getStackConhecimento(); 
+        List<String> palavrasChave = Arrays.stream(stack.split(","))
+            .map(String::trim)
+            .map(String::toLowerCase)
+            .toList();
+
+        List<TaskTiModel> todasTasks = taskTiRepository.findByFechadaFalseOrderByDataCriacaoDesc();
+
+        return todasTasks.stream()
+            .filter(task -> task.getTags().stream()
+                .anyMatch(tag -> palavrasChave.contains(tag.toLowerCase())))
+            .toList();
     }
 }

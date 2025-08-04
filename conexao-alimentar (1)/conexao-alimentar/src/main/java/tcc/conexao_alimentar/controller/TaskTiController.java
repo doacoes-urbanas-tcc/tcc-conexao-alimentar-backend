@@ -24,6 +24,7 @@ import tcc.conexao_alimentar.mapper.RespostaTaskMapper;
 import tcc.conexao_alimentar.mapper.TaskTiMapper;
 import tcc.conexao_alimentar.model.RespostaTaskModel;
 import tcc.conexao_alimentar.model.TaskTiModel;
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.service.RespostaTaskService;
 import tcc.conexao_alimentar.service.TasksTiService;
 
@@ -109,7 +110,19 @@ public class TaskTiController {
    public ResponseEntity<TaskTiResponseDTO> detalhesTaskAdmin(@PathVariable Long id) {
     TaskTiModel task = taskService.buscarPorId(id);
     return ResponseEntity.ok(TaskTiMapper.toDTO(task));
+   }
+
+   @GetMapping("/voluntario/recomendadas")
+   @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<List<TaskTiResponseDTO>> listarTasksRecomendadas() {
+    UsuarioModel usuario = tcc.conexao_alimentar.security.SecurityUtils.getUsuarioLogado();
+    List<TaskTiModel> tasks = taskService.listarRecomendadasParaVoluntario(usuario);
+    List<TaskTiResponseDTO> dtos = tasks.stream()
+        .map(TaskTiMapper::toDTO)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(dtos);
 }
+
 
 
 }
