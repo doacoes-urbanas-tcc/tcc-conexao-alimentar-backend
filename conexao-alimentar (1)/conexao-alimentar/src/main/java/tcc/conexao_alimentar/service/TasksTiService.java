@@ -57,7 +57,7 @@ public class TasksTiService {
     }
 
     public List<TaskTiModel> listarRecomendadasParaVoluntario(UsuarioModel usuario) {
-        VoluntarioModel voluntario = voluntarioRepository.findByUsuarioId(usuario.getId())
+        VoluntarioModel voluntario = voluntarioRepository.findById(usuario.getId())
                 .orElseThrow(() -> new RuntimeException("Voluntário não encontrado"));
 
         VoluntarioTiModel ti = voluntarioTiRepository.findByVoluntarioId(voluntario.getId())
