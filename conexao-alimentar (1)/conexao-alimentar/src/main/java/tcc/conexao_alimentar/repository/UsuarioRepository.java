@@ -25,6 +25,9 @@ public interface UsuarioRepository  extends JpaRepository<UsuarioModel,Long>{
 
     List<UsuarioModel> findTop5ByStatusAndTipoUsuarioNotOrderByIdDesc(StatusUsuario status, TipoUsuario tipoExcluido);
 
+    List<UsuarioModel> findByStatusAndTipoUsuarioNot(StatusUsuario status, TipoUsuario tipoUsuario);
+
+
 
 
 

@@ -25,7 +25,9 @@ import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
+import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.service.ComercioService;
+import tcc.conexao_alimentar.service.EmailService;
 import tcc.conexao_alimentar.service.OngService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 import tcc.conexao_alimentar.service.ProdutorRuralService;
@@ -44,6 +46,8 @@ public class UsuarioController {
     private final PessoaFisicaService pessoaFisicaService;
     private final ProdutorRuralService produtorRuralService;
     private final VoluntarioService voluntarioService;
+    private final EmailService emailService;
+    private final UsuarioRepository usuarioRepository;
 
     @GetMapping("/pendentes/{tipo}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -116,17 +120,34 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Aprovar usuário por ID", description = "Aprova um cadastro pendente.")
     public ResponseEntity<String> aprovarUsuario(@PathVariable Long id) {
-        usuarioService.aprovarUsuario(id);
-        return ResponseEntity.ok("Usuário aprovado com sucesso!");
-    }
+    UsuarioModel usuario = usuarioService.aprovarUsuario(id); 
+    emailService.enviarEmailAprovacaoCadastro(usuario.getNome(), usuario.getEmail());
+    return ResponseEntity.ok("Usuário aprovado com sucesso!");
+   }
 
     @PatchMapping("/reprovar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Reprovar usuário por ID", description = "Reprova/desativa um cadastro.")
     public ResponseEntity<Void> reprovarUsuario(@PathVariable Long id, @RequestBody JustificativaRequestDTO justificativaRequest) {
-        usuarioService.reprovarUsuario(id, justificativaRequest.getMotivo());
-        return ResponseEntity.ok().build();
+    UsuarioModel usuario = usuarioService.reprovarUsuario(id, justificativaRequest.getMotivo());
+    emailService.enviarEmailReprovacaoCadastro(usuario.getNome(), usuario.getEmail());
+    return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/desativar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Desativar usuário", description = "Desativa um usuário e envia justificativa por e-mail.")
+     public ResponseEntity<Void> desativarUsuario(@PathVariable Long id, @RequestBody JustificativaRequestDTO justificativaRequest) {
+    UsuarioModel usuario = usuarioService.buscarPorId(id).orElseThrow();
+    usuario.setStatus(StatusUsuario.DESATIVADO);
+    usuario.setJustificativaReprovacao(justificativaRequest.getMotivo());
+    usuarioRepository.save(usuario);
+
+    emailService.enviarEmailContaDesativada(usuario.getNome(), usuario.getEmail(), justificativaRequest.getMotivo());
+
+    return ResponseEntity.ok().build();
+    }
+
 
 
     @GetMapping("/perfil")
