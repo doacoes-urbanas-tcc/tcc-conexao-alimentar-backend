@@ -11,24 +11,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
 import tcc.conexao_alimentar.DTO.QrCodeResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.repository.ReservaRepository;
-import tcc.conexao_alimentar.service.CloudinaryService;
 import tcc.conexao_alimentar.service.QrCodeService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/qr-code")
+@Tag(name = "QR Code", description = "Endpoints para geração de QR Codes de reserva")
 public class QrCodeController {
 
     
     private final QrCodeService qrCodeService;
-    private final CloudinaryService cloudinaryService;
     private final ReservaRepository reservaRepository;
 
+
+    @Operation(summary = "Geração de QR Code ",description = "Endpoint para que o QR Code seja gerado ao realizar uma reserva")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "QR Code gerado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Reserva não encontrada")
+    })
     @PostMapping("/generate/{doacaoId}")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
         try {
@@ -48,6 +59,14 @@ public class QrCodeController {
             return ResponseEntity.status(500).body("Erro ao gerar QR Code.");
         }
     }
+
+    @Operation(summary = "Geração de QR Code com tempo de expiração",description = "Endpoint para geração de QR Code com tempo de expiração de 2 horas apartir do momento em que a reserva é efetuada")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Produtor rural não encontrado")
+    })
     @GetMapping("/url/{doacaoId}")
     public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
@@ -72,6 +91,6 @@ public class QrCodeController {
     response.setStatusReserva(reserva.getStatus().name()); 
 
     return ResponseEntity.ok(response);
-}
+   }
 
 }

@@ -13,6 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import tcc.conexao_alimentar.DTO.LoginRequestDTO;
 import tcc.conexao_alimentar.DTO.LoginResponseDTO;
 import tcc.conexao_alimentar.model.RecuperarSenhaToken;
@@ -43,8 +47,16 @@ public class AuthController {
     return passwordEncoder.encode("123456");
 
     
-     }
+    }
 
+    
+    @Operation(summary = "Login de usuários",description = "Permite que um usuário faça login no sistema")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Login efetuado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
+
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO dto) {
     try {
@@ -66,6 +78,14 @@ public class AuthController {
     }
     }
 
+    
+    @Operation(summary = "Recuperação de senha",description = "Permite que um usuário solicite um email para a recupeção de senha")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Senha recuperada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
+
+    })
 
     @PostMapping("/recuperar-senha")
     public ResponseEntity<String> solicitarRecuperacao(@RequestBody Map<String, String> body) {
@@ -119,6 +139,14 @@ public class AuthController {
     return ResponseEntity.ok("E-mail de redefinição enviado.");
    }
 
+   
+    @Operation(summary = "Redefinição de senha",description = "Permite que um usuário redefina sua senha atual, estando logado")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Senha recuperada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
+
+    })
     @PostMapping("/redefinir-senha")
     public ResponseEntity<String> redefinirSenha(@RequestBody Map<String, String> body) {
         String token = body.get("token");
