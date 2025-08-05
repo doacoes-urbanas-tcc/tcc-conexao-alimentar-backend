@@ -16,7 +16,6 @@ import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.repository.ReservaRepository;
 import tcc.conexao_alimentar.service.DoacaoService;
 import tcc.conexao_alimentar.service.FileUploadService;
-import tcc.conexao_alimentar.service.ReservaService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,7 +30,6 @@ public class DoacaoController {
 
     private final DoacaoService service;
     private final FileUploadService fileUploadService;
-    private final ReservaService reservaService;
     private final ReservaRepository reservaRepository;
     
     @Operation(summary = "Cadastrar nova doação",description = "Permite que um usuário do tipo COMERCIO, PRODUTOR_RURAL ou PESSOA_FISICA cadastre uma nova doação.")
@@ -101,8 +99,17 @@ public class DoacaoController {
         service.removerDoacao(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Valida o qrCode",description = "Endpoint para que os doadores consigam validar o QR Code quando a ONG chegar para retirar a doação")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "QR Code validado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Credenciais de autenticação inválidas"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+
+    })
     @PostMapping("/validar-qr/{doacaoId}")
-    @PreAuthorize("hasRole('COMERCIO')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
     public ResponseEntity<Map<String, Long>> validarQrCode(@PathVariable Long doacaoId) {
     service.validarQrCode(doacaoId);
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)

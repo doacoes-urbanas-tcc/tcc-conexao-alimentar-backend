@@ -130,12 +130,25 @@ public class VoluntarioController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "Endpoint para um voluntário atualizar o email",description = "Endpoint para um voluntário atualizar o email")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Email atualizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+
     @PatchMapping("/{id}/email")
     @PreAuthorize("hasRole('VOLUNTARIO')")
     public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody AtualizarEmailDTO dto) {
        voluntarioService.atualizarEmail(id, dto.getNovoEmail());
         return ResponseEntity.ok().build();
     }
+    @Operation(summary = "Endpoint para um voluntário atualizar a senha",description = "Endpoint para um voluntário atualizar a senha")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('VOLUNTARIO')")

@@ -52,7 +52,7 @@ public class ProdutorRuralController {
 
     produtorRuralService.cadastrar(dto);
     return ResponseEntity.ok("Produtor rural cadastrado com sucesso!");
-}
+    }
 
     
     @Operation(summary = "Atualizar e-mail",description = "Permite que o produtor rural atualize seu endereço de e-mail.")

@@ -20,6 +20,12 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.awt.Color;
 
 
@@ -36,10 +42,17 @@ import tcc.conexao_alimentar.service.RelatorioService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/relatorio")
+@Tag(name = "Relatórios", description = "Endpoints exportação de relatórios de pdf e csv")
 public class RelatorioController {
 
     private final RelatorioService relatorioService;
 
+    @Operation(summary = "Exportação do relatório de doações mensais em csv",description = "Endpoint para exportação de relatórios referentes as doações efetuadas no mês em questão em formato csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/csv/doacoes-mensais")
     public void exportarCSV(@RequestParam int ano, @RequestParam int mes, HttpServletResponse response) throws IOException {
     List<RelatorioDoacaoDTO> relatorio = relatorioService.gerarRelatorioMensal(ano, mes);
@@ -64,6 +77,12 @@ public class RelatorioController {
     writer.flush();
    }
 
+    @Operation(summary = "Exportação do relatório de doações mensais em pdf",description = "Endpoint para exportação de relatórios referentes as doações efetuadas no mês em questão em formato pdf")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
    @GetMapping("/pdf/doacoes-mensais")
     public void exportarPDF(@RequestParam int ano, @RequestParam int mes, HttpServletResponse response) throws Exception {
@@ -118,6 +137,14 @@ public class RelatorioController {
     document.close();
     }
 
+    @Operation(summary = "Exportação do relatório de doações que estão pendentes ou foram expiradas em csv",description = "Endpoint para exportação de relatórios referentes as doações  pendentes ou expiradas em formato csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+       
+    })
+
     @GetMapping("/csv/pendentes-ou-expiradas")
     public void exportarCSVStatus(HttpServletResponse response) throws IOException {
     List<RelatorioDoacaoStatusDTO> relatorio = relatorioService.gerarRelatorioPendentesOuExpiradas();
@@ -139,6 +166,14 @@ public class RelatorioController {
     }
     writer.flush();
     }
+
+    @Operation(summary = "Exportação do relatório de doações que estão pendentes ou foram expiradas em pdf",description = "Endpoint para exportação de relatórios referentes as doações  pendentes ou expiradas em formato pdf")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+
 
     @GetMapping("/pdf/pendentes-ou-expiradas")
     public void exportarPDFStatus(HttpServletResponse response) throws Exception {
@@ -191,6 +226,13 @@ public class RelatorioController {
     document.add(table);
     document.close();
    }
+    @Operation(summary = "Exportação do relatório da quantidade doações efetuadas no mês csv",description = "Endpoint para exportação de relatórios referentes a quantidade de doações edetuadas no mês csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+
    @GetMapping("/csv/quantidade-total")
    public void exportarCSVQuantidadeTotal(HttpServletResponse response) throws IOException {
     List<RelatorioQuantidadeTotalDTO> relatorio = relatorioService.gerarRelatorioQuantidadeTotal();
@@ -204,6 +246,13 @@ public class RelatorioController {
     }
     writer.flush();
    }
+
+   @Operation(summary = "Exportação do relatório a quantidade doações efetuadas no mês em pdf",description = "Endpoint para exportação de relatórios referentes a quantidade doações efetuadas no mês csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
    @GetMapping("/pdf/quantidade-total")
     public void exportarPDFQuantidadeTotal(HttpServletResponse response) throws Exception {
@@ -253,6 +302,15 @@ public class RelatorioController {
     document.add(table);
     document.close();
    }
+
+   
+    @Operation(summary = "Exportação do relatório a quantidade doações por doador efetuadas dentro de um mês em pdf",description = "Endpoint para exportação de relatórios referentes a quantidade doações efetuadas por um doador dentro de um mês pdf")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+
 
    @GetMapping("/pdf/doacoes-por-doador")
    public void exportarRelatorioPorDoadorPDF(HttpServletResponse response) throws Exception {
@@ -305,7 +363,12 @@ public class RelatorioController {
     document.close();
     
     }
-
+    @Operation(summary = "Exportação do relatório da quantidade doações efetuadas por um doador dentro de um mês csv",description = "Endpoint para exportação de relatórios referentes a quantidade de doações edetuadas por um doador dentro de um  mês csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/csv/doacoes-por-doador")
     public void exportarCSVPorDoador(HttpServletResponse response) throws IOException {
     List<RelatorioDoacoesPorDoadorDTO> relatorio = relatorioService.gerarRelatorioPorDoador();
@@ -329,6 +392,12 @@ public class RelatorioController {
     writer.flush();
    }
 
+    @Operation(summary = "Exportação do relatório da quantidade doações efetuadas por um receptor dentro de um mês csv",description = "Endpoint para exportação de relatórios referentes a quantidade de doações edetuadas por um receptor dentro de um  mês csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/csv/doacoes-por-receptor")
     public void exportarCSVPorReceptor(HttpServletResponse response) throws IOException {
     List<RelatorioDoacoesPorReceptorDTO> relatorio = relatorioService.gerarRelatorioPorReceptor();
@@ -352,6 +421,12 @@ public class RelatorioController {
     writer.flush();
    }
 
+    @Operation(summary = "Exportação do relatório da quantidade doações efetuadas por um receptor dentro de um mês csv",description = "Endpoint para exportação de relatórios referentes a quantidade de doações edetuadas por um receptor dentro de um  mês csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/pdf/doacoes-por-receptor")
     public void exportarPDFPorReceptor(HttpServletResponse response) throws Exception {
     List<RelatorioDoacoesPorReceptorDTO> relatorio = relatorioService.gerarRelatorioPorReceptor();
@@ -403,6 +478,12 @@ public class RelatorioController {
     document.close();
     }
 
+    @Operation(summary = "Exportação do relatório da efetividade das doações em csv",description = "Endpoint para exportação de relatórios referentes a efetividade das doações em csv")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/csv/efetividade")
     public void exportarCSVEfetividade(HttpServletResponse response) throws IOException {
     List<RelatorioEfetividadeDTO> relatorio = relatorioService.gerarRelatorioEfetividade();
@@ -420,6 +501,13 @@ public class RelatorioController {
     }
     writer.flush();
     }
+
+    @Operation(summary = "Exportação do relatório da efetividade das doações em pdf",description = "Endpoint para exportação de relatórios referentes a efetividade das doações em pdf")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relatório exportado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/pdf/efetividade")
     public void exportarPDFEfetividade(HttpServletResponse response) throws Exception {

@@ -52,7 +52,7 @@ public class OngController {
 
     ongService.cadastrar(dto);
     return ResponseEntity.ok("Comércio cadastrado com sucesso!");
-}
+   }
 
     
     
