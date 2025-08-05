@@ -41,6 +41,7 @@ public class DoacaoController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
     @PostMapping("/cadastrar")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hsRole('PESSOA_FISICA')")
     public ResponseEntity<String> cadastrarDoacao(
     @RequestPart("dto") DoacaoRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
     if (file.isEmpty()) {
