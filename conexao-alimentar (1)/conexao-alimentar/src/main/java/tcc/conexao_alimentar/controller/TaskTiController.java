@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.RespostaTaskRequestDTO;
 import tcc.conexao_alimentar.DTO.RespostaTaskTiResponseDTO;
@@ -24,17 +28,25 @@ import tcc.conexao_alimentar.mapper.RespostaTaskMapper;
 import tcc.conexao_alimentar.mapper.TaskTiMapper;
 import tcc.conexao_alimentar.model.RespostaTaskModel;
 import tcc.conexao_alimentar.model.TaskTiModel;
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.service.RespostaTaskService;
 import tcc.conexao_alimentar.service.TasksTiService;
 
 @RestController
 @RequestMapping("/tasks-ti")
 @RequiredArgsConstructor
+@Tag(name = "Tasks de TI", description = "Endpoints referentes as tasks de TI")
 public class TaskTiController {
 
     private final TasksTiService taskService;
     private final RespostaTaskService respostaService;
 
+    @Operation(summary = "Endpoint para o administrador cadastrar uma task",description = "Endpoint para um administrador cadastrar uma task para que os voluntários de TI responderem")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Task cadastrada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @PostMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskTiResponseDTO> criarTask(@RequestBody TaskTiRequestDTO dto) {
@@ -42,12 +54,26 @@ public class TaskTiController {
         return ResponseEntity.ok(TaskTiMapper.toDTO(model));
     }
 
+    @Operation(summary = "Endpoint para o administrador  fechar uma task",description = "Endpoint para um administrador fechar uma task para que os voluntários de TI não consigam visualizar nem responder mais")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Task fechada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+    
     @PutMapping("/admin/{id}/fechar")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> fechar(@PathVariable Long id) {
         taskService.fechar(id);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Endpoint para o administrador visualizar as respostas de uma task",description = "Endpoint para um administrador visualizar as respostas que os voluntários de TI deram para a task cadastrada")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Respostas carregadas com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/admin/{id}/respostas")
     @PreAuthorize("hasRole('ADMIN')")
@@ -59,6 +85,12 @@ public class TaskTiController {
         return ResponseEntity.ok(dtos);
     }
 
+    @Operation(summary = "Endpoint para o administrador mudar o status da resposta de uma task",description = "Endpoint para um administrador mudar o status da resposta de uma task")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @PutMapping("/admin/respostas/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> atualizarStatus(
@@ -68,6 +100,12 @@ public class TaskTiController {
         respostaService.atualizarStatus(id, status);
         return ResponseEntity.ok().build();
     }
+    @Operation(summary = "Endpoint para um voluntário de TI visualizar as tasks abertas",description = "Endpoint para um voluntário de TI visualizar as tasks abertas")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Task carregadas com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/voluntario")
     @PreAuthorize("hasRole('VOLUNTARIO')")
@@ -78,6 +116,12 @@ public class TaskTiController {
             .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
+    @Operation(summary = "Endpoint para um voluntário de TI visualizar os detalhes da task selecionada",description = "Endpoint para um voluntário de TI visualizar os detalhes da task selecionada")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Task carregadas com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/voluntario/{id}")
     @PreAuthorize("hasRole('VOLUNTARIO')")
@@ -85,6 +129,12 @@ public class TaskTiController {
         TaskTiModel task = taskService.buscarPorId(id);
         return ResponseEntity.ok(TaskTiMapper.toDTO(task));
     }
+    @Operation(summary = "Endpoint para um voluntário de TI responder uma task",description = "Endpoint para um voluntário de TI  responder uma task")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Task respondida com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @PostMapping("/voluntario/{id}/responder")
     @PreAuthorize("hasRole('VOLUNTARIO')")
@@ -95,6 +145,12 @@ public class TaskTiController {
         RespostaTaskModel resposta = respostaService.responder(id, dto.getVoluntarioId(), dto.getLinkSolucao());
         return ResponseEntity.ok(RespostaTaskMapper.toDTO(resposta));
     }
+    @Operation(summary = "Endpoint para o administrador listar todas as tasks ",description = "Endpoint para o administrador listar todas as tasks abertas cadastrardas no sistema ")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Tasks carregadas com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<TaskTiResponseDTO>> listarTodasTasks() {
@@ -104,12 +160,36 @@ public class TaskTiController {
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
    }
+    @Operation(summary = "Endpoint para o administrador visualizar os detalhes task ",description = "Endpoint para o administrador visualizar os detalhes task ")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Detalhes carregados com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
    @GetMapping("/admin/{id}")
    @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<TaskTiResponseDTO> detalhesTaskAdmin(@PathVariable Long id) {
     TaskTiModel task = taskService.buscarPorId(id);
     return ResponseEntity.ok(TaskTiMapper.toDTO(task));
+   }
+    @Operation(summary = "Endpoint para o voluntário de TI visualizar as tasks cadastrardas que tem as tags da stacks cadastradas por ele",description = "Endpoint para o voluntário de TI visualizar as tasks cadastrardas que tem as tags da stacks cadastradas por ele")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Detalhes carregados com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
+
+   @GetMapping("/voluntario/recomendadas")
+   @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<List<TaskTiResponseDTO>> listarTasksRecomendadas() {
+    UsuarioModel usuario = tcc.conexao_alimentar.security.SecurityUtils.getUsuarioLogado();
+    List<TaskTiModel> tasks = taskService.listarRecomendadasParaVoluntario(usuario);
+    List<TaskTiResponseDTO> dtos = tasks.stream()
+        .map(TaskTiMapper::toDTO)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(dtos);
 }
+
 
 
 }

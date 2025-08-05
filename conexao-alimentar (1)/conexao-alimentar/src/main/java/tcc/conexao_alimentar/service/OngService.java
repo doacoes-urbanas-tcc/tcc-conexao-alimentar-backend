@@ -40,8 +40,8 @@ public class OngService {
     }
 
     @Transactional
-    public void atualizarSenha(Long ongId, String novaSenha) {
-        usuarioService.atualizarSenha(ongId, novaSenha);
+    public void atualizarSenha(Long ongId, String senhaAtual,String novaSenha) {
+        usuarioService.atualizarSenha(ongId, senhaAtual,novaSenha);
     }
 
     public OngResponseDTO visualizarPerfil(Long id) {

@@ -77,7 +77,7 @@ public class ComercioController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('COMERCIO')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        comercioService.atualizarSenha(id, dto.getNovaSenha());
+        comercioService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

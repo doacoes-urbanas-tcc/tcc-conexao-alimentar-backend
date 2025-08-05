@@ -59,6 +59,7 @@ public class UsuarioService {
     private final DoacaoRepository doacaoRepository;
     private final TasksTiService taskService;
     private final TaskTiRepository taskRepository;
+    private final EmailService emailService;
 
 
     public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaRequestDTO dto) {
@@ -114,12 +115,17 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    @Transactional
-    public void atualizarSenha(Long id, String novaSenha) {
-        UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
-        usuario.setSenha(passwordEncoder.encode(novaSenha));
-        usuarioRepository.save(usuario);
+   public void atualizarSenha(Long id, String senhaAtual, String novaSenha) {
+    UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    
+    if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+        throw new RegraDeNegocioException("Senha atual incorreta.");
     }
+
+    usuario.setSenha(passwordEncoder.encode(novaSenha));
+    usuarioRepository.save(usuario);
+   }
+
 
     public List<Object> listarUsuariosPorStatus(StatusUsuario status) {
         return usuarioRepository.findByStatus(status).stream().map(usuario -> {
@@ -133,8 +139,9 @@ public class UsuarioService {
     }
 
     public List<UsuarioModel> listarAtivos() {
-        return usuarioRepository.findByStatus(StatusUsuario.ATIVO);
+    return usuarioRepository.findByStatusAndTipoUsuarioNot(StatusUsuario.ATIVO, TipoUsuario.ADMIN);
     }
+
 
     public List<Object> listarUsuariosPendentes() {
         return listarUsuariosPorStatus(StatusUsuario.PENDENTE);
@@ -165,20 +172,28 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void aprovarUsuario(Long id) {
-        UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
-        usuario.setStatus(StatusUsuario.ATIVO);
-        usuario.setJustificativaReprovacao(null);
-        usuarioRepository.save(usuario);
-    }
+    public UsuarioModel aprovarUsuario(Long id) {
+    UsuarioModel usuario = buscarPorId(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
+    
+    usuario.setStatus(StatusUsuario.ATIVO);
+    usuario.setJustificativaReprovacao(null);
+
+    return usuarioRepository.save(usuario); 
+   }
+
 
     @Transactional
-    public void reprovarUsuario(Long id, String justificativa) {
-        UsuarioModel usuario = buscarPorId(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        usuario.setStatus(StatusUsuario.REPROVADO);
-        usuario.setJustificativaReprovacao(justificativa);
-        usuarioRepository.save(usuario);
+    public UsuarioModel reprovarUsuario(Long id, String justificativa) {
+    UsuarioModel usuario = buscarPorId(id)
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+    
+    usuario.setStatus(StatusUsuario.REPROVADO);
+    usuario.setJustificativaReprovacao(justificativa);
+
+    return usuarioRepository.save(usuario); 
     }
+
 
     public List<UsuarioModel> buscarUltimosPendentes() {
     return usuarioRepository.findTop5ByStatusAndTipoUsuarioNotOrderByIdDesc(
@@ -204,6 +219,8 @@ public class UsuarioService {
 
         return dto;
     }
+
+    
 
 }
 

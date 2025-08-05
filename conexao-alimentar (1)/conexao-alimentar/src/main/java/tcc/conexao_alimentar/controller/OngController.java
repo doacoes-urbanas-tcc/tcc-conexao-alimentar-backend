@@ -52,7 +52,7 @@ public class OngController {
 
     ongService.cadastrar(dto);
     return ResponseEntity.ok("Comércio cadastrado com sucesso!");
-}
+   }
 
     
     
@@ -80,7 +80,7 @@ public class OngController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        ongService.atualizarSenha(id, dto.getNovaSenha());
+        ongService.atualizarSenha(id,dto.getSenhaAtual(), dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

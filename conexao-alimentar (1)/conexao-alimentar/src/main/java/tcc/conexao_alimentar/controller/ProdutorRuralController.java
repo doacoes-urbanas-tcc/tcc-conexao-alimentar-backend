@@ -52,7 +52,7 @@ public class ProdutorRuralController {
 
     produtorRuralService.cadastrar(dto);
     return ResponseEntity.ok("Produtor rural cadastrado com sucesso!");
-}
+    }
 
     
     @Operation(summary = "Atualizar e-mail",description = "Permite que o produtor rural atualize seu endereço de e-mail.")
@@ -79,7 +79,7 @@ public class ProdutorRuralController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PRODUTOR_RURAL')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        produtorRuralService.atualizarSenha(id, dto.getNovaSenha());
+        produtorRuralService.atualizarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 

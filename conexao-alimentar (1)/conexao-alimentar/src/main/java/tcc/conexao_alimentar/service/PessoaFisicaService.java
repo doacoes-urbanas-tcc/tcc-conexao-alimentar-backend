@@ -51,8 +51,8 @@ public class PessoaFisicaService {
     }
 
     @Transactional
-    public void atualizarSenha(Long pfId, String novaSenha) {
-        usuarioService.atualizarSenha(pfId, novaSenha);
+    public void atualizarSenha(Long pfId,String senhaAtual, String novaSenha) {
+        usuarioService.atualizarSenha(pfId, senhaAtual, novaSenha);
     }
 
     public PessoaFisicaResponseDTO visualizarPerfil(Long id) {

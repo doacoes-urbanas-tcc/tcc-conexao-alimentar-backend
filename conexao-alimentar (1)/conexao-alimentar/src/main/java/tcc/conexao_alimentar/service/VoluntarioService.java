@@ -67,8 +67,8 @@ public class VoluntarioService {
     }
 
     @Transactional
-    public void atualizarSenha(Long voluntarioId, String novaSenha) {
-        usuarioService.atualizarSenha(voluntarioId, novaSenha);
+    public void atualizarSenha(Long voluntarioId, String senhaAtual, String novaSenha) {
+        usuarioService.atualizarSenha(voluntarioId,senhaAtual, novaSenha);
     }
 
     public VoluntarioResponseDTO visualizarPerfil(Long id) {

@@ -39,8 +39,8 @@ public class ComercioService {
     }
 
     @Transactional
-    public void atualizarSenha(Long comercioId, String novaSenha) {
-        usuarioService.atualizarSenha(comercioId, novaSenha);
+    public void atualizarSenha(Long comercioId, String senhaAtual, String novaSenha) {
+        usuarioService.atualizarSenha(comercioId, senhaAtual,novaSenha);
     }
 
     public ComercioResponseDTO visualizarPerfil(Long id) {

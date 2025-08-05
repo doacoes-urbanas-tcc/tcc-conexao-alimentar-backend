@@ -40,8 +40,8 @@ public class ProdutorRuralService {
     }
 
     @Transactional
-    public void atualizarSenha(Long prId, String novaSenha) {
-        usuarioService.atualizarSenha(prId, novaSenha);
+    public void atualizarSenha(Long prId, String senhaAtual, String novaSenha) {
+        usuarioService.atualizarSenha(prId,senhaAtual, novaSenha);
     }
 
     public ProdutorRuralResponseDTO visualizarPerfil(Long id) {

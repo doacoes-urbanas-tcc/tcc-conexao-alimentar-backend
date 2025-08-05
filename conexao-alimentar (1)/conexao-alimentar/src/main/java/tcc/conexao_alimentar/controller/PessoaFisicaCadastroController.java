@@ -30,7 +30,6 @@ import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
-import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
 
 @RestController
@@ -40,7 +39,6 @@ import tcc.conexao_alimentar.service.PessoaFisicaService;
 public class PessoaFisicaCadastroController {
 
     private final PessoaFisicaService pessoaFisicaService;
-    private final FileUploadService fileUploadService;
 
     
     @Operation(summary = "Cadastro de pessoa física",description = "Permite que uma pessoa física se cadastre no sistema")
@@ -91,7 +89,7 @@ public class PessoaFisicaCadastroController {
     @PatchMapping("/{id}/senha")
     @PreAuthorize("hasRole('PESOA_FISICA')")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaDTO dto) {
-        pessoaFisicaService.atualizarSenha(id, dto.getNovaSenha());
+        pessoaFisicaService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
 
