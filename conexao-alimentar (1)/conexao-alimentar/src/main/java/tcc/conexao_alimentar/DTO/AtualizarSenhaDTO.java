@@ -6,5 +6,6 @@ import lombok.Data;
 public class AtualizarSenhaDTO {
     private String novaSenha;
     private String senhaAtual;
+    
 
 }
