@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class QrCodeController {
         @ApiResponse(responseCode = "404", description = "Reserva não encontrada")
     })
     @PostMapping("/generate/{doacaoId}")
+    @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
         try {
             QrCodeDTO dto = new QrCodeDTO();
@@ -68,6 +70,7 @@ public class QrCodeController {
         @ApiResponse(responseCode = "404", description = "Produtor rural não encontrado")
     })
     @GetMapping("/url/{doacaoId}")
+    @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
         .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));

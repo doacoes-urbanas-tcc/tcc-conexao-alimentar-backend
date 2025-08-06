@@ -2,19 +2,26 @@ package tcc.conexao_alimentar.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.RespostaTaskTiResponseDTO;
 import tcc.conexao_alimentar.DTO.TaskTiRequestDTO;
+import tcc.conexao_alimentar.exception.RegraDeNegocioException;
+import tcc.conexao_alimentar.mapper.RespostaTaskMapper;
 import tcc.conexao_alimentar.mapper.TaskTiMapper;
+import tcc.conexao_alimentar.model.RespostaTaskModel;
 import tcc.conexao_alimentar.model.TaskTiModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.model.VoluntarioTiModel;
+import tcc.conexao_alimentar.repository.RespostaTaskTiRepository;
 import tcc.conexao_alimentar.repository.TaskTiRepository;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
@@ -28,6 +35,7 @@ public class TasksTiService {
     private final VoluntarioTiRepository voluntarioTiRepository;
     private final VoluntarioRepository voluntarioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final RespostaTaskTiRepository respostaTaskTiRepository;
 
     public TaskTiModel criar(TaskTiRequestDTO dto) {
         TaskTiModel model = TaskTiMapper.toEntity(dto);
@@ -76,4 +84,17 @@ public class TasksTiService {
                 .anyMatch(tag -> palavrasChave.contains(tag.toLowerCase())))
             .toList();
     }
+
+    public List<RespostaTaskTiResponseDTO> listarTasksRespondidasPeloVoluntario() {
+    String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    UsuarioModel voluntario = usuarioRepository.findByEmail(emailUsuario)
+        .orElseThrow(() -> new RegraDeNegocioException("Voluntário não encontrado"));
+
+    List<RespostaTaskModel> respostas = respostaTaskTiRepository.findByVoluntario(voluntario);
+   return respostas.stream()
+        .map(RespostaTaskMapper::toDTO)
+        .collect(Collectors.toList());
+    }
+
 }

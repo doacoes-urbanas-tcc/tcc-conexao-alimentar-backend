@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +55,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @GetMapping("/csv/doacoes-mensais")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarCSV(@RequestParam int ano, @RequestParam int mes, HttpServletResponse response) throws IOException {
     List<RelatorioDoacaoDTO> relatorio = relatorioService.gerarRelatorioMensal(ano, mes);
 
@@ -83,7 +85,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
-
+   @PreAuthorize("hasRole('ADMIN')")
    @GetMapping("/pdf/doacoes-mensais")
     public void exportarPDF(@RequestParam int ano, @RequestParam int mes, HttpServletResponse response) throws Exception {
     List<RelatorioDoacaoDTO> relatorio = relatorioService.gerarRelatorioMensal(ano, mes);
@@ -145,6 +147,7 @@ public class RelatorioController {
        
     })
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/csv/pendentes-ou-expiradas")
     public void exportarCSVStatus(HttpServletResponse response) throws IOException {
     List<RelatorioDoacaoStatusDTO> relatorio = relatorioService.gerarRelatorioPendentesOuExpiradas();
@@ -175,6 +178,7 @@ public class RelatorioController {
     })
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/pdf/pendentes-ou-expiradas")
     public void exportarPDFStatus(HttpServletResponse response) throws Exception {
     List<RelatorioDoacaoStatusDTO> relatorio = relatorioService.gerarRelatorioPendentesOuExpiradas();
@@ -233,7 +237,9 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
 
+    
    @GetMapping("/csv/quantidade-total")
+   @PreAuthorize("hasRole('ADMIN')")
    public void exportarCSVQuantidadeTotal(HttpServletResponse response) throws IOException {
     List<RelatorioQuantidadeTotalDTO> relatorio = relatorioService.gerarRelatorioQuantidadeTotal();
     response.setHeader("Content-Disposition", "attachment; filename=relatorio_quantidade_total_por_categoria.csv");
@@ -255,6 +261,7 @@ public class RelatorioController {
     })
 
    @GetMapping("/pdf/quantidade-total")
+   @PreAuthorize("hasRole('ADMIN')")
     public void exportarPDFQuantidadeTotal(HttpServletResponse response) throws Exception {
     List<RelatorioQuantidadeTotalDTO> relatorio = relatorioService.gerarRelatorioQuantidadeTotal();
     response.setHeader("Content-Disposition", "attachment; filename=relatorio_quantidade_total_por_categoria.pdf");
@@ -313,6 +320,7 @@ public class RelatorioController {
 
 
    @GetMapping("/pdf/doacoes-por-doador")
+   @PreAuthorize("hasRole('ADMIN')")
    public void exportarRelatorioPorDoadorPDF(HttpServletResponse response) throws Exception {
     List<RelatorioDoacoesPorDoadorDTO> relatorio = relatorioService.gerarRelatorioPorDoador();
 
@@ -370,6 +378,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @GetMapping("/csv/doacoes-por-doador")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarCSVPorDoador(HttpServletResponse response) throws IOException {
     List<RelatorioDoacoesPorDoadorDTO> relatorio = relatorioService.gerarRelatorioPorDoador();
 
@@ -399,6 +408,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @GetMapping("/csv/doacoes-por-receptor")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarCSVPorReceptor(HttpServletResponse response) throws IOException {
     List<RelatorioDoacoesPorReceptorDTO> relatorio = relatorioService.gerarRelatorioPorReceptor();
 
@@ -428,6 +438,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @GetMapping("/pdf/doacoes-por-receptor")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarPDFPorReceptor(HttpServletResponse response) throws Exception {
     List<RelatorioDoacoesPorReceptorDTO> relatorio = relatorioService.gerarRelatorioPorReceptor();
 
@@ -485,6 +496,7 @@ public class RelatorioController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @GetMapping("/csv/efetividade")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarCSVEfetividade(HttpServletResponse response) throws IOException {
     List<RelatorioEfetividadeDTO> relatorio = relatorioService.gerarRelatorioEfetividade();
     response.setHeader("Content-Disposition", "attachment; filename=relatorio_efetividade.csv");
@@ -510,6 +522,7 @@ public class RelatorioController {
     })
 
     @GetMapping("/pdf/efetividade")
+    @PreAuthorize("hasRole('ADMIN')")
     public void exportarPDFEfetividade(HttpServletResponse response) throws Exception {
     List<RelatorioEfetividadeDTO> relatorio = relatorioService.gerarRelatorioEfetividade();
     response.setHeader("Content-Disposition", "attachment; filename=relatorio_efetividade.pdf");

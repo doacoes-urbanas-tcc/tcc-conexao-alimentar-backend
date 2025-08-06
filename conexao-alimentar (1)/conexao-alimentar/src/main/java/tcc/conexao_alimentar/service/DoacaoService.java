@@ -141,7 +141,6 @@ public class DoacaoService {
         .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado"));
 
     List<DoacaoModel> doacoes = doacaoRepository.findByDoador(doador);
-    log.info("Quantidade de doações encontradas: {}", doacoes.size());
 
     return doacoes.stream()
         .map(DoacaoMapper::toResponse)
