@@ -220,6 +220,23 @@ public class UsuarioService {
         return dto;
     }
 
+    public DashboardDoadorDTO getDashboardDoador(Long usuarioId) {
+    int totalDoacoes = doacaoRepository.contarDoacoesPorUsuario(usuarioId);
+    int ongsBeneficiadas = doacaoRepository.contarOngsBeneficiadas(usuarioId);
+    Double mediaAvaliacoes = doacaoRepository.calcularMediaAvaliacoes(usuarioId);
+    Optional<DoacaoModel> ultimaDoacaoOpt = doacaoRepository.buscarUltimaDoacao(usuarioId);
+
+    UltimaDoacaoDTO ultima = ultimaDoacaoOpt.map(d -> new UltimaDoacaoDTO(
+        d.getData().toString(),
+        d.getItensDescricao(),
+        d.getReserva() != null ? d.getReserva().getOng().getNome() : "Ainda não reservado",
+        d.getStatus().toString()
+    )).orElse(null);
+
+    return new DashboardDoadorDTO(totalDoacoes, ongsBeneficiadas, mediaAvaliacoes, ultima);
+}
+
+
     
 
 }

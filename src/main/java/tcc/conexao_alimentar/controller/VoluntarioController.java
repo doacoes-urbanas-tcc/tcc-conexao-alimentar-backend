@@ -1,6 +1,7 @@
 package tcc.conexao_alimentar.controller;
 
 import lombok.RequiredArgsConstructor;
+import main.java.tcc.conexao_alimentar.DTO.EstatisticasVoluntarioDTO;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -156,6 +157,21 @@ public class VoluntarioController {
     voluntarioService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/dashboard")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<EstatisticasVoluntarioDTO> estatisticasVoluntario() {
+    Usuario usuario = usuarioAutenticado(); 
+    Long id = usuario.getId();
+
+    EstatisticasVoluntarioDTO dto = new EstatisticasVoluntarioDTO();
+    dto.setNome(usuario.getNome());
+    dto.setTasksRespondidas(taskService.contarTasksRespondidas(id));
+    dto.setTasksAbertas(taskService.contarTasksAbertas());
+    dto.setMediaAvaliacoes(avaliacaoService.calcularMediaAvaliacoesVoluntario(id));
+
+    return ResponseEntity.ok(dto);
+    }
+ 
 
 
 

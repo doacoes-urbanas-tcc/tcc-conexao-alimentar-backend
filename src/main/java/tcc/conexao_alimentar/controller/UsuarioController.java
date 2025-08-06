@@ -210,6 +210,12 @@ public class UsuarioController {
             default -> throw new IllegalArgumentException("Unexpected value: " + tipo);
         };
     }
+    @GetMapping("/doador/dashboard/{id}")
+    public ResponseEntity<DashboardDoadorDTO> buscarDashboard(@PathVariable Long id) {
+    DashboardDoadorDTO dto = usuarioService.getDashboardDoador(id);
+    return ResponseEntity.ok(dto);
+    }
+
 
 }
 

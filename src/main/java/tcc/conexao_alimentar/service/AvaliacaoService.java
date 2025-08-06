@@ -64,4 +64,15 @@ public class AvaliacaoService {
             .map(AvaliacaoMapper::toResponse)
             .toList();
     }
+
+    public double calcularMediaAvaliacoesVoluntario(Long voluntarioId) {
+    List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByAvaliadoId(voluntarioId);
+    if (avaliacoes.isEmpty()) return 0.0;
+
+    return avaliacoes.stream()
+        .mapToInt(AvaliacaoModel::getNota)
+        .average()
+        .orElse(0.0);
+    }
+
 }

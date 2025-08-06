@@ -97,4 +97,11 @@ public class TasksTiService {
         .collect(Collectors.toList());
     }
 
+    public int contarTasksRespondidas(Long voluntarioId) {
+    return taskRepository.countByVoluntarioId(voluntarioId);
+   }
+
+   
+
+
 }
