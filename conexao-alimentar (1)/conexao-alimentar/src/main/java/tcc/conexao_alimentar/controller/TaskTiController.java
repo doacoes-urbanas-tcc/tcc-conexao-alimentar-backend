@@ -188,7 +188,21 @@ public class TaskTiController {
         .map(TaskTiMapper::toDTO)
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
-}
+   }
+   
+    @Operation(summary = "Listar doações do doador logado", description = "Retorna uma lista das doações cadastradas pelo doador logado.")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+    @ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
+    @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+   })
+    @GetMapping("/minhas-respostas")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<List<RespostaTaskTiResponseDTO>> listarMinhasRespostas() {
+    List<RespostaTaskTiResponseDTO> minhasRespostas = taskService.listarTasksRespondidasPeloVoluntario();
+    return ResponseEntity.ok(minhasRespostas);
+    }
+
 
 
 
