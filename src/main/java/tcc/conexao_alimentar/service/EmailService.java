@@ -41,7 +41,7 @@ public class EmailService {
           <h2 style="font-size: 24px; color: #15803d; margin-bottom: 10px;">Cadastro Aprovado!</h2>
           <p style="font-size: 16px; color: #333;">Olá, <strong>%s</strong>! Seu cadastro foi aprovado com sucesso.</p>
           <p style="font-size: 16px; color: #333;">Agora você já pode acessar a plataforma e começar a utilizar nossos serviços.</p>
-          <a href="http://localhost:5501/pages/cadastrologin/login"
+          <a href="https://conexao-alimentar.onrender.com/pages/cadastrologin/login"
              style="display: inline-block; padding: 14px 28px; background-color: #15803d; color: #ffffff !important; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; margin-top: 20px;">
              Fazer Login
           </a>
@@ -71,7 +71,7 @@ public class EmailService {
           <p style="font-size: 16px; color: #333;">Olá, <strong>%s</strong>!</p>
           <p style="font-size: 16px; color: #333;">Após análise dos dados fornecidos, infelizmente seu cadastro na plataforma <strong>Conexão Alimentar</strong> não foi aprovado neste momento.</p>
           <p style="font-size: 16px; color: #333;">Você pode revisar seus dados e realizar um novo cadastro, caso desejar.</p>
-          <a href="http://localhost:5501/pages/cadastrologin/cadastro.html"
+          <a href="https://conexao-alimentar.onrender.com/pages/cadastrologin/cadastro.html"
              style="display: inline-block; padding: 14px 28px; background-color: #b91c1c; color: #ffffff !important; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; margin-top: 20px;">
              Refazer Cadastro
           </a>
