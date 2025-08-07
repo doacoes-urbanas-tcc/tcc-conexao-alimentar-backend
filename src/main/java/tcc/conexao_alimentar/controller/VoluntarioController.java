@@ -19,12 +19,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
+import tcc.conexao_alimentar.DTO.DashboardVoluntarioTIResponseDTO;
 import tcc.conexao_alimentar.DTO.VeiculoRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
 import tcc.conexao_alimentar.model.VoluntarioModel;
+import tcc.conexao_alimentar.service.DashboardVoluntarioService;
 import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
@@ -38,6 +40,7 @@ public class VoluntarioController {
     private final VoluntarioService voluntarioService;
     private final VeiculoService veiculoService;
     private final FileUploadService fileUploadService;
+    private final DashboardVoluntarioService dashboardService;
 
     
     @Operation(summary = "Cadastro de voluntário",description = "Permite que um usuário se cadastre como voluntário no sistema")
@@ -157,6 +160,15 @@ public class VoluntarioController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("dashboard-ti/{id}")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
+    public ResponseEntity<DashboardVoluntarioTIResponseDTO> getDashboard(@PathVariable Long id) {
+        DashboardVoluntarioTIResponseDTO dto = dashboardService.gerarDashboard(id);
+        return ResponseEntity.ok(dto);
+    }
+}
+
+
 
 
 
@@ -167,4 +179,4 @@ public class VoluntarioController {
 
 
 
-}
+

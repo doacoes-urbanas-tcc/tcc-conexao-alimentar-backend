@@ -210,6 +210,7 @@ public class UsuarioController {
             default -> throw new IllegalArgumentException("Unexpected value: " + tipo);
         };
     }
+    
 
 }
 
