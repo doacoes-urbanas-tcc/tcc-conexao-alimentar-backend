@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.DTO.MetricasDoadorDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.enums.TipoUsuario;
@@ -146,6 +147,24 @@ public class DoacaoService {
         .map(DoacaoMapper::toResponse)
         .collect(Collectors.toList());
     }
+    public MetricasDoadorDTO buscarMetricasDoador() {
+    String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+    UsuarioModel doador = usuarioRepository.findByEmail(emailUsuario)
+        .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado."));
+
+    Long doadorId = doador.getId();
+
+    long totalDoacoes = doacaoRepository.contarDoacoesPorUsuario(doadorId);
+    long ongsBeneficiadas = doacaoRepository.contarOngsBeneficiadas(doadorId);
+    Double mediaAvaliacoes = doacaoRepository.calcularMediaAvaliacoes(doadorId);
+
+    if (mediaAvaliacoes == null) {
+        mediaAvaliacoes = 0.0;
+    }
+
+    return new MetricasDoadorDTO(totalDoacoes, ongsBeneficiadas, mediaAvaliacoes);
+}
+
 
 
 

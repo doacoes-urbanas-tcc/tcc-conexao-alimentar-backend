@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.ComercioResponseDTO;
 import tcc.conexao_alimentar.DTO.JustificativaRequestDTO;
+import tcc.conexao_alimentar.DTO.MetricasDoadorDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.PessoaFisicaResponseDTO;
 import tcc.conexao_alimentar.DTO.ProdutorRuralResponseDTO;
@@ -29,6 +30,7 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.service.ComercioService;
+import tcc.conexao_alimentar.service.DoacaoService;
 import tcc.conexao_alimentar.service.EmailService;
 import tcc.conexao_alimentar.service.OngService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
@@ -50,6 +52,7 @@ public class UsuarioController {
     private final VoluntarioService voluntarioService;
     private final EmailService emailService;
     private final UsuarioRepository usuarioRepository;
+    private final DoacaoService doacaoService;
 
     @GetMapping("/pendentes/{tipo}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -210,6 +213,15 @@ public class UsuarioController {
             default -> throw new IllegalArgumentException("Unexpected value: " + tipo);
         };
     }
+
+    @Operation(summary = "Obter métricas do doador", description = "Retorna o total de doações concluídas, número de ONGs beneficiadas e a média de avaliações do doador.")
+    @GetMapping("/metricas")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
+    public ResponseEntity<MetricasDoadorDTO> obterMetricasDoador() {
+    MetricasDoadorDTO metricas = doacaoService.buscarMetricasDoador();
+    return ResponseEntity.ok(metricas);
+}
+
     
 
 }
