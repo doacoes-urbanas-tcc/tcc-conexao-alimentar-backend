@@ -105,7 +105,7 @@ public class AuthController {
     recuperacao.setExpiracao(expiracao);
     tokenRepository.save(recuperacao);
 
-    String link = "http://localhost:5501/pages/perfil/redefinir-senha.html?token=" + token;
+    String link = "https://conexao-alimentar.onrender.com/pages/perfil/redefinir-senha.html?token=" + token;
 
    String conteudoHtml = """
   <!DOCTYPE html>

@@ -9,9 +9,11 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,8 +27,8 @@ import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiResponseDTO;
+import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
-import tcc.conexao_alimentar.service.DashboardVoluntarioService;
 import tcc.conexao_alimentar.service.FileUploadService;
 import tcc.conexao_alimentar.service.VeiculoService;
 import tcc.conexao_alimentar.service.VoluntarioService;
@@ -40,7 +42,6 @@ public class VoluntarioController {
     private final VoluntarioService voluntarioService;
     private final VeiculoService veiculoService;
     private final FileUploadService fileUploadService;
-    private final DashboardVoluntarioService dashboardService;
 
     
     @Operation(summary = "Cadastro de voluntário",description = "Permite que um usuário se cadastre como voluntário no sistema")
@@ -160,12 +161,15 @@ public class VoluntarioController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("dashboard-ti/{id}")
+    @GetMapping("/dashboard-ti/{id}")
     @PreAuthorize("hasRole('VOLUNTARIO')")
-    public ResponseEntity<DashboardVoluntarioTIResponseDTO> getDashboard(@PathVariable Long id) {
-        DashboardVoluntarioTIResponseDTO dto = dashboardService.gerarDashboard(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<DashboardVoluntarioTIResponseDTO> getDashboardTi(@PathVariable Long id) {
+    DashboardVoluntarioTIResponseDTO dto = voluntarioService.gerarDashboardVoluntarioTi(id);
+    return ResponseEntity.ok(dto);
     }
+
+    
+    
 }
 
 

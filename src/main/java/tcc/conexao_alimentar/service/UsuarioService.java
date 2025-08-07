@@ -29,12 +29,14 @@ import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.mapper.PessoaFisicaMapper;
 import tcc.conexao_alimentar.mapper.ProdutorRuralMapper;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
+import tcc.conexao_alimentar.model.AvaliacaoModel;
 import tcc.conexao_alimentar.model.ComercioModel;
 import tcc.conexao_alimentar.model.OngModel;
 import tcc.conexao_alimentar.model.PessoaFisicaModel;
 import tcc.conexao_alimentar.model.ProdutorRuralModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
+import tcc.conexao_alimentar.repository.AvaliacaoRepository;
 import tcc.conexao_alimentar.repository.ComercioRepository;
 import tcc.conexao_alimentar.repository.DoacaoRepository;
 import tcc.conexao_alimentar.repository.OngRepository;
@@ -55,11 +57,9 @@ public class UsuarioService {
     private final ProdutorRuralRepository produtorRuralRepository;
     private final OngRepository ongRepository;
     private final PasswordEncoder passwordEncoder;
-    private final DoacaoService doacaoService;
     private final DoacaoRepository doacaoRepository;
-    private final TasksTiService taskService;
     private final TaskTiRepository taskRepository;
-    private final EmailService emailService;
+    private final AvaliacaoRepository avaliacaoRepository;
 
 
     public PessoaFisicaResponseDTO cadastrarPessoaFisica(PessoaFisicaRequestDTO dto) {
@@ -218,6 +218,22 @@ public class UsuarioService {
 
 
         return dto;
+    }
+    public String buscarNomePorId(Long id) {
+        return voluntarioRepository.findById(id)
+                .map(v -> v.getNome())
+                .orElse("Nome não encontrado");
+    }
+
+    public double buscarMediaAvaliacoes(Long voluntarioId) {
+        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByAvaliadoId(voluntarioId);
+        if (avaliacoes.isEmpty()) return 0.0;
+
+        double soma = avaliacoes.stream()
+                .mapToInt(AvaliacaoModel::getNota)
+                .sum();
+
+        return soma / avaliacoes.size();
     }
 
 

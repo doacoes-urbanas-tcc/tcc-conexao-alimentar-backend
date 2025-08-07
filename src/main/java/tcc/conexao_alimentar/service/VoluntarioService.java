@@ -2,7 +2,9 @@ package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.DashboardVoluntarioTIResponseDTO;
+import tcc.conexao_alimentar.DTO.RespostaDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioRequestDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioResponseDTO;
 import tcc.conexao_alimentar.DTO.VoluntarioTiRequestDTO;
@@ -20,10 +24,12 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.VoluntarioMapper;
 import tcc.conexao_alimentar.mapper.VoluntarioTiMapper;
+import tcc.conexao_alimentar.model.RespostaTaskModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.model.VoluntarioModel;
 import tcc.conexao_alimentar.model.VoluntarioTiModel;
-import tcc.conexao_alimentar.repository.UsuarioRepository;
+import tcc.conexao_alimentar.repository.RespostaTaskTiRepository;
+import tcc.conexao_alimentar.repository.TaskTiRepository;
 import tcc.conexao_alimentar.repository.VoluntarioRepository;
 import tcc.conexao_alimentar.repository.VoluntarioTiRepository;
 
@@ -36,7 +42,8 @@ public class VoluntarioService {
     private final UsuarioService usuarioService;
     private final VoluntarioTiRepository voluntarioTiRepository;
     private final FileUploadService fileUploadService;
-    private final UsuarioRepository usuarioRepository;
+    private final RespostaTaskTiRepository respostaTaskTiRepository;
+    private final TaskTiRepository taskTiRepository;
     
    @Transactional
    public VoluntarioModel cadastrar(VoluntarioRequestDTO dto, MultipartFile comprovante, MultipartFile foto) throws IOException {
@@ -156,7 +163,33 @@ public class VoluntarioService {
     }
 
     return dto;
-}
+    }
+    
+    public DashboardVoluntarioTIResponseDTO gerarDashboardVoluntarioTi(Long voluntarioId) {
+        String nome = usuarioService.buscarNomePorId(voluntarioId);
+        int tasksRespondidas = (int) respostaTaskTiRepository.countByVoluntarioId(voluntarioId);
+        int tasksAbertas = (int) taskTiRepository.countByFechadaFalse();
+        double mediaAvaliacoes = usuarioService.buscarMediaAvaliacoes(voluntarioId);
+
+        List<RespostaTaskModel> respostas = respostaTaskTiRepository.findByVoluntarioId(voluntarioId);
+
+        List<RespostaDTO> respostaDTOs = respostas.stream()
+            .map(r -> new RespostaDTO(
+                r.getTaskTi().getTitulo(),
+                r.getLinkSolucao(),
+                r.getDataResposta()
+            ))
+            .collect(Collectors.toList());
+
+        DashboardVoluntarioTIResponseDTO dto = new DashboardVoluntarioTIResponseDTO();
+        dto.setNome(nome);
+        dto.setTasksRespondidas(tasksRespondidas);
+        dto.setTasksAbertas(tasksAbertas);
+        dto.setMediaAvaliacoes(mediaAvaliacoes);
+        dto.setRespostas(respostaDTOs);
+
+        return dto;
+    }
 
 
     
