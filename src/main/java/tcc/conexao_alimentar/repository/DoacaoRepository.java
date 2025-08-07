@@ -21,15 +21,14 @@ public interface DoacaoRepository extends JpaRepository<DoacaoModel,Long> {
     long countByStatus(StatusDoacao status);
 
     @Query("SELECT d FROM DoacaoModel d WHERE d.status = :status AND d.dataCadastro BETWEEN :inicio AND :fim")
-    List<DoacaoModel> findDoacoesConcluidasNoPeriodo(@Param("status") StatusDoacao status,
-                                                    @Param("inicio") LocalDateTime inicio,
-                                                    @Param("fim") LocalDateTime fim);
+    List<DoacaoModel> findDoacoesConcluidasNoPeriodo(@Param("status") StatusDoacao status,@Param("inicio") LocalDateTime inicio,@Param("fim") LocalDateTime fim);
 
     @Query("SELECT COUNT(d) FROM DoacaoModel d WHERE d.doador.id = :usuarioId")
     long contarDoacoesPorUsuario(@Param("usuarioId") Long usuarioId);
 
-    @Query("SELECT COUNT(DISTINCT d.reserva.ong.id) FROM DoacaoModel d WHERE d.doador.id = :usuarioId AND d.reserva IS NOT NULL")
+    @Query("SELECT COUNT(DISTINCT d.reserva.receptor.id) FROM DoacaoModel d WHERE d.doador.id = :usuarioId AND d.reserva IS NOT NULL")
     long contarOngsBeneficiadas(@Param("usuarioId") Long usuarioId);
+
 
     @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a WHERE a.avaliado.id = :usuarioId")
     Double calcularMediaAvaliacoes(@Param("usuarioId") Long usuarioId);
