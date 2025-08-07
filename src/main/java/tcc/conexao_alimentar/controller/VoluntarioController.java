@@ -161,6 +161,7 @@ public class VoluntarioController {
     }
 
     @GetMapping("dashboard-ti/{id}")
+    @PreAuthorize("hasRole('VOLUNTARIO')")
     public ResponseEntity<DashboardVoluntarioTIResponseDTO> getDashboard(@PathVariable Long id) {
         DashboardVoluntarioTIResponseDTO dto = dashboardService.gerarDashboard(id);
         return ResponseEntity.ok(dto);
