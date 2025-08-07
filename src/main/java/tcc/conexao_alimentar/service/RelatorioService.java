@@ -29,12 +29,17 @@ import tcc.conexao_alimentar.repository.DoacaoRepository;
 public class RelatorioService {
     private final DoacaoRepository doacaoRepository;
 
-    public List<RelatorioDoacaoDTO> gerarRelatorioMensal(int ano, int mes) {
+     public List<RelatorioDoacaoDTO> gerarRelatorioMensal(int ano, int mes) {
         LocalDate inicio = LocalDate.of(ano, mes, 1);
         LocalDate fim = inicio.withDayOfMonth(inicio.lengthOfMonth());
 
-        return doacaoRepository.findDoacoesConcluidasNoPeriodo(inicio.atStartOfDay(), fim.atTime(23, 59))
-            .stream()
+        List<DoacaoModel> doacoesConcluidas = doacaoRepository.findDoacoesConcluidasNoPeriodo(
+            StatusDoacao.CONCLUIDA,
+            inicio.atStartOfDay(),
+            fim.atTime(23, 59, 59)
+        );
+
+        return doacoesConcluidas.stream()
             .map(doacao -> {
                 ReservaModel reserva = doacao.getReserva();
 
@@ -81,7 +86,8 @@ public class RelatorioService {
                     nomeOng,
                     cnpjOng
                 );
-            }).collect(Collectors.toList());
+            })
+            .collect(Collectors.toList());
     }
 
     public List<RelatorioDoacaoStatusDTO> gerarRelatorioPendentesOuExpiradas() {
