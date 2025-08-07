@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.DTO.MetricasDoadorDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.repository.ReservaRepository;
@@ -133,6 +134,15 @@ public class DoacaoController {
     List<DoacaoResponseDTO> minhasDoacoes = service.listarDoacoesDoDoador();
     return ResponseEntity.ok(minhasDoacoes);
     }
+    
+    @Operation(summary = "Obter métricas do doador", description = "Retorna o total de doações concluídas, número de ONGs beneficiadas e a média de avaliações do doador.")
+    @GetMapping("/metricas")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
+    public ResponseEntity<MetricasDoadorDTO> obterMetricasDoador() {
+    MetricasDoadorDTO metricas = service.buscarMetricasDoador();
+    return ResponseEntity.ok(metricas);
+}
+
 
 
 
