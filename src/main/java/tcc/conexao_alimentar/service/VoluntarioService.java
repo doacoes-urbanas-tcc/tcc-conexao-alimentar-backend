@@ -166,30 +166,31 @@ public class VoluntarioService {
     }
     
     public DashboardVoluntarioTIResponseDTO gerarDashboardVoluntarioTi(Long voluntarioId) {
-        String nome = usuarioService.buscarNomePorId(voluntarioId);
-        int tasksRespondidas = (int) respostaTaskTiRepository.countByVoluntarioId(voluntarioId);
-        int tasksAbertas = (int) taskTiRepository.countByFechadaFalse();
-        double mediaAvaliacoes = usuarioService.buscarMediaAvaliacoes(voluntarioId);
+    String nome = usuarioService.buscarNomePorId(voluntarioId);
+    int tasksRespondidas = (int) respostaTaskTiRepository.countByVoluntarioId(voluntarioId);
+    int tasksAbertas = (int) taskTiRepository.countByFechadaFalse();
+    double mediaAvaliacoes = usuarioService.buscarMediaAvaliacoes(voluntarioId);
 
-        List<RespostaTaskModel> respostas = respostaTaskTiRepository.findByVoluntarioId(voluntarioId);
+    List<RespostaTaskModel> respostas = respostaTaskTiRepository.findByVoluntarioId(voluntarioId);
 
-        List<RespostaDTO> respostaDTOs = respostas.stream()
-            .map(r -> new RespostaDTO(
-                r.getTaskTi().getTitulo(),
-                r.getLinkSolucao(),
-                r.getDataResposta()
-            ))
-            .collect(Collectors.toList());
+    List<RespostaDTO> respostaDTOs = respostas.stream()
+        .map(r -> new RespostaDTO(
+            r.getTaskTi().getTitulo(),
+            r.getLinkSolucao(),
+            r.getDataResposta()
+        ))
+        .collect(Collectors.toList());
 
-        DashboardVoluntarioTIResponseDTO dto = new DashboardVoluntarioTIResponseDTO();
-        dto.setNome(nome);
-        dto.setTasksRespondidas(tasksRespondidas);
-        dto.setTasksAbertas(tasksAbertas);
-        dto.setMediaAvaliacoes(mediaAvaliacoes);
-        dto.setRespostas(respostaDTOs);
+    DashboardVoluntarioTIResponseDTO dto = new DashboardVoluntarioTIResponseDTO();
+    dto.setNome(nome);
+    dto.setTasksRespondidas(tasksRespondidas);
+    dto.setTasksAbertas(tasksAbertas);
+    dto.setMediaAvaliacoes(mediaAvaliacoes);
+    dto.setRespostas(respostaDTOs);
 
-        return dto;
-    }
+    return dto;
+}
+
 
 
     
