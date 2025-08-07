@@ -11,7 +11,8 @@ public interface TaskTiRepository extends JpaRepository<TaskTiModel, Long> {
     long countByFechadaFalse(); 
     long countByFechadaTrue();
     int countByVoluntarioId(Long voluntarioId);
-    int countByStatus(StatusTask status);
+    List<TaskTiModel> findByFechadaFalse();
+
 
     
 

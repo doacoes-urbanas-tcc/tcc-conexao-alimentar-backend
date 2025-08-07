@@ -12,5 +12,6 @@ public interface RespostaTaskTiRepository  extends JpaRepository<RespostaTaskMod
     boolean existsByTaskTiIdAndVoluntarioId(Long taskId, Long voluntarioId);
     List<RespostaTaskModel> findByVoluntarioId(Long voluntarioId);
     List<RespostaTaskModel> findByVoluntario(UsuarioModel voluntario);
+    long countByVoluntarioId(Long voluntarioId);
 
 }
