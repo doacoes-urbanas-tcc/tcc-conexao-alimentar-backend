@@ -50,7 +50,8 @@ public class SecurityConfig {
                     "/recuperar-senha",        
                     "/redefinir-senha",         
                     "/redefinir-senha.html",    
-                    "/js/**", "/css/**", "/img/**"
+                    "/js/**", "/css/**", "/img/**",
+                    "/actuator/health"
                 ).permitAll()
                 .anyRequest().authenticated()
             )

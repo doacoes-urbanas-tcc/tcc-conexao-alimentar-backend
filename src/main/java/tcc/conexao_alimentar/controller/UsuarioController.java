@@ -29,7 +29,6 @@ import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.model.UsuarioModel;
 import tcc.conexao_alimentar.repository.UsuarioRepository;
 import tcc.conexao_alimentar.service.ComercioService;
-import tcc.conexao_alimentar.service.DoacaoService;
 import tcc.conexao_alimentar.service.EmailService;
 import tcc.conexao_alimentar.service.OngService;
 import tcc.conexao_alimentar.service.PessoaFisicaService;
