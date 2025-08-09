@@ -84,7 +84,7 @@ public class QrCodeController {
 
     OffsetDateTime dataReserva = reserva.getDataReserva(); 
     long segundosTotais = 7200;
-    long segundosPassados = Duration.between(dataReserva, LocalDateTime.now()).getSeconds();
+    long segundosPassados = Duration.between(dataReserva, OffsetDateTime.now()).getSeconds();
     long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);
 
     QrCodeResponseDTO response = new QrCodeResponseDTO();
