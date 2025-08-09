@@ -37,7 +37,7 @@ public class ReservaController {
         @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
     })
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_ONG')")
+    @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<?> criarReserva(@RequestBody @Valid ReservaRequestDTO dto) {
         reservaService.cadastrar(dto);
         return ResponseEntity.ok("Reserva criada com sucesso!");
@@ -50,14 +50,14 @@ public class ReservaController {
     })
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_VOLUNTARIO')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('VOLUNTARIO')")
     public ResponseEntity<List<ReservaResponseDTO>> listarTodas() {
         List<ReservaResponseDTO> lista = reservaService.listarTodas();
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_VOLUNTARIO')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('VOLUNTARIO')")
     public ResponseEntity<ReservaResponseDTO> buscarPorId(@PathVariable Long id) {
         ReservaResponseDTO dto = reservaService.buscarPorId(id);
         return ResponseEntity.ok(dto);
@@ -70,7 +70,7 @@ public class ReservaController {
     })
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_ONG')")
+    @PreAuthorize("hasARole('ADMIN') or hasRole('ONG')")
     public ResponseEntity<Void> cancelar(@PathVariable Long id, @RequestBody String justificativa) {
         reservaService.cancelarReserva(id, justificativa);
         return ResponseEntity.noContent().build();
