@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.DTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class AvaliacaoResponseDTO {
     private String nomeAvaliado;
     private int nota;
     private String comentario;
-    private LocalDateTime dataCriacao;
+    private OffsetDateTime dataCriacao;
     private String fotoAvaliador;
 
 

@@ -1,7 +1,8 @@
 package tcc.conexao_alimentar.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,8 +37,8 @@ public class RespostaTaskModel {
     private TaskTiModel taskTi;
 
     private String linkSolucao; 
-
-    private LocalDateTime dataResposta;
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataResposta;
 
     @Enumerated(EnumType.STRING)
     private StatusResposta status = StatusResposta.PENDENTE;

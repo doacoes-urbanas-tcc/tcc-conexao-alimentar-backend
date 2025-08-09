@@ -7,7 +7,7 @@ import tcc.conexao_alimentar.enums.Medida;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -34,10 +34,10 @@ public class DoacaoModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria", nullable = false)
     private CategoriaAlimento categoria;
-    @Column(name = "data_cadastro", nullable = false)
-    private LocalDateTime dataCadastro;
-    @Column(name = "data_expiracao", nullable = false)
-    private LocalDateTime dataExpiracao;
+    @Column(name = "data_cadastro", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataCadastro;
+    @Column(name = "data_expiracao", nullable = false,columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataExpiracao;
     @Column(name = "url_imagem")
     private String urlImagem;
     @Enumerated(EnumType.STRING)
@@ -47,8 +47,8 @@ public class DoacaoModel {
     private UsuarioModel doador;
     @OneToOne(mappedBy = "doacao", cascade = CascadeType.ALL)
     private ReservaModel reserva;
-    @Column(name = "data_conclusao")
-    private LocalDateTime dataConclusao;
+    @Column(name = "data_conclusao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataConclusao;
 
     
 }

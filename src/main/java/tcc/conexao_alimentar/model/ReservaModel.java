@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,8 +34,8 @@ public class ReservaModel {
     @JoinColumn(name = "receptor_id")
     private UsuarioModel receptor; 
 
-    @Column(name = "data_reserva")
-    private LocalDateTime dataReserva;
+    @Column(name = "data_reserva", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataReserva;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -52,8 +52,8 @@ public class ReservaModel {
 
     @Column(name = "avaliacao_receptor")
     private Boolean avaliacaoFeitaPeloReceptor = false;
-    @Column(name = "data_hora_expiracao")
-    private LocalDateTime dataHoraExpiracao;
+    @Column(name = "data_hora_expiracao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataHoraExpiracao;
 
     
 

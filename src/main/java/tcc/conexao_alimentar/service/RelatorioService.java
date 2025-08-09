@@ -1,7 +1,7 @@
 package tcc.conexao_alimentar.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +92,7 @@ public class RelatorioService {
 
     public List<RelatorioDoacaoStatusDTO> gerarRelatorioPendentesOuExpiradas() {
     List<DoacaoModel> doacoes = doacaoRepository.findAll().stream()
-        .filter(d -> d.getStatus() == StatusDoacao.PENDENTE || d.getDataExpiracao().isBefore(LocalDateTime.now()))
+        .filter(d -> d.getStatus() == StatusDoacao.PENDENTE || d.getDataExpiracao().isBefore(OffsetDateTime.now()))
         .collect(Collectors.toList());
 
     return doacoes.stream().map(doacao -> {

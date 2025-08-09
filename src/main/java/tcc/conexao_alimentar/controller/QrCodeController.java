@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +82,7 @@ public class QrCodeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    LocalDateTime dataReserva = reserva.getDataReserva(); 
+    OffsetDateTime dataReserva = reserva.getDataReserva(); 
     long segundosTotais = 7200;
     long segundosPassados = Duration.between(dataReserva, LocalDateTime.now()).getSeconds();
     long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);

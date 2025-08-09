@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.DTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ public class QrCodeResponseDTO {
     private String url;
     private long segundosRestantes;
     private Long reservaId;
-    private LocalDateTime dataReserva;
+    private OffsetDateTime dataReserva;
     private String statusReserva;
     
 }

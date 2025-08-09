@@ -1,7 +1,7 @@
 package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +66,7 @@ public class ReservaService {
 
         reserva.setAvaliacaoFeitaPeloDoador(false);
         reserva.setAvaliacaoFeitaPeloReceptor(false);
-        reserva.setDataHoraExpiracao(LocalDateTime.now().plusHours(2));
+        reserva.setDataHoraExpiracao(OffsetDateTime.now().plusHours(2));
 
 
         reservaRepository.save(reserva);
@@ -119,7 +119,7 @@ public class ReservaService {
     public void verificarReservasExpiradas() {
         List<ReservaModel> reservas = reservaRepository.findAll();
         reservas.forEach(reserva -> {
-            if (reserva.getDoacao().getDataExpiracao().isBefore(LocalDateTime.now())) {
+            if (reserva.getDoacao().getDataExpiracao().isBefore(OffsetDateTime.now())) {
                 reserva.setStatus(StatusReserva.EXPIRADA);
                 reservaRepository.save(reserva);
             }

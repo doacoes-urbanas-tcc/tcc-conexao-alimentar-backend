@@ -1,9 +1,9 @@
 package tcc.conexao_alimentar.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,8 +33,8 @@ public class TaskTiModel {
 
     @ElementCollection
     private List<String> tags;
-
-    private LocalDateTime dataCriacao;
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataCriacao;
 
     @OneToMany(mappedBy = "taskTi", cascade = jakarta.persistence.CascadeType.ALL)
     private List<RespostaTaskModel> respostas;

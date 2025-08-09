@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.DTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +16,6 @@ public class TaskTiResponseDTO {
     private String linkRepositorio;
     private List<String> tags;
     private boolean fechada;
-    private LocalDateTime dataCriacao;
+    private OffsetDateTime dataCriacao;
 
 }

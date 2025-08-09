@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class RespostaTaskService {
         resposta.setTaskTi(task);
         resposta.setVoluntario(voluntario);
         resposta.setLinkSolucao(link);
-        resposta.setDataResposta(LocalDateTime.now());
+        resposta.setDataResposta(OffsetDateTime.now());
         resposta.setStatus(StatusResposta.PENDENTE);
 
         return respostaRepo.save(resposta);

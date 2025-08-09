@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +22,6 @@ public class RecuperarSenhaToken {
 
     private String token;
 
-    private LocalDateTime expiracao;
+    private OffsetDateTime expiracao;
 
 }

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,14 +125,14 @@ public class DoacaoService {
     }
 
     doacao.setStatus(StatusDoacao.CONCLUIDA);
-    doacao.setDataConclusao(LocalDateTime.now()); 
+    doacao.setDataConclusao(OffsetDateTime.now()); 
     doacaoRepository.save(doacao);
 
     ReservaModel reserva = reservaRepository.findByDoacaoId(id)
         .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
 
     reserva.setStatus(StatusReserva.RETIRADA);
-    reserva.setDataReserva(LocalDateTime.now());
+    reserva.setDataReserva(OffsetDateTime.now());
     reservaRepository.save(reserva);
     }
     public List<DoacaoResponseDTO> listarDoacoesDoDoador() {

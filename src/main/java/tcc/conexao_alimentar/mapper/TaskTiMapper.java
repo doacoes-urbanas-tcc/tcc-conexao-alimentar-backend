@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.mapper;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import tcc.conexao_alimentar.DTO.TaskTiRequestDTO;
 import tcc.conexao_alimentar.DTO.TaskTiResponseDTO;
@@ -14,7 +14,7 @@ public class TaskTiMapper {
         task.setDescricao(dto.getDescricao());
         task.setLinkRepositorio(dto.getLinkRepositorio());
         task.setTags(dto.getTags());
-        task.setDataCriacao(LocalDateTime.now());
+        task.setDataCriacao(OffsetDateTime.now());
         task.setFechada(false);
         return task;
     }

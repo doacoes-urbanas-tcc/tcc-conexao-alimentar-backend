@@ -1,7 +1,8 @@
 package tcc.conexao_alimentar.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +30,8 @@ public class AvaliacaoModel {
     private int nota;
 
     private String comentario;
-
-    private LocalDateTime dataCriacao;
+    @Column(name = "data_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime dataCriacao;
 
     @ManyToOne
     @JoinColumn(name = "avaliador_id", nullable = false)

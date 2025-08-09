@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.DTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import tcc.conexao_alimentar.enums.StatusResposta;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ public class RespostaTaskTiResponseDTO {
     private Long voluntarioId;
     private String nomeVoluntario; 
     private String linkSolucao;
-    private LocalDateTime dataResposta;
+    private OffsetDateTime dataResposta;
     private StatusResposta status;
 
 }

@@ -9,7 +9,7 @@ import tcc.conexao_alimentar.enums.CategoriaAlimento;
 import tcc.conexao_alimentar.enums.Medida;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 public class DoacaoMapper {
 
 
@@ -25,7 +25,7 @@ public class DoacaoMapper {
     if (dto.getCategoria() != null) {
         model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
     }
-    model.setDataCadastro(LocalDateTime.now());
+    model.setDataCadastro(OffsetDateTime.now());
     model.setStatus(StatusDoacao.PENDENTE);
     model.setDoador(doador);
     model.setUrlImagem(dto.getUrlImagem());

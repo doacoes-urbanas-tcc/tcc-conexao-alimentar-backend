@@ -1,7 +1,7 @@
 package tcc.conexao_alimentar.controller;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,7 +97,7 @@ public class AuthController {
     }
 
     String token = UUID.randomUUID().toString();
-    LocalDateTime expiracao = LocalDateTime.now().plusHours(2);
+    OffsetDateTime expiracao = OffsetDateTime.now().plusHours(2);
 
     RecuperarSenhaToken recuperacao = new RecuperarSenhaToken();
     recuperacao.setEmail(email);
@@ -158,7 +158,7 @@ public class AuthController {
         }
 
         RecuperarSenhaToken recuperar = optionalToken.get();
-        if (recuperar.getExpiracao().isBefore(LocalDateTime.now())) {
+        if (recuperar.getExpiracao().isBefore(OffsetDateTime.now())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token expirado.");
         }
 

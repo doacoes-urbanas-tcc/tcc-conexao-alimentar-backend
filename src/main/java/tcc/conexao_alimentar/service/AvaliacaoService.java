@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,7 +50,7 @@ public class AvaliacaoService {
         avaliacao.setAvaliado(avaliado);
         avaliacao.setNota(dto.getNota());
         avaliacao.setComentario(dto.getComentario());
-        avaliacao.setDataCriacao(LocalDateTime.now());
+        avaliacao.setDataCriacao(OffsetDateTime.now());
 
         reservaRepository.save(reserva);
         avaliacaoRepository.save(avaliacao);

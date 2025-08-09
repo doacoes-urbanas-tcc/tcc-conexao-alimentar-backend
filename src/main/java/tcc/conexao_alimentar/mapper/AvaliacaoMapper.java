@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.mapper;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import tcc.conexao_alimentar.DTO.AvaliacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.AvaliacaoResponseDTO;
@@ -12,7 +12,7 @@ public class AvaliacaoMapper {
         AvaliacaoModel model = new AvaliacaoModel();
         model.setNota(dto.getNota());
         model.setComentario(dto.getComentario());
-        model.setDataCriacao(LocalDateTime.now());
+        model.setDataCriacao(OffsetDateTime.now());
         model.setAvaliador(avaliador);
         model.setAvaliado(avaliado);
         return model;

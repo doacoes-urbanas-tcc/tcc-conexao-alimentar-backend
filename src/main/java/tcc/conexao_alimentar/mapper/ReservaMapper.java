@@ -1,6 +1,6 @@
 package tcc.conexao_alimentar.mapper;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
@@ -62,12 +62,12 @@ public class ReservaMapper {
         ReservaModel model = new ReservaModel();
         model.setDoacao(doacao);
         model.setReceptor(receptor);
-        model.setDataReserva(LocalDateTime.now());
+        model.setDataReserva(OffsetDateTime.now());
         model.setStatus(StatusReserva.RESERVADA);
         model.setJustificativaCancelamento(null);
         model.setAvaliacaoFeitaPeloDoador(false);
         model.setAvaliacaoFeitaPeloReceptor(false);
-        model.setDataHoraExpiracao(LocalDateTime.now().plusHours(2)); 
+        model.setDataHoraExpiracao(OffsetDateTime.now().plusHours(2)); 
         return model;
     }
 }

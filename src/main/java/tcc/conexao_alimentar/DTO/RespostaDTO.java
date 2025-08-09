@@ -1,6 +1,7 @@
 package tcc.conexao_alimentar.DTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class RespostaDTO {
     private String tituloTask;
     private String linkSolucao;
-    private LocalDateTime dataResposta;
+    private OffsetDateTime dataResposta;
 
 
 }

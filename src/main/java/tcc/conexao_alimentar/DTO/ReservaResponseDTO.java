@@ -1,7 +1,7 @@
 package tcc.conexao_alimentar.DTO;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class ReservaResponseDTO {
     private Long id;
     private Long doacaoId;
     private Long beneficiarioId;
-    private LocalDateTime dataReserva;
+    private OffsetDateTime dataReserva;
     private StatusReserva status;
     private String justificativaCancelamento;
     private String urlQrCode;
@@ -32,7 +32,7 @@ public class ReservaResponseDTO {
     private Boolean avaliacaoFeitaPeloDoador;
     private Boolean avaliacaoFeitaPeloReceptor;
     private Boolean necessitaAvaliacao;
-    private LocalDateTime dataExpiracao;
+    private OffsetDateTime dataExpiracao;
 
 
 
