@@ -71,7 +71,7 @@ public class QrCodeController {
         @ApiResponse(responseCode = "404", description = "Produtor rural não encontrado")
     })
     @GetMapping("/url/{doacaoId}")
-    @PreAuthorize("hasRole('ONG')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
         .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
