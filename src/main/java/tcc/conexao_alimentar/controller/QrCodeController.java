@@ -81,14 +81,15 @@ public class QrCodeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    long segundosTotais = 7200; 
     OffsetDateTime dataReserva = reserva.getDataReserva(); 
-    long segundosTotais = 7200;
     long segundosPassados = Duration.between(dataReserva, OffsetDateTime.now()).getSeconds();
     long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);
 
     QrCodeResponseDTO response = new QrCodeResponseDTO();
     response.setUrl(url);
     response.setSegundosRestantes(segundosRestantes);
+    response.setSegundosTotais(segundosTotais); 
     response.setReservaId(reserva.getId());
     response.setDataReserva(dataReserva);
     response.setStatusReserva(reserva.getStatus().name()); 

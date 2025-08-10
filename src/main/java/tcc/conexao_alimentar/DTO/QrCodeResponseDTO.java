@@ -15,5 +15,6 @@ public class QrCodeResponseDTO {
     private Long reservaId;
     private OffsetDateTime dataReserva;
     private String statusReserva;
+    private long segundosTotais;
     
 }
