@@ -16,6 +16,7 @@ import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
+import tcc.conexao_alimentar.DTO.OngdashboardDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.service.FileUploadService;
@@ -96,6 +97,11 @@ public class OngController {
         var ong = ongService.buscarPorId(id)
                           .orElseThrow(() -> new RegraDeNegocioException("ONG não encontrado."));
         return ResponseEntity.ok(OngMapper.toResponse(ong));
+    }
+    @GetMapping("/dashboard/{ongId}")
+    @PreAuthorize("hasRole('ONG')")
+    public ResponseEntity<OngdashboardDTO> getDashboard(@PathVariable Long ongId) {
+        return ResponseEntity.ok(ongService.getEstatisticas(ongId));
     }
 
 

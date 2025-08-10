@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
+import tcc.conexao_alimentar.DTO.OngdashboardDTO;
 import tcc.conexao_alimentar.enums.StatusUsuario;
 import tcc.conexao_alimentar.enums.TipoUsuario;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.mapper.OngMapper;
 import tcc.conexao_alimentar.model.OngModel;
 import tcc.conexao_alimentar.model.UsuarioModel;
+import tcc.conexao_alimentar.repository.AvaliacaoRepository;
 import tcc.conexao_alimentar.repository.OngRepository;
+import tcc.conexao_alimentar.repository.ReservaRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class OngService {
     private final OngRepository ongRepository;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
+    private final ReservaRepository reservaRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
 
     public void cadastrar(OngRequestDTO dto) {
         OngModel model = OngMapper.toEntity(dto);
@@ -57,6 +62,12 @@ public class OngService {
     }
      public Optional<OngModel> buscarPorId(Long id) {
         return ongRepository.findById(id);
+    }
+    public OngdashboardDTO getEstatisticas(Long ongId) {
+        Long totalDoacoes = reservaRepository.countDoacoesRecebidasByOng(ongId);
+        Double mediaAvaliacoes = avaliacaoRepository.findMediaAvaliacoesByOng(ongId);
+
+        return new OngdashboardDTO(totalDoacoes, mediaAvaliacoes != null ? mediaAvaliacoes : 0.0);
     }
 
 

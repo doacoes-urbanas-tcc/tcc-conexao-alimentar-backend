@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import tcc.conexao_alimentar.enums.StatusReserva;
 import tcc.conexao_alimentar.model.DoacaoModel;
@@ -17,6 +19,9 @@ public interface ReservaRepository extends JpaRepository<ReservaModel,Long>{
     Optional<ReservaModel> findByDoacaoId(Long doacaoId);
     List<ReservaModel> findByReceptorId(Long receptor);
     Optional<ReservaModel> findByDoacao(DoacaoModel doacao);
+    @Query("SELECT COUNT(r) FROM ReservaModel r " +"WHERE r.receptor.id = :ongId AND r.status = StatusReserva.RETIRADA")
+    Long countDoacoesRecebidasByOng(@Param("ongId") Long ongId);
+
 
 
 
