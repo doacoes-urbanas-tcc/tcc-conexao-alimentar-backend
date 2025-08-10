@@ -105,7 +105,7 @@ public class AuthController {
     recuperacao.setExpiracao(expiracao);
     tokenRepository.save(recuperacao);
 
-    String link = "https://conexao-alimentar.onrender.com/pages/perfil/redefinir-senha.html?token=" + token;
+    String link = "https://conexao-alimentar.netlify.app/pages/perfil/redefinir-senha.html?token=" + token;
 
    String conteudoHtml = """
   <!DOCTYPE html>
