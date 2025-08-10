@@ -85,23 +85,28 @@ public class QrCodeController {
     long segundosTotais = 7200; 
 
     OffsetDateTime dataReserva = reserva.getDataReserva().withOffsetSameInstant(ZoneOffset.UTC);
-    OffsetDateTime agora = OffsetDateTime.now(ZoneOffset.UTC);
+   OffsetDateTime agora = OffsetDateTime.now(ZoneOffset.UTC);
 
-    long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
-    if (segundosPassados < 0) {
-        segundosPassados = 0;
-    }
-    long segundosRestantes = Math.max(0, segundosTotais - segundosPassados);
+   long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
+   if (segundosPassados < 0) segundosPassados = 0;
+  long segundosRestantes = Math.max(0, 7200 - segundosPassados);
 
-    QrCodeResponseDTO response = new QrCodeResponseDTO();
-    response.setUrl(url);
-    response.setSegundosRestantes(segundosRestantes);
-    response.setSegundosTotais(segundosTotais); 
-    response.setReservaId(reserva.getId());
-    response.setDataReserva(dataReserva);
-    response.setStatusReserva(reserva.getStatus().name()); 
+  System.out.println("Reserva ID: " + reserva.getId());
+  System.out.println("Data reserva (UTC): " + dataReserva);
+  System.out.println("Agora (UTC): " + agora);
+  System.out.println("Segundos passados: " + segundosPassados);
+  System.out.println("Segundos restantes: " + segundosRestantes);
 
-    return ResponseEntity.ok(response);
+  QrCodeResponseDTO response = new QrCodeResponseDTO();
+  response.setUrl(reserva.getUrlQrCode());
+  response.setSegundosRestantes(segundosRestantes);
+  response.setSegundosTotais(7200);
+  response.setReservaId(reserva.getId());
+  response.setDataReserva(dataReserva);
+  response.setStatusReserva(reserva.getStatus().name());
+
+  return ResponseEntity.ok(response);
+
   }
 
 }
