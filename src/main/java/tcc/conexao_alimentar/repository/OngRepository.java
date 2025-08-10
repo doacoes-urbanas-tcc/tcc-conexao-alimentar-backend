@@ -9,8 +9,7 @@ import tcc.conexao_alimentar.model.OngModel;
 
 public interface OngRepository extends JpaRepository<OngModel,Long> {
     
-    @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a " +
-           "WHERE a.avaliado.id = :ongId AND a.tipoUsuario = 'ONG'")
+    @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a WHERE a.avaliado.id = :ongId")
     Double findMediaAvaliacoesByOng(@Param("ongId") Long ongId);
 
 
