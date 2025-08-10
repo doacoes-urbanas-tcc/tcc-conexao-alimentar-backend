@@ -119,7 +119,7 @@ public class DoacaoService {
         throw new RegraDeNegocioException("Doação não possui data de reserva definida.");
     }
 
-    Duration duracao = Duration.between(doacao.getDataCadastro(), LocalDateTime.now());
+    Duration duracao = Duration.between(doacao.getDataCadastro(), OffsetDateTime.now());
     if (duracao.toHours() >= 2) {
         throw new RegraDeNegocioException("QR Code expirado. A reserva passou do prazo de 2 horas.");
     }
