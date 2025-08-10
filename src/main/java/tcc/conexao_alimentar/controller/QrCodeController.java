@@ -84,8 +84,9 @@ public class QrCodeController {
 
     long segundosTotais = 7200; 
 
-    OffsetDateTime dataReserva = reserva.getDataReserva().withOffsetSameInstant(ZoneOffset.UTC);
+   OffsetDateTime dataReserva = reserva.getDataReserva().withOffsetSameInstant(ZoneOffset.UTC);
    OffsetDateTime agora = OffsetDateTime.now(ZoneOffset.UTC);
+
 
    long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
    if (segundosPassados < 0) segundosPassados = 0;

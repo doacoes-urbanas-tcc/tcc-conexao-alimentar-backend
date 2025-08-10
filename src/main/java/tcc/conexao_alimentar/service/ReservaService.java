@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.service;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,7 @@ public class ReservaService {
 
         ReservaModel reserva = ReservaMapper.toEntity(dto, doacao, receptor);
 
+        reserva.setDataReserva(OffsetDateTime.now(ZoneOffset.UTC));       
         reserva.setAvaliacaoFeitaPeloDoador(false);
         reserva.setAvaliacaoFeitaPeloReceptor(false);
         reserva.setDataHoraExpiracao(OffsetDateTime.now().plusHours(2));
