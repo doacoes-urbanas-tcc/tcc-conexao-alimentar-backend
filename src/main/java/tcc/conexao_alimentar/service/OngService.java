@@ -62,15 +62,14 @@ public class OngService {
     }
      public Optional<OngModel> buscarPorId(Long id) {
         return ongRepository.findById(id);
-    }
-    public OngdashboardDTO getEstatisticas(Long ongId) {
-        Long totalDoacoes = reservaRepository.countDoacoesRecebidasByOng(ongId);
-        Double mediaAvaliacoes = avaliacaoRepository.findMediaAvaliacoesByOng(ongId);
-        Long receptorId = reservaRepository.findByReceptorId(ongId);
-        String nome = usuarioService.buscarNomePorId(receptorId);
+    }public OngdashboardDTO getEstatisticas(Long ongId) {
+    Long totalDoacoes = reservaRepository.countDoacoesRecebidasByOng(ongId);
+    Double mediaAvaliacoes = avaliacaoRepository.findMediaAvaliacoesByOng(ongId);
+    String nome = usuarioService.buscarNomePorId(ongId);
 
-        return new OngdashboardDTO(nome,totalDoacoes, mediaAvaliacoes != null ? mediaAvaliacoes : 0.0);
-    }
+    return new OngdashboardDTO(nome, totalDoacoes, mediaAvaliacoes != null ? mediaAvaliacoes : 0.0);
+}
+
 
 
 }
