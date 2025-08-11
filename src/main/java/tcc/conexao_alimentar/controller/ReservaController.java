@@ -42,7 +42,7 @@ public class ReservaController {
         reservaService.cadastrar(dto);
         return ResponseEntity.ok("Reserva criada com sucesso!");
     }
-    @Operation(summary = "Endpoint para fazer listar todas as reservas",description = "Endpoint para uma ONG  ou um administrador listarem as reservas cadastrardas no sistema")
+    @Operation(summary = "Endpoint para fazer listar todas as reservas",description = "Endpoint para um voluntário ou um administrador listarem as reservas cadastrardas no sistema")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista de reservas retornada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
@@ -55,6 +55,12 @@ public class ReservaController {
         List<ReservaResponseDTO> lista = reservaService.listarTodas();
         return ResponseEntity.ok(lista);
     }
+    @Operation(summary = "Endpoint para fazer buscar reserva por id",description = "Endpoint para um voluntário ou um administradorbuscarem uma reserva por id")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Reserva retornada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('VOLUNTARIO')")

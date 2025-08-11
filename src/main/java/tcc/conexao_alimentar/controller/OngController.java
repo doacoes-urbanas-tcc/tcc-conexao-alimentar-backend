@@ -98,6 +98,12 @@ public class OngController {
                           .orElseThrow(() -> new RegraDeNegocioException("ONG não encontrado."));
         return ResponseEntity.ok(OngMapper.toResponse(ong));
     }
+    @Operation(summary = "Carregar os dados do dashboard de ONG",description = "Retorna os dados do dashboard da ONG.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Dados carregados com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "ONG não encontrada")
+    })
     @GetMapping("/dashboard/{ongId}")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<OngdashboardDTO> getDashboard(@PathVariable Long ongId) {

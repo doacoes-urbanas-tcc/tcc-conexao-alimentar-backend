@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
@@ -33,7 +35,12 @@ public class QrCodeController {
     private final ReservaRepository reservaRepository;
 
 
-     @Operation(summary = "Geração de QR Code", description = "Endpoint para que o QR Code seja gerado ao realizar uma reserva")
+    @Operation(summary = "Geração de QR Code", description = "Endpoint para que o QR Code seja gerado ao realizar uma reserva")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "QR Code gerado com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "QR Code não encontrado")
+    })
     @PostMapping("/generate/{doacaoId}")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
@@ -56,6 +63,11 @@ public class QrCodeController {
     }
 
     @Operation(summary = "Buscar QR Code com tempo restante")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "QR Code gerado com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "QR Code não encontrado")
+    })
     @GetMapping("/url/{doacaoId}")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {

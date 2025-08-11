@@ -136,6 +136,11 @@ public class DoacaoController {
     }
     
     @Operation(summary = "Obter métricas do doador", description = "Retorna o total de doações concluídas, número de ONGs beneficiadas e a média de avaliações do doador.")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Métricas retornadas com sucesso"),
+    @ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
+    @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
+    })
     @GetMapping("/metricas")
     @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
     public ResponseEntity<MetricasDoadorDTO> obterMetricasDoador() {

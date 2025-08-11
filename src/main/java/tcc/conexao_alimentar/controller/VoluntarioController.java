@@ -157,6 +157,12 @@ public class VoluntarioController {
     voluntarioService.atualizarSenha(id, dto.getSenhaAtual(),dto.getNovaSenha());
         return ResponseEntity.ok().build();
     }
+    @Operation(summary = "Endpoint para carregar o dashboard de um voluntário de TI",description = "Endpoint para carregar o dashboard de um voluntário de TI")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Usuários carregados com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+    })
 
     @GetMapping("/dashboard-ti/{id}")
     @PreAuthorize("hasRole('VOLUNTARIO')")
