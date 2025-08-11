@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import tcc.conexao_alimentar.DTO.QrCodeDTO;
@@ -35,13 +33,7 @@ public class QrCodeController {
     private final ReservaRepository reservaRepository;
 
 
-    @Operation(summary = "Geração de QR Code ",description = "Endpoint para que o QR Code seja gerado ao realizar uma reserva")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "QR Code gerado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Reserva não encontrada")
-    })
+     @Operation(summary = "Geração de QR Code", description = "Endpoint para que o QR Code seja gerado ao realizar uma reserva")
     @PostMapping("/generate/{doacaoId}")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<String> gerarQr(@PathVariable Long doacaoId) {
@@ -63,55 +55,46 @@ public class QrCodeController {
         }
     }
 
-    @Operation(summary = "Geração de QR Code com tempo de expiração",description = "Endpoint para geração de QR Code com tempo de expiração de 2 horas apartir do momento em que a reserva é efetuada")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Produtor rural não encontrado")
-    })
+    @Operation(summary = "Buscar QR Code com tempo restante")
     @GetMapping("/url/{doacaoId}")
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<QrCodeResponseDTO> buscarQrCodeComTempo(@PathVariable Long doacaoId) {
-    ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
-        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
+        ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
+                .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada para esta doação."));
 
-    String url = reserva.getUrlQrCode();
+        String url = reserva.getUrlQrCode();
+        if (url == null || url.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
-    if (url == null || url.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        ZoneId zoneBrasilia = ZoneId.of("America/Sao_Paulo");
+
+        OffsetDateTime dataReserva = reserva.getDataReserva()
+                .atZoneSameInstant(zoneBrasilia)
+                .toOffsetDateTime();
+
+        OffsetDateTime agora = OffsetDateTime.now(zoneBrasilia);
+
+        long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
+        if (segundosPassados < 0) segundosPassados = 0;
+
+        long segundosRestantes = Math.max(0, 7200 - segundosPassados);
+
+        System.out.println("Reserva ID: " + reserva.getId());
+        System.out.println("Data reserva: " + dataReserva);
+        System.out.println("Agora: " + agora);
+        System.out.println("Segundos passados: " + segundosPassados);
+        System.out.println("Segundos restantes: " + segundosRestantes);
+
+        QrCodeResponseDTO response = new QrCodeResponseDTO();
+        response.setUrl(reserva.getUrlQrCode());
+        response.setSegundosRestantes(segundosRestantes);
+        response.setSegundosTotais(7200);
+        response.setReservaId(reserva.getId());
+        response.setDataReserva(dataReserva);
+        response.setStatusReserva(reserva.getStatus().name());
+
+        return ResponseEntity.ok(response);
     }
-
-    ZoneId zoneBrasilia = ZoneId.of("America/Sao_Paulo");
-
-    OffsetDateTime dataReserva = reserva.getDataReserva()
-    .atZoneSameInstant(zoneBrasilia)
-    .toOffsetDateTime();
-
-    OffsetDateTime agora = OffsetDateTime.now(zoneBrasilia);
-
-   long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
-   if (segundosPassados < 0) segundosPassados = 0;
-
-   long segundosRestantes = Math.max(0, 7200 - segundosPassados);
-
-
-  System.out.println("Reserva ID: " + reserva.getId());
-  System.out.println("Data reserva (UTC): " + dataReserva);
-  System.out.println("Agora (UTC): " + agora);
-  System.out.println("Segundos passados: " + segundosPassados);
-  System.out.println("Segundos restantes: " + segundosRestantes);
-
-  QrCodeResponseDTO response = new QrCodeResponseDTO();
-  response.setUrl(reserva.getUrlQrCode());
-  response.setSegundosRestantes(segundosRestantes);
-  response.setSegundosTotais(7200);
-  response.setReservaId(reserva.getId());
-  response.setDataReserva(dataReserva);
-  response.setStatusReserva(reserva.getStatus().name());
-
-  return ResponseEntity.ok(response);
-
-  }
 
 }
