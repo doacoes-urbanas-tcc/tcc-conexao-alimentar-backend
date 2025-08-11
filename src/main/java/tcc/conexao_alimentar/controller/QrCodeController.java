@@ -2,7 +2,7 @@ package tcc.conexao_alimentar.controller;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,15 +82,19 @@ public class QrCodeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    long segundosTotais = 7200; 
+    ZoneId zoneBrasilia = ZoneId.of("America/Sao_Paulo");
 
-   OffsetDateTime dataReserva = reserva.getDataReserva().withOffsetSameInstant(ZoneOffset.UTC);
-   OffsetDateTime agora = OffsetDateTime.now(ZoneOffset.UTC);
+    OffsetDateTime dataReserva = reserva.getDataReserva()
+    .atZoneSameInstant(zoneBrasilia)
+    .toOffsetDateTime();
 
+    OffsetDateTime agora = OffsetDateTime.now(zoneBrasilia);
 
    long segundosPassados = Duration.between(dataReserva, agora).getSeconds();
    if (segundosPassados < 0) segundosPassados = 0;
-  long segundosRestantes = Math.max(0, 7200 - segundosPassados);
+
+   long segundosRestantes = Math.max(0, 7200 - segundosPassados);
+
 
   System.out.println("Reserva ID: " + reserva.getId());
   System.out.println("Data reserva (UTC): " + dataReserva);
