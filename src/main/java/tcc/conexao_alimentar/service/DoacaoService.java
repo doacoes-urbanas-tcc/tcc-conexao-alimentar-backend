@@ -26,7 +26,6 @@ import tcc.conexao_alimentar.repository.UsuarioRepository;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +40,7 @@ public class DoacaoService {
     private final UsuarioRepository usuarioRepository;
     private final FileUploadService fileUploadService; 
     private final ReservaRepository reservaRepository;
+    private final UsuarioService usuarioService;
 
     public void cadastrar(DoacaoRequestDTO dto, MultipartFile file) throws IOException {
         String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -154,6 +154,7 @@ public class DoacaoService {
         .orElseThrow(() -> new RegraDeNegocioException("Doador não encontrado."));
 
     Long doadorId = doador.getId();
+    String nome = usuarioService.buscarNomePorId(doadorId);
 
     long totalDoacoes = doacaoRepository.contarDoacoesPorUsuario(doadorId);
     long ongsBeneficiadas = doacaoRepository.contarOngsBeneficiadas(doadorId);
@@ -163,7 +164,7 @@ public class DoacaoService {
         mediaAvaliacoes = 0.0;
     }
 
-    return new MetricasDoadorDTO(totalDoacoes, ongsBeneficiadas, mediaAvaliacoes);
+    return new MetricasDoadorDTO(nome,totalDoacoes, ongsBeneficiadas, mediaAvaliacoes);
 }
 
 

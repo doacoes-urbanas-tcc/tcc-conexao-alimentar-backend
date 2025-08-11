@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetricasDoadorDTO {
+    private String nome;
     private long totalDoacoes;
     private long ongsBeneficiadas;
     private double mediaAvaliacoes;

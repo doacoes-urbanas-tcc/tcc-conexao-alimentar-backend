@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OngdashboardDTO {
+    private String nome;
     private Long totalDoacoesRecebidas;
     private Double mediaAvaliacoes;
 
