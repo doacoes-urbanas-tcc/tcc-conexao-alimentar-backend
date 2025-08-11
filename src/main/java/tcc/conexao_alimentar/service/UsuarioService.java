@@ -220,10 +220,10 @@ public class UsuarioService {
         return dto;
     }
     public String buscarNomePorId(Long id) {
-        return voluntarioRepository.findById(id)
-                .map(v -> v.getNome())
-                .orElse("Nome não encontrado");
-    }
+    return usuarioRepository.findById(id)
+            .map(u -> u.getNome())
+            .orElse("Nome não encontrado");
+   }
 
     public double buscarMediaAvaliacoes(Long voluntarioId) {
         List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByAvaliadoId(voluntarioId);
