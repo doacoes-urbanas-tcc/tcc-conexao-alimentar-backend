@@ -34,6 +34,7 @@ tcc-conexao-alimentar-backend/.vscode
 
 #Ignora arquivos de configuração sensíveis
 src/main/resources/application-test.properties
+src/main/resources/application-dev.properties
 
 #Ignora pasta com os qrcodes gerados das reservas
 tcc-conexao-alimentar-backend/qrcodes
