@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.transaction.Transactional;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
+import tcc.conexao_alimentar.DTO.EnderecoDTO;
+import tcc.conexao_alimentar.DTO.LocalizacaoDoacaoDTO;
 import tcc.conexao_alimentar.DTO.MetricasDoadorDTO;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 import tcc.conexao_alimentar.enums.StatusReserva;
@@ -165,7 +167,29 @@ public class DoacaoService {
     }
 
     return new MetricasDoadorDTO(nome,totalDoacoes, ongsBeneficiadas, mediaAvaliacoes);
-}
+    }
+    public LocalizacaoDoacaoDTO buscarLocalizacao(Long idDoacao) {
+        DoacaoModel doacao = doacaoRepository.findById(idDoacao)
+                .orElseThrow(() -> new RegraDeNegocioException("Doação não encontrada"));
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+            doacao.getDoador().getEndereco().getCep(),
+            doacao.getDoador().getEndereco().getLogradouro(),
+            doacao.getDoador().getEndereco().getNumero(),
+            doacao.getDoador().getEndereco().getBairro(),
+            doacao.getDoador().getEndereco().getCidade(),
+            doacao.getDoador().getEndereco().getEstado(),
+            doacao.getDoador().getEndereco().getLatitude(),
+            doacao.getDoador().getEndereco().getLongitude()
+        );
+
+        return new LocalizacaoDoacaoDTO(
+            doacao.getId(),
+            doacao.getNomeAlimento(),
+            doacao.getDoador().getNome(),
+            enderecoDTO
+        );
+    }
 
 
 
