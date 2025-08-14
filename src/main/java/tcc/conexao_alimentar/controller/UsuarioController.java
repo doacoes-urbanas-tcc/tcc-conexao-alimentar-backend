@@ -1,6 +1,8 @@
 package tcc.conexao_alimentar.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -210,6 +212,15 @@ public class UsuarioController {
             default -> throw new IllegalArgumentException("Unexpected value: " + tipo);
         };
     }
+    @GetMapping("/usuario/localizacao")
+    public ResponseEntity<Map<String, Double>> getLocalizacaoUsuarioLogado() {
+    UsuarioModel usuario = usuarioService.getUsuarioLogado();
+    Map<String, Double> coords = new HashMap<>();
+    coords.put("latitude", usuario.getEndereco().getLatitude());
+    coords.put("longitude", usuario.getEndereco().getLongitude());
+    return ResponseEntity.ok(coords);
+}
+
 
 
     
