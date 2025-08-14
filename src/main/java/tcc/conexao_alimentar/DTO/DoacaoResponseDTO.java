@@ -33,5 +33,7 @@ public class DoacaoResponseDTO {
     private OffsetDateTime DataConclusao;
     private Double doadorLatitude;
     private Double doadorLongitude;
+     private Double receptorLatitude;   
+    private Double receptorLongitude;  
 
 }

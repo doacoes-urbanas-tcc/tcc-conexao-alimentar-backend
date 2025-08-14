@@ -13,22 +13,27 @@ import java.time.OffsetDateTime;
 public class DoacaoMapper {
 
 
-     public static DoacaoModel toEntity(DoacaoRequestDTO dto, UsuarioModel doador) {
+      public static DoacaoModel toEntity(DoacaoRequestDTO dto, UsuarioModel doador) {
         DoacaoModel model = new DoacaoModel();
         model.setNomeAlimento(dto.getNomeAlimento());
+
         if (dto.getUnidadeMedida() != null) {
             model.setUnidadeMedida(Medida.valueOf(dto.getUnidadeMedida().toUpperCase()));
         }
+
         model.setQuantidade(dto.getQuantidade());
         model.setDataValidade(dto.getDataValidade());
         model.setDescricao(dto.getDescricao());
+
         if (dto.getCategoria() != null) {
             model.setCategoria(CategoriaAlimento.valueOf(dto.getCategoria().toUpperCase()));
         }
+
         model.setDataCadastro(OffsetDateTime.now());
         model.setStatus(StatusDoacao.PENDENTE);
         model.setDoador(doador);
         model.setUrlImagem(dto.getUrlImagem());
+
         return model;
     }
 
@@ -39,19 +44,31 @@ public class DoacaoMapper {
         String nomeReceptor = null;
         Long idReceptor = null;
         String tipoReceptor = null;
+        Double receptorLat = null;
+        Double receptorLng = null;
 
         if (reserva != null && reserva.getReceptor() != null) {
             idReserva = reserva.getId();
             nomeReceptor = reserva.getReceptor().getNome();
             idReceptor = reserva.getReceptor().getId();
             tipoReceptor = reserva.getReceptor().getTipoUsuario().toString();
+
+            if (reserva.getReceptor().getEndereco() != null) {
+                receptorLat = reserva.getReceptor().getEndereco().getLatitude();
+                receptorLng = reserva.getReceptor().getEndereco().getLongitude();
+            }
         }
 
+        String nomeDoador = "Doador não informado";
         Double doadorLat = null;
         Double doadorLng = null;
-        if (doacao.getDoador() != null && doacao.getDoador().getEndereco() != null) {
-            doadorLat = doacao.getDoador().getEndereco().getLatitude();
-            doadorLng = doacao.getDoador().getEndereco().getLongitude();
+
+        if (doacao.getDoador() != null) {
+            nomeDoador = doacao.getDoador().getNome();
+            if (doacao.getDoador().getEndereco() != null) {
+                doadorLat = doacao.getDoador().getEndereco().getLatitude();
+                doadorLng = doacao.getDoador().getEndereco().getLongitude();
+            }
         }
 
         return new DoacaoResponseDTO(
@@ -65,16 +82,18 @@ public class DoacaoMapper {
             doacao.getDataExpiracao(),
             doacao.getCategoria() != null ? doacao.getCategoria().toString() : null,
             doacao.getStatus(),
-            doacao.getDoador() != null ? doacao.getDoador().getNome() : null,
+            nomeDoador,
             doacao.getDoador() != null ? doacao.getDoador().getId() : null,
             doacao.getUrlImagem(),
             idReserva,
             nomeReceptor,
             idReceptor,
             tipoReceptor,
-            doacao.getDataConclusao() != null ? doacao.getDataConclusao() : null,
+            doacao.getDataConclusao(),
             doadorLat,
-            doadorLng
+            doadorLng,
+            receptorLat,
+            receptorLng
         );
     }
 }
