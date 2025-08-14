@@ -43,7 +43,7 @@ public class DoacaoController {
         @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
     })
     @PostMapping("/cadastrar")
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hsRole('PESSOA_FISICA')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
     public ResponseEntity<String> cadastrarDoacao(
     @RequestPart("dto") DoacaoRequestDTO dto,@RequestPart("file") MultipartFile file) throws IOException {
     if (file.isEmpty()) {
@@ -112,7 +112,7 @@ public class DoacaoController {
 
     })
     @PostMapping("/validar-qr/{doacaoId}")
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') hasRole('PESSOA_FISICA')")
     public ResponseEntity<Map<String, Long>> validarQrCode(@PathVariable Long doacaoId) {
     service.validarQrCode(doacaoId);
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
