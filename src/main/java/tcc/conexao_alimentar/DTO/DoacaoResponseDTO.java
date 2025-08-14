@@ -2,6 +2,7 @@ package tcc.conexao_alimentar.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tcc.conexao_alimentar.enums.StatusDoacao;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class DoacaoResponseDTO {
 
     private Long id;
@@ -29,5 +31,7 @@ public class DoacaoResponseDTO {
     private Long idReceptor;
     private String tipoReceptor;
     private OffsetDateTime DataConclusao;
+    private Double doadorLatitude;
+    private Double doadorLongitude;
 
 }
