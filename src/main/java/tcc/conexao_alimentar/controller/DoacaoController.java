@@ -112,7 +112,7 @@ public class DoacaoController {
 
     })
     @PostMapping("/validar-qr/{doacaoId}")
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') hasRole('PESSOA_FISICA')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')")
     public ResponseEntity<Map<String, Long>> validarQrCode(@PathVariable Long doacaoId) {
     service.validarQrCode(doacaoId);
     ReservaModel reserva = reservaRepository.findByDoacaoId(doacaoId)
