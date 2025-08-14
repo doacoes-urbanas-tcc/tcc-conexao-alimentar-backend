@@ -213,6 +213,7 @@ public class UsuarioController {
         };
     }
     @GetMapping("/usuario/localizacao")
+     @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
     public ResponseEntity<Map<String, Double>> getLocalizacaoUsuarioLogado() {
     UsuarioModel usuario = usuarioService.getUsuarioLogado();
     Map<String, Double> coords = new HashMap<>();

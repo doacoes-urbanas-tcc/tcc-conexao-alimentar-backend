@@ -123,6 +123,20 @@ public class ReservaController {
     }
 
     return ResponseEntity.ok(dto);
+   }
+    @GetMapping("/reservas/{id}/localizacao")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<LocalizacaoDTO> getLocalizacaoPorReserva(@PathVariable Long id) {
+    Reserva reserva = reservaService.buscarPorId(id);
+    Doacao doacao = doacaoService.buscarPorId(reserva.getDoacaoId());
+
+    LocalizacaoDTO localizacao = new LocalizacaoDTO(
+        doacao.getLatitude(),
+        doacao.getLongitude()
+    );
+
+    return ResponseEntity.ok(localizacao);
 }
+
 
 }
