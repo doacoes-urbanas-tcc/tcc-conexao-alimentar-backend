@@ -80,18 +80,12 @@ public class UsuarioController {
     return ResponseEntity.ok(filtrados);
     }
 
-    @GetMapping("/ativos/{tipo}")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Listar usuários ativos por tipo", description = "Lista cadastros ativos conforme tipo.")
-        @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Usuários carregados com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
-    })
-     public ResponseEntity<List<Object>> listarAtivosPorTipo(@PathVariable TipoUsuario tipo) {
-       List<Object> ativos = usuarioService.listarUsuariosPorStatus(StatusUsuario.ATIVO);
+   @GetMapping("/ativos/{tipo}")
+   @PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<List<Object>> listarAtivosPorTipo(@PathVariable TipoUsuario tipo) {
+    List<Object> ativos = usuarioService.listarUsuariosPorStatus(StatusUsuario.ATIVO);
 
-       List<Object> filtrados = ativos.stream()
+    List<Object> filtrados = ativos.stream()
         .filter(usuario -> {
             switch (tipo) {
                 case COMERCIO: return usuario instanceof ComercioResponseDTO;
@@ -105,7 +99,7 @@ public class UsuarioController {
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(filtrados);
-    }
+  }
 
 
     @GetMapping("/pendentes")
