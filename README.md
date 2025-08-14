@@ -22,10 +22,10 @@ Este repositório contém **apenas o backend**, desenvolvido em **Java com Sprin
 ## 👥 Integrantes do Grupo
 > *(Substitua pelos nomes reais)*
 
-- Nome 1  
-- Nome 2  
-- Nome 3  
-- Nome 4  
+- Lívia Neves 
+- Yasmin Martimiano 
+- Vinícius  
+- Kaique 
 
 
 ## 📋 Funcionalidades
