@@ -143,7 +143,7 @@ public class DoacaoController {
     @ApiResponse(responseCode = "403", description = "Acesso não autorizado")
     })
     @GetMapping("/metricas")
-    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL')")
+    @PreAuthorize("hasRole('COMERCIO') or hasRole('PRODUTOR_RURAL') or hasRole('PESSOA_FISICA')" )
     public ResponseEntity<MetricasDoadorDTO> obterMetricasDoador() {
     MetricasDoadorDTO metricas = service.buscarMetricasDoador();
     return ResponseEntity.ok(metricas);

@@ -1,7 +1,7 @@
 package tcc.conexao_alimentar.service;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,67 +28,69 @@ import tcc.conexao_alimentar.repository.DoacaoRepository;
 @RequiredArgsConstructor
 public class RelatorioService {
     private final DoacaoRepository doacaoRepository;
+    public List<RelatorioDoacaoDTO> gerarRelatorioMensal(int ano, int mes) {
+    ZoneOffset offset = ZoneOffset.of("-03:00");
+    OffsetDateTime inicio = OffsetDateTime.of(ano, mes, 1, 0, 0, 0, 0, offset);
+    OffsetDateTime fim = inicio.withDayOfMonth(inicio.toLocalDate().lengthOfMonth())
+                               .withHour(23).withMinute(59).withSecond(59);
 
-     public List<RelatorioDoacaoDTO> gerarRelatorioMensal(int ano, int mes) {
-        LocalDate inicio = LocalDate.of(ano, mes, 1);
-        LocalDate fim = inicio.withDayOfMonth(inicio.lengthOfMonth());
+    List<DoacaoModel> doacoesConcluidas = doacaoRepository.findDoacoesConcluidasNoPeriodo(
+        StatusDoacao.CONCLUIDA,
+        inicio,
+        fim
+    );
 
-        List<DoacaoModel> doacoesConcluidas = doacaoRepository.findDoacoesConcluidasNoPeriodo(
-            StatusDoacao.CONCLUIDA,
-            inicio.atStartOfDay(),
-            fim.atTime(23, 59, 59)
-        );
+    return doacoesConcluidas.stream()
+        .map(doacao -> {
+            ReservaModel reserva = doacao.getReserva();
 
-        return doacoesConcluidas.stream()
-            .map(doacao -> {
-                ReservaModel reserva = doacao.getReserva();
+            String nomeOng = "-";
+            String cnpjOng = "-";
 
-                String nomeOng = "-";
-                String cnpjOng = "-";
+            if (reserva != null && reserva.getReceptor() != null) {
+                UsuarioModel receptor = reserva.getReceptor();
+                nomeOng = receptor.getNome();
 
-                if (reserva != null && reserva.getReceptor() != null) {
-                    UsuarioModel receptor = reserva.getReceptor();
-                    nomeOng = receptor.getNome();
-
-                    if (receptor instanceof OngModel ong) {
-                        cnpjOng = ong.getCnpj();
-                    } else if (receptor instanceof ComercioModel comercio) {
-                        cnpjOng = comercio.getCnpj();
-                    } else if (receptor instanceof ProdutorRuralModel rural) {
-                        cnpjOng = rural.getNumeroRegistroRural();
-                    }
+                if (receptor instanceof OngModel ong) {
+                    cnpjOng = ong.getCnpj();
+                } else if (receptor instanceof ComercioModel comercio) {
+                    cnpjOng = comercio.getCnpj();
+                } else if (receptor instanceof ProdutorRuralModel rural) {
+                    cnpjOng = rural.getNumeroRegistroRural();
                 }
+            }
 
-                UsuarioModel doador = doacao.getDoador();
-                String cnpjDoador = "-";
+            UsuarioModel doador = doacao.getDoador();
+            String cnpjDoador = "-";
 
-                if (doador instanceof ComercioModel comercio) {
-                    cnpjDoador = comercio.getCnpj();
-                } else if (doador instanceof OngModel ong) {
-                    cnpjDoador = ong.getCnpj();
-                } else if (doador instanceof ProdutorRuralModel rural) {
-                    cnpjDoador = rural.getNumeroRegistroRural();
-                }
+            if (doador instanceof ComercioModel comercio) {
+                cnpjDoador = comercio.getCnpj();
+            } else if (doador instanceof OngModel ong) {
+                cnpjDoador = ong.getCnpj();
+            } else if (doador instanceof ProdutorRuralModel rural) {
+                cnpjDoador = rural.getNumeroRegistroRural();
+            }
 
-                LocalDate dataConclusao = doacao.getDataConclusao() != null
-                    ? doacao.getDataConclusao().toLocalDate()
-                    : doacao.getDataCadastro().toLocalDate();
+            OffsetDateTime dataConclusao = doacao.getDataConclusao() != null
+                ? doacao.getDataConclusao()
+                : doacao.getDataCadastro();
 
-                return new RelatorioDoacaoDTO(
-                    doacao.getId(),
-                    doacao.getNomeAlimento(),
-                    doacao.getUnidadeMedida().name(),
-                    doacao.getQuantidade(),
-                    dataConclusao,
-                    doacao.getCategoria().name(),
-                    doador.getNome(),
-                    cnpjDoador,
-                    nomeOng,
-                    cnpjOng
-                );
-            })
-            .collect(Collectors.toList());
-    }
+            return new RelatorioDoacaoDTO(
+                doacao.getId(),
+                doacao.getNomeAlimento(),
+                doacao.getUnidadeMedida().name(),
+                doacao.getQuantidade(),
+                dataConclusao.toLocalDate(),
+                doacao.getCategoria().name(),
+                doador.getNome(),
+                cnpjDoador,
+                nomeOng,
+                cnpjOng
+            );
+        })
+        .collect(Collectors.toList());
+}
+
 
     public List<RelatorioDoacaoStatusDTO> gerarRelatorioPendentesOuExpiradas() {
     List<DoacaoModel> doacoes = doacaoRepository.findAll().stream()

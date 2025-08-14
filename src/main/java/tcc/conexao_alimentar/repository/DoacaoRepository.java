@@ -1,6 +1,7 @@
 package tcc.conexao_alimentar.repository;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springdoc.core.converters.models.Pageable;
@@ -20,7 +21,7 @@ public interface DoacaoRepository extends JpaRepository<DoacaoModel,Long> {
     long countByStatus(StatusDoacao status);
 
     @Query("SELECT d FROM DoacaoModel d WHERE d.status = :status AND d.dataCadastro BETWEEN :inicio AND :fim")
-    List<DoacaoModel> findDoacoesConcluidasNoPeriodo(@Param("status") StatusDoacao status,@Param("inicio") LocalDateTime inicio,@Param("fim") LocalDateTime fim);
+    List<DoacaoModel> findDoacoesConcluidasNoPeriodo(@Param("status") StatusDoacao status,@Param("inicio") OffsetDateTime inicio,@Param("fim") OffsetDateTime fim);
 
     @Query("SELECT COUNT(d) FROM DoacaoModel d WHERE d.doador.id = :usuarioId")
     long contarDoacoesPorUsuario(@Param("usuarioId") Long usuarioId);
