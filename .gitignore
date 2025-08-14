@@ -1,0 +1,44 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+tcc-conexao-alimentar-backend/.vscode
+
+#Ignora arquivos de configuração sensíveis
+src/main/resources/application-test.properties
+src/main/resources/application-dev.properties
+
+#Ignora pasta com os qrcodes gerados das reservas
+tcc-conexao-alimentar-backend/qrcodes
+tcc-conexao-alimentar-backend/static/imagens
+tcc-conexao-alimentar-backend/static/imagens/cnhs
+tcc-conexao-alimentar-backend/static/imagens/docs_comprovantes_voluntarios
+
