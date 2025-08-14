@@ -38,7 +38,7 @@ public class AvaliacaoService {
         if (avaliador.getTipoUsuario() == TipoUsuario.ONG) {
             avaliado = reserva.getDoacao().getDoador();
             reserva.setAvaliacaoFeitaPeloReceptor(true);
-        } else if (avaliador.getTipoUsuario() == TipoUsuario.COMERCIO) {
+        } else if (avaliador.getTipoUsuario() == TipoUsuario.COMERCIO || avaliador.getTipoUsuario() == TipoUsuario.PRODUTOR_RURAL || avaliador.getTipoUsuario() == TipoUsuario.PESSOA_FISICA ) {
             avaliado = reserva.getReceptor();
             reserva.setAvaliacaoFeitaPeloDoador(true);
         } else {
