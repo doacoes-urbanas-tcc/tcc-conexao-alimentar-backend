@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import tcc.conexao_alimentar.DTO.AtualizarEmailDTO;
 import tcc.conexao_alimentar.DTO.AtualizarSenhaDTO;
+import tcc.conexao_alimentar.DTO.OngLocationDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.OngdashboardDTO;
@@ -108,6 +109,10 @@ public class OngController {
     @PreAuthorize("hasRole('ONG')")
     public ResponseEntity<OngdashboardDTO> getDashboard(@PathVariable Long ongId) {
         return ResponseEntity.ok(ongService.getEstatisticas(ongId));
+    }
+    @GetMapping("/{id}/localizacao")
+    public OngLocationDTO getOngLocation(@PathVariable Long id) {
+        return ongService.getOngLocation(id);
     }
 
 

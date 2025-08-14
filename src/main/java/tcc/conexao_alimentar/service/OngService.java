@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import tcc.conexao_alimentar.DTO.OngLocationDTO;
 import tcc.conexao_alimentar.DTO.OngRequestDTO;
 import tcc.conexao_alimentar.DTO.OngResponseDTO;
 import tcc.conexao_alimentar.DTO.OngdashboardDTO;
@@ -68,7 +69,22 @@ public class OngService {
     String nome = usuarioService.buscarNomePorId(ongId);
 
     return new OngdashboardDTO(nome, totalDoacoes, mediaAvaliacoes != null ? mediaAvaliacoes : 0.0);
-}
+   }
+    public OngLocationDTO getOngLocation(Long idOng) {
+        OngModel ong = ongRepository.findById(idOng)
+                .orElseThrow(() -> new RuntimeException("ONG não encontrada"));
+
+        if (ong.getEndereco() == null || 
+            ong.getEndereco().getLatitude() == null || 
+            ong.getEndereco().getLongitude() == null) {
+            throw new RuntimeException("Localização da ONG não cadastrada");
+        }
+
+        return new OngLocationDTO(
+                ong.getEndereco().getLatitude(),
+                ong.getEndereco().getLongitude()
+        );
+    }
 
 
 
