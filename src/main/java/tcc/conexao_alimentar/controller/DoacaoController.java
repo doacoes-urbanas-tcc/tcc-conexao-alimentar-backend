@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import tcc.conexao_alimentar.DTO.DoacaoRequestDTO;
 import tcc.conexao_alimentar.DTO.DoacaoResponseDTO;
-import tcc.conexao_alimentar.DTO.LocalizacaoDoacaoDTO;
 import tcc.conexao_alimentar.DTO.MetricasDoadorDTO;
 import tcc.conexao_alimentar.exception.RegraDeNegocioException;
 import tcc.conexao_alimentar.model.ReservaModel;
@@ -148,11 +147,6 @@ public class DoacaoController {
     MetricasDoadorDTO metricas = service.buscarMetricasDoador();
     return ResponseEntity.ok(metricas);
      }
-
-    @GetMapping("/{idDoacao}/localizacao")
-    public ResponseEntity<LocalizacaoDoacaoDTO> buscarLocalizacao(@PathVariable Long idDoacao) {
-        return ResponseEntity.ok(service.buscarLocalizacao(idDoacao));
-    }
 
 
 

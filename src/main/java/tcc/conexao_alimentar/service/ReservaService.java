@@ -177,6 +177,11 @@ public class ReservaService {
 
     return pendentes.get(0); 
 }
+public ReservaModel buscarModelPorId(Long id) {
+    return reservaRepository.findById(id)
+        .orElseThrow(() -> new RegraDeNegocioException("Reserva não encontrada."));
+}
+
 
 
 

@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocalizacaoDoacaoDTO {
-    private Long idDoacao;
-    private String nomeAlimento;
-    private String doadorNome;
-    private EnderecoDTO endereco;
+    private Double latitude;
+    private Double longitude;
 
 }

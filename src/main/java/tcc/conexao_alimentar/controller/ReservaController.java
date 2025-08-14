@@ -18,8 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import tcc.conexao_alimentar.DTO.LocalizacaoDoacaoDTO;
 import tcc.conexao_alimentar.DTO.ReservaRequestDTO;
 import tcc.conexao_alimentar.DTO.ReservaResponseDTO;
+import tcc.conexao_alimentar.model.DoacaoModel;
+import tcc.conexao_alimentar.model.ReservaModel;
 import tcc.conexao_alimentar.service.ReservaService;
 @RestController
 @RequestMapping("/reservas")
@@ -124,19 +127,21 @@ public class ReservaController {
 
     return ResponseEntity.ok(dto);
    }
-    @GetMapping("/reservas/{id}/localizacao")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<LocalizacaoDTO> getLocalizacaoPorReserva(@PathVariable Long id) {
-    Reserva reserva = reservaService.buscarPorId(id);
-    Doacao doacao = doacaoService.buscarPorId(reserva.getDoacaoId());
+   @GetMapping("/{id}/localizacao")
+@PreAuthorize("isAuthenticated()")
+public ResponseEntity<LocalizacaoDoacaoDTO> getLocalizacaoPorReserva(@PathVariable Long id) {
+    ReservaModel reserva = reservaService.buscarModelPorId(id); 
+    DoacaoModel doacao = reserva.getDoacao();
 
-    LocalizacaoDTO localizacao = new LocalizacaoDTO(
-        doacao.getLatitude(),
-        doacao.getLongitude()
-    );
+    LocalizacaoDoacaoDTO localizacao = new LocalizacaoDoacaoDTO(
+    doacao.getDoador().getEndereco().getLatitude(),
+    doacao.getDoador().getEndereco().getLongitude()
+);
+
 
     return ResponseEntity.ok(localizacao);
 }
+
 
 
 }
